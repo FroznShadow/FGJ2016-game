@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.h"
 #include "GameObject.h"
+#include "StateManager.hpp"
+#include "menuState.h"
 
 int main()
 {
@@ -9,9 +11,8 @@ int main()
 	shape.setFillColor(sf::Color(255, 127, 0, 255));
 
 	ResourceManager* RM = ResourceManager::getInstance();
-
-	GameObject* go = new GameObject();
-	go->M_set_Texture(*(RM->getTexture("default")));
+	StateManager SM;
+	SM.setState(new MenuState);
 
 	while (window.isOpen())
 	{
@@ -22,9 +23,14 @@ int main()
 				window.close();
 		}
 
+		SM.update(0.1);
 		window.clear();
+
+		//draw
 		window.draw(shape);
-		go->M_draw(window);
+		SM.draw(window);
+
+		//end draw
 		window.display();
 	}
 

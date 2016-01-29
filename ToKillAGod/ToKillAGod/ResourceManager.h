@@ -26,12 +26,12 @@ public:
 			if (texture->loadFromFile(path))
 			{
 				m_map.insert(std::make_pair(name, texture));
-				std::cout << "loaded texture" << path << " \n";
+				std::cout << "loaded texture " << path << " \n";
 				return texture;
 			}
 			else
 			{
-				std::cout << "unable to load texture" << path << " \n";
+				std::cout << "unable to load texture " << path << " \n";
 			}
 		}
 	}

@@ -11,7 +11,8 @@ public:
 	State* getState();
 	bool setState(State* state);
 
-	void update();
+	void update(float dt);
+	void draw(sf::RenderWindow & window);
 private:
 	State* _currentState;
 };
@@ -31,6 +32,10 @@ bool StateManager::setState(State* state) {
 	_currentState = state;
 }
 
-void StateManager::update() {
-	_currentState->update();
+void StateManager::update(float dt) {
+	_currentState->update(dt);
+}
+
+void StateManager::draw(sf::RenderWindow &window) {
+	_currentState->draw(window);
 }
