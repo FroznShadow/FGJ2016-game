@@ -21,6 +21,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ResourceManager.h">
+	</ClInclude>
+    <ClInclude Include="State.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
