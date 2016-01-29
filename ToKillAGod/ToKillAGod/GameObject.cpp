@@ -15,7 +15,7 @@ void GameObject::M_draw(sf::RenderWindow& window)
 	window.draw(P_sprite);
 }
 
-void GameObject::M_update()
+void GameObject::M_update(const float dt)
 {
 	
 }

@@ -26,7 +26,7 @@ public:
 	void M_Rotation(float value);
 	void M_Destroy();
 	void M_draw(sf::RenderWindow& window);
-	void M_update();
+	void M_update(const float dt);
 
 private:
 	
