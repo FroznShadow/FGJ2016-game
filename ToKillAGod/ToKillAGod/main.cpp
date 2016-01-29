@@ -1,11 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include <SFML\System.hpp>
 
 #include "StateManager.hpp"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "StateManager.hpp"
 #include "menuState.h"
-#include <SFML\System.hpp>
+#include "Button.hpp"
 
 int main()
 {
@@ -18,6 +19,9 @@ int main()
 	ResourceManager* RM = ResourceManager::getInstance();
 	StateManager SM;
 	SM.setState(new MenuState);
+
+	CircleButton circlejerk(50, 50, 25);
+	RectangleButton rectButt(200, 200, 200, 50);
 
 	while (window.isOpen())
 	{
@@ -34,6 +38,8 @@ int main()
 		window.clear();
 
 		//draw
+		rectButt.update(deltaTime.asSeconds(), window);
+		rectButt.draw(window);
 		window.draw(shape);
 		SM.draw(window);
 
