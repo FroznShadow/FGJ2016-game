@@ -20,7 +20,7 @@ int main()
 	StateManager SM;
 	SM.setState(new MenuState);
 
-	CircleButton circlejerk(50, 50, 25);
+	CircleButton circlejerk(400, 400, 100);
 	RectangleButton rectButt(200, 200, 200, 50);
 
 	while (window.isOpen())
@@ -38,8 +38,8 @@ int main()
 		window.clear();
 
 		//draw
-		rectButt.update(deltaTime.asSeconds(), window);
 		rectButt.draw(window);
+		circlejerk.draw(window);
 		window.draw(shape);
 		SM.draw(window);
 
