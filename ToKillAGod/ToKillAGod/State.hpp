@@ -27,7 +27,7 @@ void State::update(const float dt)
 	}
 }
 
-void State::draw(sf::RenderWindow &window)
+void State::draw(sf::RenderWindow window)
 {
 	for (auto it : m_objects)
 	{

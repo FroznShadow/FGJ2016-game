@@ -80,6 +80,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="menuState.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Button.hpp" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="StateManager.hpp" />

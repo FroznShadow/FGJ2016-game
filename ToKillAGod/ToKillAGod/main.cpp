@@ -1,8 +1,11 @@
 #include <SFML/Graphics.hpp>
+
+#include "StateManager.hpp"
 #include "ResourceManager.h"
 #include "GameObject.h"
 #include "StateManager.hpp"
 #include "menuState.h"
+#include <SFML\System.hpp>
 
 int main()
 {
@@ -10,12 +13,16 @@ int main()
 	sf::CircleShape shape(100.f);
 	shape.setFillColor(sf::Color(255, 127, 0, 255));
 
+	sf::Clock deltaClock;
+
 	ResourceManager* RM = ResourceManager::getInstance();
 	StateManager SM;
 	SM.setState(new MenuState);
 
 	while (window.isOpen())
 	{
+		sf::Time deltaTime = deltaClock.restart();
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -23,7 +30,7 @@ int main()
 				window.close();
 		}
 
-		SM.update(0.1);
+		SM.update(deltaTime.asSeconds());
 		window.clear();
 
 		//draw
