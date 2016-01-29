@@ -37,7 +37,16 @@ public:
 	}
 	sf::Texture* getTexture(std::string name)
 	{
-		return nullptr;
+		auto it = m_map.find(name);
+		if (it != m_map.end())
+		{
+			return it->second;
+		}
+		else
+		{
+			std::cout << "Texture not found\n";
+			return nullptr;
+		}
 	}
 	void clearAll()
 	{
