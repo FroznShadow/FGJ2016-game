@@ -33,7 +33,6 @@ protected:
 	sf::Sprite P_sprite;
 	sf::Vector2f P_origin;
 	void M_update_Origin();
-
 };
 
 

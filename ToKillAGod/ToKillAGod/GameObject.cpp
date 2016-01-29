@@ -9,6 +9,7 @@ GameObject::~GameObject()
 {
 
 }
+
 void GameObject::M_draw(sf::RenderWindow& window)
 {
 

@@ -1,18 +1,24 @@
 #pragma once
 
-class Button
+#include <SFML\System.hpp>
+#include <SFML\Window\Mouse.hpp>
+
+#include "GameObject.h"
+
+class Button : public GameObject
 {
 public:
 	Button(int x, int y);
 	virtual ~Button();
 	virtual void pressed();
 	virtual void update(float deltaTime);
-private:
+protected:
 	int _x;
 	int _y;
+	bool _hovered;
 };
 
-Button::Button(int x, int y) : _x(x), _y(y) {}
+Button::Button(int x, int y) : _hovered(false), GameObject(sf::Vector2f(x, y)) {}
 
 Button::~Button() {}
 
@@ -38,11 +44,20 @@ RectangleButton::RectangleButton(int x, int y, int width, int height) : _width(w
 RectangleButton::~RectangleButton() {}
 
 void RectangleButton::pressed() {
-
+	//DoSomething();
 }
 
 void RectangleButton::update(float deltaTime) {
-
+	sf::Vector2i mousePos = sf::Mouse::getPosition();
+	if (_x - _width  / 2 < mousePos.x &&
+		_x + _width  / 2 > mousePos.x &&
+		_y + _height / 2 > mousePos.y &&
+		_y - _height / 2 < mousePos.y) {
+		_hovered = true;
+	}
+	else {
+		_hovered = false;
+	}
 }
 
 class CircleButton : public Button
@@ -62,9 +77,15 @@ CircleButton::CircleButton(int x, int y, int radius) : _radius(radius), Button(x
 CircleButton::~CircleButton() {}
 
 void CircleButton::pressed() {
-
+	//DoSomething();
 }
 
 void CircleButton::update(float deltaTime) {
-
+	sf::Vector2i mousePos = sf::Mouse::getPosition();
+	if (_radius*_radius > pow(mousePos.x - _x, 2) + pow(mousePos.y - _y, 2)) {
+		_hovered = true;
+	}
+	else {
+		_hovered = false;
+	}
 }
