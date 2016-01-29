@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "ResourceManager.h"
+#include "GameObject.h"
 
 int main()
 {
@@ -8,6 +9,9 @@ int main()
 	shape.setFillColor(sf::Color(255, 127, 0, 255));
 
 	ResourceManager* RM = ResourceManager::getInstance();
+
+	GameObject* go = new GameObject();
+	go->M_set_Texture(*(RM->getTexture("default")));
 
 	while (window.isOpen())
 	{
@@ -20,6 +24,7 @@ int main()
 
 		window.clear();
 		window.draw(shape);
+		go->M_draw(window);
 		window.display();
 	}
 
