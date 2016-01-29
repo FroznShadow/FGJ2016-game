@@ -30,11 +30,11 @@ MenuState::~MenuState()
 
 void MenuState::update(const float dt)
 {
-	m_totalTime += dt / 100;
+	m_totalTime += dt;
 	for (auto it : m_objects)
 	{
 		it->M_update(dt);
-		it->M_set_Rotation((sin(m_totalTime)/2+0.5) * 180 / 3.14159265);
+		it->M_set_Rotation(((sin(m_totalTime)/2+0.5)*360));
 	}
 }
 

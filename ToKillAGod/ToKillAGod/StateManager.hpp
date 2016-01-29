@@ -13,7 +13,6 @@ public:
 
 	void update(float dt);
 	void draw(sf::RenderWindow & window);
-	void update(float deltaTime);
 private:
 	State* _currentState;
 };
