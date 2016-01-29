@@ -2,6 +2,7 @@
 
 Player::Player()
 {
+	this->M_set_Position(position);
 }
 
 Player::~Player()

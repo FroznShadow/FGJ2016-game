@@ -12,7 +12,7 @@ public:
 
 private:
 	int hitPoints;
-
+	sf::Vector2f position;
 };
 
 #endif // !PLAYER_H

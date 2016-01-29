@@ -28,7 +28,7 @@ public:
 	void M_draw(sf::RenderWindow& window);
 	void M_update(const float dt);
 
-private:
+protected:
 	
 	sf::Sprite P_sprite;
 	sf::Vector2f P_origin;
