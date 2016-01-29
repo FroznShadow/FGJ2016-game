@@ -10,7 +10,6 @@ public:
 	GameObject(){}
 	~GameObject();
 
-
 	//Set values//
 	void Destroy();
 	void M_set_Position(const sf::Vector2f& value);
@@ -23,12 +22,11 @@ public:
 	float			M_get_Rotation() const;
 	sf::FloatRect	M_get_Bounding_Box() const;
 
-
 	//Other values//
 	void M_Rotation(float value);
 	void M_Destroy();
 	void M_draw(sf::RenderWindow& window);
-
+	void M_update();
 
 private:
 	
