@@ -30,8 +30,8 @@ public:
 	//Other values//
 	void M_Rotation(float value);
 	void M_Destroy();
-	void M_draw(sf::RenderWindow& window);
-	void M_update(const float dt);
+	virtual void M_draw(sf::RenderWindow& window)=0;
+	virtual void M_update(const float dt)=0;
 
 protected:
 	

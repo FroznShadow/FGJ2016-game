@@ -10,18 +10,13 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(640, 480), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color(255, 127, 0, 255));
+	sf::RenderWindow window(sf::VideoMode(640, 480), "TOKILLAGOD!");
 
 	sf::Clock deltaClock;
 
 	ResourceManager* RM = ResourceManager::getInstance();
 	StateManager SM;
 	SM.setState(new MenuState);
-
-	CircleButton circlejerk(400, 400, 100);
-	RectangleButton rectButt(200, 200, 200, 50);
 
 	while (window.isOpen())
 	{
@@ -38,9 +33,6 @@ int main()
 		window.clear();
 
 		//draw
-		rectButt.draw(window);
-		circlejerk.draw(window);
-		window.draw(shape);
 		SM.draw(window);
 
 		//end draw
