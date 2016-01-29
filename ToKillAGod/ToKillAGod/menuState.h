@@ -34,7 +34,6 @@ void MenuState::update(const float dt)
 	for (auto it : m_objects)
 	{
 		it->M_update(dt);
-		it->M_set_Rotation(((sin(m_totalTime)/2+0.5)*360));
 	}
 }
 

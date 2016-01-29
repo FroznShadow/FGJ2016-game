@@ -14,7 +14,10 @@ public:
 	{
 		normal,
 		danger,
-		heal
+		heal,
+		background,
+		bouncer,
+		objective
 	};
 
 	Tile();
