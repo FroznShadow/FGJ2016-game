@@ -10,7 +10,7 @@ public:
 	State();
 	virtual ~State();
 	virtual void update(float dt)=0;
-	virtual void draw(sf::RenderWindow* window)=0;
+	virtual void draw(sf::RenderWindow window)=0;
 private:
 	std::vector<GameObject*> m_objects;
 };
@@ -27,7 +27,7 @@ void State::update(float dt)
 	}
 }
 
-void State::draw(sf::RenderWindow &window)
+void State::draw(sf::RenderWindow window)
 {
 	for (auto it : m_objects)
 	{
