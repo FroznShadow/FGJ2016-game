@@ -3,6 +3,7 @@
 
 #include <SFML\Graphics.hpp>
 #include <unordered_map>
+#include <iostream>
 
 class ResourceManager
 {
@@ -22,9 +23,16 @@ public:
 		else
 		{
 			sf::Texture* texture = new sf::Texture();
-			texture->loadFromFile(path);
-			m_map.insert(std::make_pair(name, texture));
-			return texture;
+			if (texture->loadFromFile(path))
+			{
+				m_map.insert(std::make_pair(name, texture));
+				std::cout << "loaded texture" << path << " \n";
+				return texture;
+			}
+			else
+			{
+				std::cout << "unable to load texture" << path << " \n";
+			}
 		}
 	}
 	sf::Texture* getTexture(std::string name)
@@ -42,6 +50,7 @@ public:
 private:
 	ResourceManager()
 	{
+		std::cout << "loading default texture\n";
 		loadTexture("textures/default.png", "default");
 
 	}
