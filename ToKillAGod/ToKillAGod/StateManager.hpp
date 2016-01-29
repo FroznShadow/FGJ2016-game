@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML\System.hpp>
 #include "State.hpp"
 
 class StateManager
@@ -11,7 +12,7 @@ public:
 	State* getState();
 	bool setState(State* state);
 
-	void update();
+	void update(float deltaTime);
 private:
 	State* _currentState;
 };
@@ -29,8 +30,9 @@ bool StateManager::setState(State* state) {
 		return false;
 	}
 	_currentState = state;
+	return true;
 }
 
-void StateManager::update() {
-	_currentState->update();
+void StateManager::update(float deltaTime) {
+	_currentState->update(deltaTime);
 }
