@@ -7,17 +7,12 @@ class Player : public GameObject
 public:
 	Player();
 	~Player();
+	void update();
+	void movePlayer();
 
 private:
+	int hitPoints;
+
 };
-
-Player::Player()
-{
-}
-
-Player::~Player()
-{
-}
-
 
 #endif // !PLAYER_H
