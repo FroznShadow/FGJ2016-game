@@ -7,12 +7,19 @@ class Player : public GameObject
 public:
 	Player();
 	~Player();
-	void update();
-	void movePlayer(float x,float y);
-	void collision();
+	void draw();
+	void movePlayer(std::string dir);
+	//void collision();
+	void jump();
 private:
 	int hitPoints;
 	sf::Vector2f position;
+	float acceleration;
+	float deceleration;
+	float max_speed;
+	float jump_Acceleration;
+	float x_velocity;
+	float y_velocity;
 };
 
 #endif // !PLAYER_H

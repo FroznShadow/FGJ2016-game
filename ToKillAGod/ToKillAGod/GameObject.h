@@ -2,7 +2,12 @@
 #define GAMEOBJECT_H
 #include "SFML\Main.hpp"
 #include "SFML\Graphics.hpp"
-
+enum TYPE
+{
+	Tile,
+	Player,
+	Enemy
+};
 class GameObject
 {
 public:
