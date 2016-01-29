@@ -14,7 +14,7 @@ void Player::update()
 {
 	
 }
-void Player::movePlayer()
+void Player::movePlayer(float x, float y)
 {
 
 }

@@ -8,8 +8,8 @@ public:
 	Player();
 	~Player();
 	void update();
-	void movePlayer();
-
+	void movePlayer(float x,float y);
+	void collision();
 private:
 	int hitPoints;
 	sf::Vector2f position;
