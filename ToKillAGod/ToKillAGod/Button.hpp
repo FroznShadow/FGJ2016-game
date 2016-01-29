@@ -9,7 +9,7 @@ class Button : public GameObject
 public:
 	Button(int x, int y);
 	virtual ~Button();
-	virtual void pressed();
+	virtual bool isHovering();
 	virtual void update(float deltaTime);
 	virtual void draw(sf::RenderWindow& window);
 protected:
@@ -18,15 +18,15 @@ protected:
 	bool _hovered;
 };
 
-Button::Button(int x, int y) : _hovered(false), _x(x), _y(y), GameObject(sf::Vector2f(x, y)) {}
+Button::Button(int x, int y) : _x(x), _y(y), _hovered(false), GameObject(sf::Vector2f(x, y)) {}
 
 Button::~Button() {}
 
-void Button::pressed() {}
+bool Button::isHovering() { return false; }
 
-void Button::update(float deltaTime) {}
+void Button::update(float deltaTime) { return; }
 
-void Button::draw(sf::RenderWindow& window) {}
+void Button::draw(sf::RenderWindow& window) { return; }
 
 class RectangleButton : public Button
 {
@@ -34,7 +34,7 @@ public:
 	RectangleButton(int x, int y, int width, int height);
 	~RectangleButton();
 
-	bool isPressed();
+	bool isHovering();
 	void update(float deltaTime);
 	void draw(sf::RenderWindow& window);
 private:
@@ -53,8 +53,8 @@ RectangleButton::RectangleButton(int x, int y, int width, int height) : _width(w
 
 RectangleButton::~RectangleButton() {}
 
-bool RectangleButton::isPressed() {
-	return true;
+bool RectangleButton::isHovering() {
+	return _hovered;
 }
 
 void RectangleButton::update(float deltaTime) {}
@@ -65,12 +65,12 @@ void RectangleButton::draw(sf::RenderWindow& window) {
 		_x + _width / 2 > mousePos.x &&
 		_y + _height / 2 > mousePos.y &&
 		_y - _height / 2 < mousePos.y) {
-		_hovered = true;
 		_rect.setFillColor(sf::Color::Blue);
+		_hovered = true;
 	}
 	else {
-		_hovered = false;
 		_rect.setFillColor(sf::Color::Green);
+		_hovered = false;
 	}
 
 	window.draw(_rect);
@@ -82,7 +82,7 @@ public:
 	CircleButton(int x, int y, int radius);
 	~CircleButton();
 
-	bool isPressed();
+	bool isHovering();
 	void update(float deltaTime);
 	void draw(sf::RenderWindow& window);
 private:
@@ -100,8 +100,8 @@ CircleButton::CircleButton(int x, int y, int radius) : _radius(radius), Button(x
 
 CircleButton::~CircleButton() {}
 
-bool CircleButton::isPressed() {
-	return true;
+bool CircleButton::isHovering() {
+	return _hovered;
 }
 
 void CircleButton::update(float deltaTime) {}
@@ -109,12 +109,12 @@ void CircleButton::update(float deltaTime) {}
 void CircleButton::draw(sf::RenderWindow& window) {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 	if (_radius*_radius > pow(mousePos.x - _x, 2) + pow(mousePos.y - _y, 2)) {
-		_hovered = true;
 		_circ.setFillColor(sf::Color::Blue);
+		_hovered = true;
 	}
 	else {
-		_hovered = false;
 		_circ.setFillColor(sf::Color::Green);
+		_hovered = false;
 	}
 
 	window.draw(_circ);
