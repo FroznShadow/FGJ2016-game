@@ -14,7 +14,7 @@ public:
 	MenuState(StateManager* manager);
 	~MenuState();
 	void draw(sf::RenderWindow &window)override;
-	void update(float dt)override;
+    void update(const float dt)override;
 private:
 	float m_totalTime = 0;
 	ResourceManager* m_RM;
@@ -31,6 +31,7 @@ MenuState::MenuState(StateManager* manager)
 	m_RM->loadTexture("textures/Level0_pressed.bmp", "level0_p");
 	m_RM->loadTexture("textures/Level1.bmp", "level1");
 	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
+    m_RM->loadTexture("textures/tile_objective.png", "finished");
 
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
@@ -58,8 +59,8 @@ MenuState::~MenuState()
 void MenuState::update(const float dt)
 {
 	m_totalTime += dt;
-	float pi = 3.1415926535;
-	float range = 128 * sqrt(2);
+	float pi = 3.1415926535f;
+	float range = 128.f * sqrt(2);
 	float centerX = 512 - 128;//= 320 - 128;
 	float centerY = 512 - 128;//= 240 - 128;
 	level2->setPosition(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));
@@ -73,10 +74,8 @@ void MenuState::update(const float dt)
 			if (level0->isHovering())
 			{
 				level0->setTexture(*m_RM->getTexture("level0_p"));
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(0))
 				{
-					std::cout << "GAME ON!\n";
-					m_RM->clearAll();
 					m_manager->setState(new GameState(m_manager));
 					return;
 				}
@@ -91,6 +90,11 @@ void MenuState::update(const float dt)
 			if (level1->isHovering())
 			{
 				level1->setTexture(*m_RM->getTexture("level1_p"));
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(1))
+                {
+                    m_manager->setState(new GameState(m_manager));
+                    return;
+                }
 			}
 			else
 			{
@@ -102,6 +106,11 @@ void MenuState::update(const float dt)
 			if (level2->isHovering())
 			{
 				level2->setTexture(*m_RM->getTexture("level1_p"));
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(2))
+                {
+                    m_manager->setState(new GameState(m_manager));
+                    return;
+                }
 			}
 			else
 			{
@@ -114,12 +123,28 @@ void MenuState::update(const float dt)
 void MenuState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
+    sf::Sprite done(*m_RM->getTexture("finished"));
 
+    for (auto it : m_objects)
+    {
+        it->draw(window);
+    }
 
-	for (auto it : m_objects)
-	{
-		it->draw(window);
-	}
+    if (m_manager->isLevelCompleted(0))
+    {
+        done.setPosition(level0->getPosition());
+        window.draw(done);
+    }
+    if (m_manager->isLevelCompleted(1))
+    {
+        done.setPosition(level1->getPosition());
+        window.draw(done);
+    }
+    if (m_manager->isLevelCompleted(2))
+    {
+        done.setPosition(level2->getPosition());
+        window.draw(done);
+    }
 }
 
 #endif

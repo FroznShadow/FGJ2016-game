@@ -10,7 +10,7 @@ public:
 	Button(int x, int y);
 	virtual ~Button();
 	virtual bool isHovering()=0;
-	virtual void update(float deltaTime);
+    virtual void update(const float deltaTime);
 	virtual void draw(sf::RenderWindow& window)override;
 protected:
 	bool m_hovered;
@@ -33,7 +33,7 @@ public:
 	~RectangleButton();
 
 	bool isHovering();
-	void update(float deltaTime);
+    void update(const float deltaTime);
 	void draw(sf::RenderWindow& window);
 private:
 	int m_width;
@@ -82,7 +82,7 @@ public:
 	~CircleButton();
 
 	bool isHovering();
-	void update(float deltaTime);
+    void update(const float deltaTime);
 	void draw(sf::RenderWindow& window);
 private:
 	int m_radius;

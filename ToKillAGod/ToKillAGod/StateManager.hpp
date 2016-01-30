@@ -22,11 +22,15 @@ public:
 	void update(float dt);
 	void draw(sf::RenderWindow & window);
     void levelComplete(LevelFlag flag);
+    bool isLevelCompleted(int levelNum)
+    {
+        return ((m_levelFlags >> levelNum) & 1) == 1;
+    }
 private:
 	State* m_currentState;
 
     //game progress
-    int m_levelFlags = 0;
+    int m_levelFlags = 5;
     int m_difficulty = 0;
 };
 
