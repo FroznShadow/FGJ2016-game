@@ -48,6 +48,19 @@ public:
 			return nullptr;
 		}
 	}
+    void deleteTexture(std::string name)
+    {
+        auto it = m_map.find(name);
+        if (it != m_map.end())
+        {
+            delete it->second;
+            m_map.erase(it);
+        }
+        else
+        {
+            std::cout << "Texture not found\n";
+        }
+    }
 	void clearAll()
 	{
 		for (auto it : m_map)
