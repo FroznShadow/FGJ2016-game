@@ -1,8 +1,9 @@
 #include "GameObject.h"
 
-GameObject::GameObject(sf::Vector2f position) 
+GameObject::GameObject(sf::Vector2f position, TYPE type)
+	:M_type(type)
 {
-
+	M_set_Position(position);
 }
 
 GameObject::~GameObject()
@@ -57,6 +58,10 @@ void GameObject::M_set_Rotation(float value)
 			P_sprite.rotate(-0.2);
 		P_sprite.rotate(-0.1);
 	}
+}
+void GameObject::M_set_Type(TYPE type)
+{
+	M_type = type;
 }
 
 

@@ -4,18 +4,26 @@
 #include "GameObject.h"
 #include <SFML\Window.hpp>
 
+class StateManager;
+
 class State
 {
 public:
-	State();
+	State(StateManager* manager);
 	virtual ~State();
 	virtual void update(const float dt)=0;
 	virtual void draw(sf::RenderWindow &window)=0;
 protected:
 	std::vector<GameObject*> m_objects;
+	StateManager* m_manager;
 };
 
-State::State() {}
+#include "StateManager.hpp"
+
+State::State(StateManager* manager)
+{
+	m_manager = manager;
+}
 
 State::~State() {}
 

@@ -10,7 +10,7 @@ public:
 	* Danger = makes damage
 	* Heal = heals?
 	*/
-	enum Types
+	enum TileType
 	{
 		normal,
 		danger,
@@ -21,21 +21,15 @@ public:
 	};
 
 	Tile();
-	Tile(Types);
-	~Tile();
+	Tile(float x, float y, TileType type);
+	~Tile(){};
+	void M_draw(sf::RenderWindow &window)override{ GameObject::M_draw(window); }
+	void M_update(float dt)override{ GameObject::M_update(dt); }
 
-	std::string getType();
+	TileType getType(){ return m_tileType; }
 
 private:
-	Types tileType;
+	TileType m_tileType;
 };
-
-Tile::Tile()
-{
-}
-
-Tile::~Tile()
-{
-}
 
 #endif

@@ -5,11 +5,13 @@
 #include "ResourceManager.h"
 #include "Button.hpp"
 
+class StateManager;
+
 class MenuState
 	:public State
 {
 public:
-	MenuState();
+	MenuState(StateManager* manager);
 	~MenuState();
 	void draw(sf::RenderWindow &window)override;
 	void update(float dt)override;
@@ -21,7 +23,8 @@ private:
 	CircleButton* level2;
 };
 
-MenuState::MenuState()
+MenuState::MenuState(StateManager* manager)
+	:State(manager)
 {
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/Level0.bmp", "level0");
@@ -42,9 +45,12 @@ MenuState::MenuState()
 	m_objects.push_back(level2);
 }
 
+#include "GameState.h"
+
 MenuState::~MenuState()
 {
-	ResourceManager::getInstance()->clearAll();
+	//do this at the next state
+	//ResourceManager::getInstance()->clearAll();
 }
 
 void MenuState::update(const float dt)
@@ -52,8 +58,8 @@ void MenuState::update(const float dt)
 	m_totalTime += dt;
 	float pi = 3.1415926535;
 	float range = 128 * sqrt(2);
-	float centerX = 320 - 128;
-	float centerY = 240 - 128;
+	float centerX = 512 - 128;//= 320 - 128;
+	float centerY = 512 - 128;//= 240 - 128;
 	level2->M_set_Position(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));
 	level1->M_set_Position(sf::Vector2f((cos(m_totalTime + 2 * pi / 3)) * range + centerX, (sin(m_totalTime + 2 * pi / 3)) * range + centerY));
 	level0->M_set_Position(sf::Vector2f((cos(m_totalTime + 0 * pi / 3)) * range + centerX, (sin(m_totalTime + 0 * pi / 3)) * range + centerY));
@@ -65,6 +71,13 @@ void MenuState::update(const float dt)
 			if (level0->isHovering())
 			{
 				level0->M_set_Texture(*m_RM->getTexture("level0_p"));
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					std::cout << "GAME ON!\n";
+					m_RM->clearAll();
+					m_manager->setState(new GameState(m_manager));
+					return;
+				}
 			}
 			else
 			{

@@ -4,14 +4,14 @@
 #include "SFML\Graphics.hpp"
 enum TYPE
 {
-	Tile,
-	Player,
-	Enemy
+	TILE,
+	PLAYER,
+	ENEMY
 };
 class GameObject
 {
 public:
-	GameObject(sf::Vector2f position);
+	GameObject(sf::Vector2f position, TYPE type = TILE);
 	GameObject(){}
 	~GameObject();
 
@@ -21,11 +21,13 @@ public:
 	void M_set_Texture(const sf::Texture& value);
 	void M_set_Texture_Rectangle(const sf::IntRect& value);
 	void M_set_Rotation(float value);
+	void M_set_Type(TYPE type);
 
 	//GetValues//
 	sf::Vector2f	M_get_position() const;
 	float			M_get_Rotation() const;
 	sf::FloatRect	M_get_Bounding_Box() const;
+	TYPE			M_get_Type() const;
 
 	//Other values//
 	void M_Rotation(float value);
@@ -38,6 +40,7 @@ protected:
 	sf::Sprite P_sprite;
 	sf::Vector2f P_origin;
 	void M_update_Origin();
+	TYPE M_type;
 };
 
 

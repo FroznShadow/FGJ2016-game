@@ -10,13 +10,13 @@
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(640, 480), "TOKILLAGOD!");
+	sf::RenderWindow window(sf::VideoMode(1024, 1024), "TOKILLAGOD!");
 
 	sf::Clock deltaClock;
 
 	ResourceManager* RM = ResourceManager::getInstance();
 	StateManager SM;
-	SM.setState(new MenuState);
+	SM.setState(new MenuState(&SM));
 
 	while (window.isOpen())
 	{
