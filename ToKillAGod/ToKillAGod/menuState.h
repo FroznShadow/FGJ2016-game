@@ -49,6 +49,9 @@ MenuState::MenuState(StateManager* manager)
 
 MenuState::~MenuState()
 {
+	delete level0;
+	delete level1;
+	delete level2;
     m_RM->deleteTexture("level0");
     m_RM->deleteTexture("level0_p");
     m_RM->deleteTexture("level1");
@@ -75,8 +78,6 @@ void MenuState::update(const float dt)
 				level0->setTexture(*m_RM->getTexture("level0_p"));
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
-					std::cout << "GAME ON!\n";
-					m_RM->clearAll();
 					m_manager->setState(new GameState(m_manager));
 					return;
 				}
@@ -114,7 +115,7 @@ void MenuState::update(const float dt)
 void MenuState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
-
+	window.setView(window.getDefaultView());
 
 	for (auto it : m_objects)
 	{

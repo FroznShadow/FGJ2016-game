@@ -25,6 +25,7 @@ private:
 	void movePlayer(float dt);
 	ResourceManager* m_RM;
 	bool objective = false;
+	bool finished = false;
 	Player* m_player;
 };
 
@@ -51,7 +52,14 @@ GameState::GameState(StateManager* manager)
 
 GameState::~GameState()
 {
-	ResourceManager::getInstance()->clearAll();
+	m_RM->deleteTexture( "normal");
+	m_RM->deleteTexture("danger");
+	m_RM->deleteTexture("heal");
+	m_RM->deleteTexture("background");
+	m_RM->deleteTexture("bouncer");
+	m_RM->deleteTexture("objective");
+	m_RM->deleteTexture("wizard");
+	std::cout << "destruction" << std::endl;
 }
 
 void GameState::generate()
@@ -144,6 +152,10 @@ void GameState::generate()
 void GameState::update(const float dt)
 {
 	movePlayer(dt);
+	if (finished)
+	{
+		levelFinish();
+	}
 }
 
 void GameState::draw(sf::RenderWindow &window)
@@ -257,7 +269,7 @@ GameObject* GameState::getPlayerCollision()
 					}
 					case Tile::objective: {
 						std::cout << "Level finished\n";
-						levelFinish();
+						finished = true;
 						break;
 					}
 					default: {
@@ -274,7 +286,7 @@ GameObject* GameState::getPlayerCollision()
 }
 void GameState::levelFinish()
 {
-
+	m_manager->levelComplete(LEVEL_0_COMPLETED);
 	m_manager->setState(new MenuState(m_manager));
 }
 
