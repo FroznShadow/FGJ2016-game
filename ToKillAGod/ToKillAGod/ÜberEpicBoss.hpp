@@ -13,12 +13,10 @@ public:
 	void update(const float deltaTime)override;
 
 	void move(float x, float y);
-	void shoot(GameObject* target);
 private:
 	int m_hitpoints;
 	float m_x;
 	float m_y;
-
 };
 
 ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y) {
@@ -29,18 +27,11 @@ private:
 }
 
 ÜberEpicBoss::~ÜberEpicBoss()
-{
-}
+{}
 
 
 void ÜberEpicBoss::draw(sf::RenderWindow& window) {
-
+	GameObject::draw(window);
 }
 
-void ÜberEpicBoss::update(const float deltaTime) {
-
-}
-
-void ÜberEpicBoss::shoot(GameObject* target) {
-
-}
+void ÜberEpicBoss::update(const float deltaTime) {}
