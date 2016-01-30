@@ -36,11 +36,12 @@ public:
 	virtual void draw(sf::RenderWindow& window)=0;
 	virtual void update(const float dt)=0;
 
+    void updateOrigin();
+
 protected:
 	
 	sf::Sprite m_sprite;
 	sf::Vector2f m_origin;
-	void updateOrigin();
 	TYPE m_type;
 };
 

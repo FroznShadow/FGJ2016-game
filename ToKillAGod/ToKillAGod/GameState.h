@@ -183,6 +183,17 @@ void GameState::generate()
 
 void GameState::update(const float dt)
 {
+    for (auto it : m_objects)
+    {
+        if (it->getType() == TYPE::TILE)
+        {
+            Tile* tile = static_cast<Tile*>(it);
+            if (tile->getTileType() == Tile::TileType::danger)
+            {
+                tile->setRotation(tile->getRotation() + dt * 100);
+            }
+        }
+    }
 	movePlayer(dt);
 	if (finished)
 	{
@@ -194,13 +205,11 @@ void GameState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
 	sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
-
+    for (auto it : m_objects)
+    {
+        it->draw(window);
+    }
 	window.setView(playerView);
-
-	for (auto it : m_objects)
-	{
-		it->draw(window);
-	}
 }
 
 void GameState::movePlayer(float dt)
