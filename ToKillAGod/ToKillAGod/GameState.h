@@ -49,9 +49,9 @@ GameState::GameState(StateManager* manager, int level)
 
     switch (level)
     {
-    case 0: m_RM->loadTexture("textures/player.png", "wizard");
-    case 1: m_RM->loadTexture("textures/player.png", "wizard");
-    case 2: m_RM->loadTexture("textures/player.png", "wizard");
+    case 0: m_RM->loadTexture("textures/Player_blue.png", "wizard");
+    case 1: m_RM->loadTexture("textures/Player_red.png", "wizard");
+    case 2: m_RM->loadTexture("textures/Player_white.png", "wizard");
     }
 
 	generate();
