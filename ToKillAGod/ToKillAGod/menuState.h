@@ -21,6 +21,7 @@ private:
 	CircleButton* level0;
 	CircleButton* level1;
 	CircleButton* level2;
+    CircleButton* center;
 };
 
 MenuState::MenuState(StateManager* manager)
@@ -45,8 +46,12 @@ MenuState::MenuState(StateManager* manager)
 	m_objects.push_back(level1);
 
 	level2 = new CircleButton(0, 0, 128);
-	level2->setTexture(*m_RM->getTexture("level1"));
+	level2->setTexture(*m_RM->getTexture("level2"));
 	m_objects.push_back(level2);
+
+    center = new CircleButton(512 - 128, 512 - 128 , 128);
+    center->setTexture(*m_RM->getTexture("level2"));
+    m_objects.push_back(center);
 }
 
 #include "GameState.h"
@@ -56,6 +61,7 @@ MenuState::~MenuState()
 	delete level0;
 	delete level1;
 	delete level2;
+    delete center;
     m_RM->deleteTexture("level0");
     m_RM->deleteTexture("level0_p");
     m_RM->deleteTexture("level1");
@@ -68,7 +74,7 @@ void MenuState::update(const float dt)
 {
 	m_totalTime += dt;
 	float pi = 3.1415926535f;
-	float range = 128.f * sqrt(2);
+    float range = 128.0f + 128.0f * sqrt(2.0f);
 	float centerX = 512 - 128;//= 320 - 128;
 	float centerY = 512 - 128;//= 240 - 128;
 	level2->setPosition(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));
