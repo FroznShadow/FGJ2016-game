@@ -50,6 +50,9 @@ MenuState::MenuState(StateManager* manager)
 
 MenuState::~MenuState()
 {
+	delete level0;
+	delete level1;
+	delete level2;
     m_RM->deleteTexture("level0");
     m_RM->deleteTexture("level0_p");
     m_RM->deleteTexture("level1");
@@ -123,6 +126,9 @@ void MenuState::update(const float dt)
 void MenuState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
+
+	window.setView(window.getDefaultView());
+
     sf::Sprite done(*m_RM->getTexture("finished"));
 
     for (auto it : m_objects)

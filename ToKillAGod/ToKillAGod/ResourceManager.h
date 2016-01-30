@@ -41,11 +41,15 @@ public:
 		auto it = m_map.find(name);
 		if (it != m_map.end())
 		{
+			if (it->second == nullptr)
+			{
+				std::cout << "null texture\n";
+			}
 			return it->second;
 		}
 		else
 		{
-			std::cout << "Texture not found\n";
+			std::cout << "Texture "<< name <<  " not found\n";
 			return nullptr;
 		}
 	}
@@ -55,12 +59,15 @@ public:
         if (it != m_map.end())
         {
             delete it->second;
-            m_map.erase(it);
+
+            m_map.erase(name);
             std::cout << "Texture" << name << " deleted\n";
         }
+
         else
         {
             std::cout << "Texture" << name << " not deleted\n";
+
         }
     }
 	void clearAll()
