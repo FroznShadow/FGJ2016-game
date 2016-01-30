@@ -48,6 +48,7 @@ GameState::GameState(StateManager* manager, int level)
 
     switch (level)
     {
+
 	case 0:
 	{
 		m_RM->loadTexture("textures/Player_blue.png", "wizard");
@@ -64,6 +65,7 @@ GameState::GameState(StateManager* manager, int level)
 		m_RM->loadTexture("textures/Player_white.png", "wizard");
 		m_RM->loadTexture("textures/tile_white.png", "normal");
 	}
+
     }
 
 	generate();
@@ -71,7 +73,7 @@ GameState::GameState(StateManager* manager, int level)
 
 GameState::~GameState()
 {
-	m_RM->deleteTexture( "normal");
+	m_RM->deleteTexture("normal");
 	m_RM->deleteTexture("danger");
 	m_RM->deleteTexture("heal");
 	m_RM->deleteTexture("background");
@@ -214,13 +216,13 @@ void GameState::movePlayer(float dt)
 	m_player->move(0, 1);
 	if (!getPlayerCollision()) //fall or move back
 	{
-		m_player->getVSpeed() += 15 * dt;
+		m_player->getVSpeed() += 75 * dt;
 	}
 	else
 	{
 		m_player->getVSpeed() = 0;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			m_player->getVSpeed() = -15.0f;
+			m_player->getVSpeed() = -25.0f;
 	}
 	m_player->move(0, -1);
 

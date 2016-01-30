@@ -83,10 +83,12 @@
     <ClInclude Include="menuState.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Button.hpp" />
+    <ClInclude Include="Projectile.hpp" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="StateManager.hpp" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="ÜberEpicBoss.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
