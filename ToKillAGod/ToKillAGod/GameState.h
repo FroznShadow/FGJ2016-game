@@ -40,7 +40,7 @@ GameState::GameState(StateManager* manager, int level)
     :State(manager), m_level(level)
 {
 	m_RM = ResourceManager::getInstance();
-	m_RM->loadTexture("textures/default.png", "danger");
+	m_RM->loadTexture("textures/danger.png", "danger");
 	m_RM->loadTexture("textures/tile_cyan.png", "heal");
 	m_RM->loadTexture("textures/tile_red.png", "background");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
@@ -93,21 +93,20 @@ void GameState::generate()
 	m_objects.push_back(m_player);
 
 
-	addTile(Tile::TileType::danger, -10, 1);
-	addTile(Tile::TileType::danger, -9, 1);
-	addTile(Tile::TileType::bouncer, -13, 3);
-	addTile(Tile::TileType::bouncer, -12, 3);
-	addTile(Tile::TileType::danger, -15, 3);
-	addTile(Tile::TileType::danger, -15, 2);
-	addTile(Tile::TileType::danger, -15, 1);
-	addTile(Tile::TileType::danger, -15, 0);
-	addTile(Tile::TileType::danger, -15, -1);
+
 	//generate starting platform
 	for (unsigned j = 0; j < 16; j++)
 	{
 		addTile(Tile::TileType::normal, j - 15.0f, 4);
 	}
-
+	addTile(Tile::TileType::bouncer, 1, 4);
+	addTile(Tile::TileType::bouncer, 2, 4);
+	for (unsigned k = 0; k < 4; k++)
+	{
+		addTile(Tile::TileType::danger, k+3, 4);
+	}
+	addTile(Tile::TileType::bouncer, 8, 4);
+	addTile(Tile::TileType::bouncer, 7, 4);
 	//set seed
 	srand(time(NULL));
 
@@ -118,7 +117,7 @@ void GameState::generate()
 	bool bouncerGap = false;
 	//generate level
 	float levelLength = 50;
-	for (unsigned i = 0; i < levelLength; i++)
+	for (unsigned i = 10; i < levelLength; i++)
 	{
 		if (gapWidth > 0)
 		{
@@ -163,7 +162,7 @@ void GameState::generate()
 				heightLength++;
 			}
 		}
-		if (totalLength == levelLength-1 && !objective)
+		if (totalLength == levelLength-11 && !objective)
 		{			
 			if (objective == false) {
 				objective = true;
@@ -205,18 +204,18 @@ void GameState::draw(sf::RenderWindow &window)
 void GameState::movePlayer(float dt)
 {
 	sf::Vector2f prev = m_player->getPosition();
-	m_player->getHSpeed() = 0.0f;
+	m_player->getHSpeed() = 20;
 	m_player->getVSpeed() = m_player->getVelocity().y;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		m_player->getHSpeed() += 1000 * dt;
+		m_player->getHSpeed() += 800* dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		m_player->getHSpeed() -= 1000 * dt;
+		m_player->getHSpeed() -= 800 * dt;
 	
 	//check if can fall
 	m_player->move(0, 1);
 	if (!getPlayerCollision()) //fall or move back
 	{
-		m_player->getVSpeed() += 75 * dt;
+		m_player->getVSpeed() += 60* dt;
 	}
 	else
 	{
