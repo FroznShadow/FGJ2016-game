@@ -31,6 +31,9 @@ MenuState::MenuState(StateManager* manager)
 	m_RM->loadTexture("textures/Level0_pressed.bmp", "level0_p");
 	m_RM->loadTexture("textures/Level1.bmp", "level1");
 	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
+    m_RM->loadTexture("textures/Level2.bmp", "level2");
+    m_RM->loadTexture("textures/Level2_pressed.bmp", "level2_p");
+
     m_RM->loadTexture("textures/tile_objective.png", "finished");
 
 	level0 = new CircleButton(0, 0, 128);
@@ -57,6 +60,8 @@ MenuState::~MenuState()
     m_RM->deleteTexture("level0_p");
     m_RM->deleteTexture("level1");
     m_RM->deleteTexture("level1_p");
+
+    m_RM->deleteTexture("finished");
 }
 
 void MenuState::update(const float dt)
@@ -79,7 +84,7 @@ void MenuState::update(const float dt)
 				level0->setTexture(*m_RM->getTexture("level0_p"));
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(0))
 				{
-					m_manager->setState(new GameState(m_manager));
+					m_manager->setState(new GameState(m_manager, 0));
 					return;
 				}
 			}
@@ -95,7 +100,7 @@ void MenuState::update(const float dt)
 				level1->setTexture(*m_RM->getTexture("level1_p"));
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(1))
                 {
-                    m_manager->setState(new GameState(m_manager));
+                    m_manager->setState(new GameState(m_manager, 1));
                     return;
                 }
 			}
@@ -108,16 +113,16 @@ void MenuState::update(const float dt)
 		{
 			if (level2->isHovering())
 			{
-				level2->setTexture(*m_RM->getTexture("level1_p"));
+				level2->setTexture(*m_RM->getTexture("level2_p"));
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(2))
                 {
-                    m_manager->setState(new GameState(m_manager));
+                    m_manager->setState(new GameState(m_manager, 2));
                     return;
                 }
 			}
 			else
 			{
-				level2->setTexture(*m_RM->getTexture("level1"));
+				level2->setTexture(*m_RM->getTexture("level2"));
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include "State.hpp"
 
 enum LevelFlag
@@ -30,7 +31,7 @@ private:
 	State* m_currentState;
 
     //game progress
-    int m_levelFlags = 5;
+    int m_levelFlags = 0;
     int m_difficulty = 0;
 };
 
@@ -60,6 +61,7 @@ void StateManager::update(float deltaTime) {
 }
 void StateManager::levelComplete(LevelFlag flag)
 {
-    m_levelFlags = m_levelFlags | flag;
+    m_levelFlags |= flag;
+    std::cout << "flags: " << m_levelFlags << "\n";
 }
 
