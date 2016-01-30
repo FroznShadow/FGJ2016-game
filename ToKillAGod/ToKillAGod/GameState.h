@@ -13,7 +13,7 @@ class GameState
 	:public State
 {
 public:
-	GameState(StateManager* manager);
+	GameState(StateManager* manager, int level);
 	~GameState();
 	void draw(sf::RenderWindow &window)override;
     void update(const float dt)override;
@@ -27,6 +27,7 @@ private:
 	bool objective = false;
 	bool finished = false;
 	Player* m_player;
+    int m_level;
 };
 
 void GameState::addTile(Tile::TileType type, float x, float y)
@@ -35,8 +36,8 @@ void GameState::addTile(Tile::TileType type, float x, float y)
 }
 
 
-GameState::GameState(StateManager* manager)
-	:State(manager)
+GameState::GameState(StateManager* manager, int level)
+    :State(manager), m_level(level)
 {
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/tile_cyan.png", "normal");
@@ -287,7 +288,13 @@ GameObject* GameState::getPlayerCollision()
 }
 void GameState::levelFinish()
 {
-	m_manager->levelComplete(LEVEL_0_COMPLETED);
+    switch (m_level)
+    {
+    case 0: m_manager->levelComplete(LEVEL_0_COMPLETED); break;
+    case 1: m_manager->levelComplete(LEVEL_1_COMPLETED); break;
+    case 2: m_manager->levelComplete(LEVEL_2_COMPLETED); break;
+    default: break;
+    }
 	m_manager->setState(new MenuState(m_manager));
 }
 
