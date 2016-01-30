@@ -7,7 +7,6 @@ Player::Player(sf::Vector2f position)
 	setPosition(m_position);
 
 	setTexture(*RM->getTexture("wizard"));
-	
 }
 
 Player::~Player()
