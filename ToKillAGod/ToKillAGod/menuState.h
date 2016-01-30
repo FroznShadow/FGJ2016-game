@@ -68,6 +68,10 @@ MenuState::MenuState(StateManager* manager)
     wizard0 = new sf::Sprite(*m_RM->getTexture("wizard_0"));
     wizard1 = new sf::Sprite(*m_RM->getTexture("wizard_1"));
     wizard2 = new sf::Sprite(*m_RM->getTexture("wizard_2"));
+
+    wizard0->setScale(4, 4);
+    wizard1->setScale(4, 4);
+    wizard2->setScale(4, 4);
 }
 
 #include "GameState.h"
@@ -78,6 +82,11 @@ MenuState::~MenuState()
 	delete level0;
 	delete level1;
 	delete level2;
+
+    delete wizard0;
+    delete wizard1;
+    delete wizard2;
+
     delete center;
     m_RM->deleteTexture("level0");
     m_RM->deleteTexture("level0_p");

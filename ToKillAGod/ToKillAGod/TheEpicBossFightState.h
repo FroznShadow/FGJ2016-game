@@ -6,6 +6,7 @@
 #include "Button.hpp"
 #include "Tile.h"
 #include "Player.h"
+#include "ÜberEpicBoss.hpp"
 
 class StateManager;
 
@@ -42,11 +43,12 @@ private:
     bool player_1_at_destination = false;
     bool player_2_at_destination = false;
 
-    bool m_boss = false;
+    bool m_bossfight = false;
+    float m_spawnTimer = 0;
 
     sf::View m_gameView;
 
-    float m_spawnTimer = 0;
+    ÜberEpicBoss* m_boss;
 };
 
 
@@ -116,6 +118,11 @@ void BossFightScene::movePlayers(float dt)
 
 void BossFightScene::update(float dt)
 {
+    for (auto it : m_objects)
+    {
+        it->update(dt);
+    }
+
     movePlayers(dt);
     if (m_spawnTimer > 0)
     {
@@ -127,12 +134,14 @@ void BossFightScene::update(float dt)
         m_circle_effect_2.setScale(scale, scale);
     }
     //collisions:
-    if (!m_boss)
+    if (!m_bossfight)
     {
         circleCollisions();
         if (player_0_at_destination && player_1_at_destination && player_2_at_destination)
         {
-            m_boss = true;
+            m_bossfight = true;
+            m_boss = new ÜberEpicBoss(0.0f, -512.f);
+            m_objects.push_back(m_boss);
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
         }
@@ -143,7 +152,6 @@ void BossFightScene::update(float dt)
         m_circle_effect_0.setPosition(m_player_0->getPosition() + sf::Vector2f(32.0f, 32.0f));
         m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
         m_circle_effect_2.setPosition(m_player_2->getPosition() + sf::Vector2f(32.0f, 32.0f));
-
 
         //projectile collisions & stuff
     }
@@ -192,13 +200,12 @@ void BossFightScene::loadResources()
     //get texture manager
     m_RM = ResourceManager::getInstance();
 
+    m_RM->loadTexture("textures/BigBadBoss.png", "BigBadBoss");
+    m_RM->loadTexture("textures/projectile.png", "Projectile1");
+
     m_player_0->setTexture(*m_RM->loadTexture("textures/Player_blue.png", "player0"));
     m_player_1->setTexture(*m_RM->loadTexture("textures/Player_red.png", "player1"));
     m_player_2->setTexture(*m_RM->loadTexture("textures/Player_white.png", "player2"));
-
-    m_objects.push_back(m_player_0);
-    m_objects.push_back(m_player_1);
-    m_objects.push_back(m_player_2);
 
     //load destination sprites & their effects
     m_circle_0.setTexture(*m_RM->loadTexture("textures/exitBtn_pressed.png", "circle0"));
@@ -225,13 +232,13 @@ void BossFightScene::loadResources()
 void BossFightScene::generate()
 {
     //set player positions
-    m_player_0->move(512.0f - 256.0f, 1024.0f);
-    m_player_1->move(512.0f + 000.0f, 1024.0f);
-    m_player_2->move(512.0f + 256.0f, 1024.0f);
+    m_player_0->move(256.0f, 1024.0f);
+    m_player_1->move(0.0f, 1024.0f);
+    m_player_2->move(-256.0f, 1024.0f);
 
-    m_circle_0.setPosition(128.0f, 256.0f);
-    m_circle_1.setPosition(256.0f, 384.0f);
-    m_circle_2.setPosition(384.0f, 256.0f);
+    m_circle_0.setPosition(256.0f, 0.0f);
+    m_circle_1.setPosition(0.0f, 64.0f);
+    m_circle_2.setPosition(-256.0f, 0.0f);
 }
 
 void BossFightScene::draw(sf::RenderWindow& window)
