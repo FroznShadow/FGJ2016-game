@@ -22,6 +22,10 @@ private:
 	CircleButton* level1;
 	CircleButton* level2;
     CircleButton* center;
+
+    sf::Sprite* wizard0;
+    sf::Sprite* wizard1;
+    sf::Sprite* wizard2;
 };
 
 MenuState::MenuState(StateManager* manager)
@@ -30,12 +34,19 @@ MenuState::MenuState(StateManager* manager)
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/Level0.bmp", "level0");
 	m_RM->loadTexture("textures/Level0_pressed.bmp", "level0_p");
+    m_RM->loadTexture("textures/Level0_complete.bmp", "level0_c");
 	m_RM->loadTexture("textures/Level1.bmp", "level1");
 	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
+    m_RM->loadTexture("textures/Level1_complete.bmp", "level1_c");
     m_RM->loadTexture("textures/Level2.bmp", "level2");
     m_RM->loadTexture("textures/Level2_pressed.bmp", "level2_p");
+    m_RM->loadTexture("textures/Level2_complete.bmp", "level2_c");
 
-    m_RM->loadTexture("textures/tile_objective.png", "finished");
+    m_RM->loadTexture("textures/Player_blue.png", "wizard_0");
+    m_RM->loadTexture("textures/Player_red.png", "wizard_1");
+    m_RM->loadTexture("textures/Player_white.png", "wizard_2");
+
+    m_RM->loadTexture("textures/tile_objective.png", "center");
 
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
@@ -50,8 +61,12 @@ MenuState::MenuState(StateManager* manager)
 	m_objects.push_back(level2);
 
     center = new CircleButton(512 - 128, 512 - 128 , 128);
-    center->setTexture(*m_RM->getTexture("level2"));
+    center->setTexture(*m_RM->getTexture("center"));
     m_objects.push_back(center);
+
+    wizard0 = new sf::Sprite(*m_RM->getTexture("wizard_0"));
+    wizard1 = new sf::Sprite(*m_RM->getTexture("wizard_1"));
+    wizard2 = new sf::Sprite(*m_RM->getTexture("wizard_2"));
 }
 
 #include "GameState.h"
@@ -64,10 +79,19 @@ MenuState::~MenuState()
     delete center;
     m_RM->deleteTexture("level0");
     m_RM->deleteTexture("level0_p");
+    m_RM->deleteTexture("level0_c");
     m_RM->deleteTexture("level1");
     m_RM->deleteTexture("level1_p");
+    m_RM->deleteTexture("level1_c");
+    m_RM->deleteTexture("level2");
+    m_RM->deleteTexture("level2_p");
+    m_RM->deleteTexture("level2_c");
 
-    m_RM->deleteTexture("finished");
+    m_RM->deleteTexture("wizard_0");
+    m_RM->deleteTexture("wizard_1");
+    m_RM->deleteTexture("wizard_2");
+
+    m_RM->deleteTexture("center");
 }
 
 void MenuState::update(const float dt)
@@ -85,51 +109,72 @@ void MenuState::update(const float dt)
 	{
 		if (it == level0)
 		{
-			if (level0->isHovering())
-			{
-				level0->setTexture(*m_RM->getTexture("level0_p"));
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(0))
-				{
-					m_manager->setState(new GameState(m_manager, 0));
-					return;
-				}
-			}
-			else
-			{
-				level0->setTexture(*m_RM->getTexture("level0"));
-			}
+            if (!m_manager->isLevelCompleted(0))
+            {
+                if (level0->isHovering())
+                {
+                    level0->setTexture(*m_RM->getTexture("level0_p"));
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                    {
+                        m_manager->setState(new GameState(m_manager, 0));
+                        return;
+                    }
+                }
+                else
+                {
+                    level0->setTexture(*m_RM->getTexture("level0"));
+                }
+            }
+            else
+            {
+                level0->setTexture(*m_RM->getTexture("level0_c"));
+            }
 		}
 		else if (it == level1)
 		{
-			if (level1->isHovering())
-			{
-				level1->setTexture(*m_RM->getTexture("level1_p"));
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(1))
+            if (!m_manager->isLevelCompleted(1))
+            {
+                if (level1->isHovering())
                 {
-                    m_manager->setState(new GameState(m_manager, 1));
-                    return;
+                    level1->setTexture(*m_RM->getTexture("level1_p"));
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                    {
+                        m_manager->setState(new GameState(m_manager, 1));
+                        return;
+                    }
                 }
-			}
-			else
-			{
-				level1->setTexture(*m_RM->getTexture("level1"));
-			}
+                else
+                {
+                    level1->setTexture(*m_RM->getTexture("level1"));
+                }
+            }
+            else
+            {
+                level1->setTexture(*m_RM->getTexture("level1_c"));
+            }
 		}
 		else if (it == level2)
 		{
-			if (level2->isHovering())
-			{
-				level2->setTexture(*m_RM->getTexture("level2_p"));
-                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(2))
+            if (!m_manager->isLevelCompleted(2))
+            {
+                if (level2->isHovering())
                 {
-                    m_manager->setState(new GameState(m_manager, 2));
-                    return;
+                    level2->setTexture(*m_RM->getTexture("level2_p"));
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                    {
+                        m_manager->setState(new GameState(m_manager, 2));
+                        return;
+                    }
                 }
-			}
-			else
-			{
-				level2->setTexture(*m_RM->getTexture("level2"));
-			}
+                else
+                {
+                    level2->setTexture(*m_RM->getTexture("level2"));
+                }
+            }
+            else
+            {
+                level2->setTexture(*m_RM->getTexture("level2_c"));
+            }
 		}
 	}
 }
@@ -140,8 +185,6 @@ void MenuState::draw(sf::RenderWindow &window)
 
 	window.setView(window.getDefaultView());
 
-    sf::Sprite done(*m_RM->getTexture("finished"));
-
     for (auto it : m_objects)
     {
         it->draw(window);
@@ -149,18 +192,18 @@ void MenuState::draw(sf::RenderWindow &window)
 
     if (m_manager->isLevelCompleted(0))
     {
-        done.setPosition(level0->getPosition());
-        window.draw(done);
+        wizard0->setPosition(level0->getPosition());
+        window.draw(*wizard0);
     }
     if (m_manager->isLevelCompleted(1))
     {
-        done.setPosition(level1->getPosition());
-        window.draw(done);
+        wizard1->setPosition(level1->getPosition());
+        window.draw(*wizard1);
     }
     if (m_manager->isLevelCompleted(2))
     {
-        done.setPosition(level2->getPosition());
-        window.draw(done);
+        wizard2->setPosition(level2->getPosition());
+        window.draw(*wizard2);
     }
 }
 
