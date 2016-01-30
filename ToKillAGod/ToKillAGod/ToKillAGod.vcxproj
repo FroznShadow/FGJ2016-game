@@ -86,6 +86,7 @@
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="State.hpp" />
     <ClInclude Include="StateManager.hpp" />
+    <ClInclude Include="TheEpicBossFightState.h" />
     <ClInclude Include="Tile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
