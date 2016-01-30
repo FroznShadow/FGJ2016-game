@@ -221,7 +221,7 @@ void GameState::movePlayer(float dt)
 
 	m_player->setVelocity(sf::Vector2f(m_player->getHSpeed(), m_player->getVSpeed()));
 
-	if (m_player->getPosition().y > 1000)
+	if (m_player->getPosition().y > 5000)
 	{
 		//m_player->destroy();
 		std::cout << "haha kuolit!";
