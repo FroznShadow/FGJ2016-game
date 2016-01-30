@@ -46,7 +46,13 @@ GameState::GameState(StateManager* manager, int level)
 	m_RM->loadTexture("textures/tile_red.png", "background");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
-	m_RM->loadTexture("textures/player.png", "wizard");
+
+    switch (level)
+    {
+    case 0: m_RM->loadTexture("textures/player.png", "wizard");
+    case 1: m_RM->loadTexture("textures/player.png", "wizard");
+    case 2: m_RM->loadTexture("textures/player.png", "wizard");
+    }
 
 	generate();
 }
