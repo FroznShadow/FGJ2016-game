@@ -40,8 +40,7 @@ GameState::GameState(StateManager* manager, int level)
     :State(manager), m_level(level)
 {
 	m_RM = ResourceManager::getInstance();
-	m_RM->loadTexture("textures/tile_cyan.png", "normal");
-	m_RM->loadTexture("textures/tile_cyan.png", "danger");
+	m_RM->loadTexture("textures/default.png", "danger");
 	m_RM->loadTexture("textures/tile_cyan.png", "heal");
 	m_RM->loadTexture("textures/tile_red.png", "background");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
@@ -49,9 +48,24 @@ GameState::GameState(StateManager* manager, int level)
 
     switch (level)
     {
-    case 0: m_RM->loadTexture("textures/Player_blue.png", "wizard");
-    case 1: m_RM->loadTexture("textures/Player_red.png", "wizard");
-    case 2: m_RM->loadTexture("textures/Player_white.png", "wizard");
+
+	case 0:
+	{
+		m_RM->loadTexture("textures/Player_blue.png", "wizard");
+		m_RM->loadTexture("textures/tile_cyan.png", "normal");
+		break;
+	}
+	case 1:
+	{
+		m_RM->loadTexture("textures/Player_red.png", "wizard");
+		m_RM->loadTexture("textures/tile_red.png", "normal");
+	}
+	case 2:
+	{
+		m_RM->loadTexture("textures/Player_white.png", "wizard");
+		m_RM->loadTexture("textures/tile_white.png", "normal");
+	}
+
     }
 
 	generate();
@@ -59,7 +73,7 @@ GameState::GameState(StateManager* manager, int level)
 
 GameState::~GameState()
 {
-	m_RM->deleteTexture( "normal");
+	m_RM->deleteTexture("normal");
 	m_RM->deleteTexture("danger");
 	m_RM->deleteTexture("heal");
 	m_RM->deleteTexture("background");
@@ -79,13 +93,19 @@ void GameState::generate()
 	m_objects.push_back(m_player);
 
 
-	addTile(Tile::TileType::bouncer, 1, 1);
-	addTile(Tile::TileType::bouncer, 2, 1);
-
+	addTile(Tile::TileType::danger, -10, 1);
+	addTile(Tile::TileType::danger, -9, 1);
+	addTile(Tile::TileType::bouncer, -13, 3);
+	addTile(Tile::TileType::bouncer, -12, 3);
+	addTile(Tile::TileType::danger, -15, 3);
+	addTile(Tile::TileType::danger, -15, 2);
+	addTile(Tile::TileType::danger, -15, 1);
+	addTile(Tile::TileType::danger, -15, 0);
+	addTile(Tile::TileType::danger, -15, -1);
 	//generate starting platform
 	for (unsigned j = 0; j < 16; j++)
 	{
-		addTile(Tile::TileType::background, j - 15.0f, 4);
+		addTile(Tile::TileType::normal, j - 15.0f, 4);
 	}
 
 	//set seed
@@ -124,6 +144,10 @@ void GameState::generate()
 					addTile(Tile::TileType::bouncer, i, levelHeight);
 				}
 			}
+			else if ((rand() % 5 == 0 && heightLength > 1))
+			{
+				addTile(Tile::TileType::danger, i, levelHeight);
+			}
 			else
 			{
 				if (heightLength > 2)
@@ -145,7 +169,7 @@ void GameState::generate()
 				objective = true;
 				std::cout << objective << std::endl;
 				totalLength++;
-				addTile(Tile::TileType::objective, i - 1, levelHeight - 1);
+				addTile(Tile::TileType::objective, i + 1, levelHeight - 1);
 				return;
 			}
 		}
@@ -192,13 +216,13 @@ void GameState::movePlayer(float dt)
 	m_player->move(0, 1);
 	if (!getPlayerCollision()) //fall or move back
 	{
-		m_player->getVSpeed() += 15 * dt;
+		m_player->getVSpeed() += 75 * dt;
 	}
 	else
 	{
 		m_player->getVSpeed() = 0;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			m_player->getVSpeed() = -15.0f;
+			m_player->getVSpeed() = -25.0f;
 	}
 	m_player->move(0, -1);
 
@@ -259,7 +283,10 @@ GameObject* GameState::getPlayerCollision()
 						break;
 					}
 					case Tile::danger: {
-						//Damage
+						sf::Vector2f pos = m_player->getPosition();
+						m_player->move(-pos.x + 256, -pos.y+400);
+						m_player->setVelocity(sf::Vector2f());
+						return nullptr;
 						break;
 					}
 					case Tile::heal: {
