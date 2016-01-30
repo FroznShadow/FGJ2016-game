@@ -7,6 +7,8 @@
 #include "Tile.h"
 #include "Player.h"
 #include "ÜberEpicBoss.hpp"
+#include "Projectile.hpp"
+#include "ParticleManager.h"
 
 class StateManager;
 
@@ -24,6 +26,7 @@ private:
     void movePlayers(float dt);
     void circleCollisions();
     ResourceManager* m_RM;
+    ParticleManager* m_PM;
     bool objective = false;
     bool finished = false;
 
@@ -49,6 +52,8 @@ private:
     sf::View m_gameView;
 
     ÜberEpicBoss* m_boss;
+
+    
 };
 
 
@@ -144,6 +149,12 @@ void BossFightScene::update(float dt)
             m_objects.push_back(m_boss);
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
+
+            for (int i = 0; i < 200; i++)
+            {
+                m_objects.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
+            }
+            std::cout << "particles created\n";
         }
     }
     else
@@ -153,7 +164,31 @@ void BossFightScene::update(float dt)
         m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
         m_circle_effect_2.setPosition(m_player_2->getPosition() + sf::Vector2f(32.0f, 32.0f));
 
-        //projectile collisions & stuff
+        //shoot particles to boss
+        m_PM->createParticle(m_RM->getTexture("spark"),
+            m_player_0->getPosition().x , m_player_0->getPosition().y,
+            500.0f,
+            atan2f(
+            m_boss->getPosition().y - m_player_0->getPosition().y,
+            m_boss->getPosition().x - m_player_0->getPosition().x),
+            1.5f, 180.0f, 0.05f, 0.5f );
+        m_PM->createParticle(m_RM->getTexture("spark"),
+            m_player_1->getPosition().x, m_player_1->getPosition().y,
+            500.0f,
+            atan2f(
+            m_boss->getPosition().y - m_player_1->getPosition().y,
+            m_boss->getPosition().x - m_player_1->getPosition().x),
+            1.5f, 180.0f, 0.05f, 0.5f);
+        m_PM->createParticle(m_RM->getTexture("spark"),
+            m_player_2->getPosition().x, m_player_2->getPosition().y,
+            500.0f,
+            atan2f(
+            m_boss->getPosition().y - m_player_2->getPosition().y,
+            m_boss->getPosition().x - m_player_2->getPosition().x),
+            1.5f, 180.0f, 0.05f, 0.5f);
+
+        //stuff
+        m_PM->update(dt);
     }
 
     //rotate shields
@@ -199,9 +234,11 @@ void BossFightScene::loadResources()
 {
     //get texture manager
     m_RM = ResourceManager::getInstance();
+    m_PM = ParticleManager::getInstance();
 
     m_RM->loadTexture("textures/BigBadBoss.png", "BigBadBoss");
     m_RM->loadTexture("textures/projectile.png", "Projectile1");
+    m_RM->loadTexture("textures/spark.png", "spark");
 
     m_player_0->setTexture(*m_RM->loadTexture("textures/Player_blue.png", "player0"));
     m_player_1->setTexture(*m_RM->loadTexture("textures/Player_red.png", "player1"));
@@ -243,6 +280,8 @@ void BossFightScene::generate()
 
 void BossFightScene::draw(sf::RenderWindow& window)
 {
+    m_PM->draw(window);
+
     sf::Vector2f aveRage = (m_player_0->getPosition() + m_player_1->getPosition() + m_player_2->getPosition()) / 3.0f;
     m_gameView.setCenter(aveRage);
     window.setView(m_gameView);
