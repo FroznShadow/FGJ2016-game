@@ -2,13 +2,11 @@
 
 Player::Player()
 {
-	this->M_set_Position(position);
+	//this->setPosition(m_position);
 }
 
 Player::~Player()
-{
-
-}
+{}
 
 void Player::draw()
 {
@@ -16,15 +14,15 @@ void Player::draw()
 }
 void Player::movePlayer(std::string dir)
 {
-	if (x_velocity < max_speed && x_velocity >-max_speed)
+	if (m_xVelocity < m_maxSpeed && m_xVelocity > -m_maxSpeed)
 	{
 		if (dir == "right")
 		{
-			x_velocity += acceleration;
+			m_xVelocity += m_acceleration;
 		}
 		else if (dir == "left");
 		{
-			x_velocity -= acceleration;
+			m_xVelocity -= m_acceleration;
 		}
 	}
 	else
@@ -32,7 +30,7 @@ void Player::movePlayer(std::string dir)
 }
 void Player::jump()
 {
-	y_velocity += jump_Acceleration;
+	m_yVelocity += m_jumpAcceleration;
 }
 //void collision()
 //{

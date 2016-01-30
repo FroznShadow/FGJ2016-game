@@ -16,31 +16,30 @@ public:
 	~GameObject();
 
 	//Set values//
-	void Destroy();
-	void M_set_Position(const sf::Vector2f& value);
-	void M_set_Texture(const sf::Texture& value);
-	void M_set_Texture_Rectangle(const sf::IntRect& value);
-	void M_set_Rotation(float value);
-	void M_set_Type(TYPE type);
+	void destroy();
+	void setPosition(const sf::Vector2f& value);
+	void setTexture(const sf::Texture& value);
+	void setTextureRectangle(const sf::IntRect& value);
+	void setRotation(float value);
+	void setType(TYPE type);
 
 	//GetValues//
-	sf::Vector2f	M_get_position() const;
-	float			M_get_Rotation() const;
-	sf::FloatRect	M_get_Bounding_Box() const;
-	TYPE			M_get_Type() const;
+	sf::Vector2f	getPosition() const;
+	float			getRotation() const;
+	sf::FloatRect	getBoundingBox() const;
+	TYPE			getType() const;
 
 	//Other values//
-	void M_Rotation(float value);
-	void M_Destroy();
-	virtual void M_draw(sf::RenderWindow& window)=0;
-	virtual void M_update(const float dt)=0;
+	void rotation(float value);
+	virtual void draw(sf::RenderWindow& window)=0;
+	virtual void update(const float dt)=0;
 
 protected:
 	
-	sf::Sprite P_sprite;
-	sf::Vector2f P_origin;
-	void M_update_Origin();
-	TYPE M_type;
+	sf::Sprite m_sprite;
+	sf::Vector2f m_origin;
+	void updateOrigin();
+	TYPE m_type;
 };
 
 

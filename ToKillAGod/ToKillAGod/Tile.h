@@ -23,8 +23,8 @@ public:
 	Tile();
 	Tile(float x, float y, TileType type);
 	~Tile(){};
-	void M_draw(sf::RenderWindow &window)override{ GameObject::M_draw(window); }
-	void M_update(float dt)override{ GameObject::M_update(dt); }
+	void draw(sf::RenderWindow &window)override{ GameObject::draw(window); }
+	void update(float dt)override{ GameObject::update(dt); }
 
 	TileType getType(){ return m_tileType; }
 

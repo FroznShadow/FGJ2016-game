@@ -11,22 +11,22 @@ Tile::Tile(float x, float y, TileType type)
 	switch (m_tileType)
 	{
 	case TileType::normal:
-		M_set_Texture(*RM->getTexture("normal"));
+		setTexture(*RM->getTexture("normal"));
 		break;
 	case TileType::danger:
-		M_set_Texture(*RM->getTexture("danger"));
+		setTexture(*RM->getTexture("danger"));
 		break;
 	case TileType::heal:
-		M_set_Texture(*RM->getTexture("heal"));
+		setTexture(*RM->getTexture("heal"));
 		break;
 	case TileType::background:
-		M_set_Texture(*RM->getTexture("background"));
+		setTexture(*RM->getTexture("background"));
 		break;
 	case TileType::bouncer:
-		M_set_Texture(*RM->getTexture("bouncer"));
+		setTexture(*RM->getTexture("bouncer"));
 		break;
 	case TileType::objective:
-		M_set_Texture(*RM->getTexture("objective"));
+		setTexture(*RM->getTexture("objective"));
 		break;
 	default:
 		// Set texture to normal tile just in case

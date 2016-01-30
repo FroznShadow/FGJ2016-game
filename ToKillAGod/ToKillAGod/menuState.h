@@ -33,15 +33,15 @@ MenuState::MenuState(StateManager* manager)
 	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
 
 	level0 = new CircleButton(0, 0, 128);
-	level0->M_set_Texture(*m_RM->getTexture("level0"));
+	level0->setTexture(*m_RM->getTexture("level0"));
 	m_objects.push_back(level0);
 
 	level1 = new CircleButton(0, 0, 128);
-	level1->M_set_Texture(*m_RM->getTexture("level1"));
+	level1->setTexture(*m_RM->getTexture("level1"));
 	m_objects.push_back(level1);
 
 	level2 = new CircleButton(0, 0, 128);
-	level2->M_set_Texture(*m_RM->getTexture("level1"));
+	level2->setTexture(*m_RM->getTexture("level1"));
 	m_objects.push_back(level2);
 }
 
@@ -60,9 +60,9 @@ void MenuState::update(const float dt)
 	float range = 128 * sqrt(2);
 	float centerX = 512 - 128;//= 320 - 128;
 	float centerY = 512 - 128;//= 240 - 128;
-	level2->M_set_Position(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));
-	level1->M_set_Position(sf::Vector2f((cos(m_totalTime + 2 * pi / 3)) * range + centerX, (sin(m_totalTime + 2 * pi / 3)) * range + centerY));
-	level0->M_set_Position(sf::Vector2f((cos(m_totalTime + 0 * pi / 3)) * range + centerX, (sin(m_totalTime + 0 * pi / 3)) * range + centerY));
+	level2->setPosition(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));
+	level1->setPosition(sf::Vector2f((cos(m_totalTime + 2 * pi / 3)) * range + centerX, (sin(m_totalTime + 2 * pi / 3)) * range + centerY));
+	level0->setPosition(sf::Vector2f((cos(m_totalTime + 0 * pi / 3)) * range + centerX, (sin(m_totalTime + 0 * pi / 3)) * range + centerY));
 
 	for (auto it : m_objects)
 	{
@@ -70,7 +70,7 @@ void MenuState::update(const float dt)
 		{
 			if (level0->isHovering())
 			{
-				level0->M_set_Texture(*m_RM->getTexture("level0_p"));
+				level0->setTexture(*m_RM->getTexture("level0_p"));
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
 					std::cout << "GAME ON!\n";
@@ -81,29 +81,29 @@ void MenuState::update(const float dt)
 			}
 			else
 			{
-				level0->M_set_Texture(*m_RM->getTexture("level0"));
+				level0->setTexture(*m_RM->getTexture("level0"));
 			}
 		}
 		else if (it == level1)
 		{
 			if (level1->isHovering())
 			{
-				level1->M_set_Texture(*m_RM->getTexture("level1_p"));
+				level1->setTexture(*m_RM->getTexture("level1_p"));
 			}
 			else
 			{
-				level1->M_set_Texture(*m_RM->getTexture("level1"));
+				level1->setTexture(*m_RM->getTexture("level1"));
 			}
 		}
 		else if (it == level2)
 		{
 			if (level2->isHovering())
 			{
-				level2->M_set_Texture(*m_RM->getTexture("level1_p"));
+				level2->setTexture(*m_RM->getTexture("level1_p"));
 			}
 			else
 			{
-				level2->M_set_Texture(*m_RM->getTexture("level1"));
+				level2->setTexture(*m_RM->getTexture("level1"));
 			}
 		}
 	}
@@ -116,7 +116,7 @@ void MenuState::draw(sf::RenderWindow &window)
 
 	for (auto it : m_objects)
 	{
-		it->M_draw(window);
+		it->draw(window);
 	}
 }
 

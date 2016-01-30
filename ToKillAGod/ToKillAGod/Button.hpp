@@ -10,21 +10,21 @@ public:
 	Button(int x, int y);
 	virtual ~Button();
 	virtual bool isHovering()=0;
-	virtual void M_update(float deltaTime);
-	virtual void M_draw(sf::RenderWindow& window)override;
+	virtual void update(float deltaTime);
+	virtual void draw(sf::RenderWindow& window)override;
 protected:
-	bool _hovered;
+	bool m_hovered;
 };
 
-Button::Button(int x, int y) : _hovered(false), GameObject(sf::Vector2f(x, y)) {}
+Button::Button(int x, int y) : m_hovered(false), GameObject(sf::Vector2f(x, y)) {}
 
 Button::~Button() {}
 
 bool Button::isHovering() { return false; }
 
-void Button::M_update(float deltaTime) { return; }
+void Button::update(float deltaTime) { return; }
 
-void Button::M_draw(sf::RenderWindow& window) { return; }
+void Button::draw(sf::RenderWindow& window) { return; }
 
 class RectangleButton : public Button
 {
@@ -33,46 +33,46 @@ public:
 	~RectangleButton();
 
 	bool isHovering();
-	void M_update(float deltaTime);
-	void M_draw(sf::RenderWindow& window);
+	void update(float deltaTime);
+	void draw(sf::RenderWindow& window);
 private:
-	int _width;
-	int _height;
-	sf::RectangleShape _rect;
+	int m_width;
+	int m_height;
+	sf::RectangleShape m_rect;
 };
 
-RectangleButton::RectangleButton(int x, int y, int width, int height) : _width(width), _height(height), Button(x, y)
+RectangleButton::RectangleButton(int x, int y, int width, int height) : m_width(width), m_height(height), Button(x, y)
 {
-	_rect = sf::RectangleShape(sf::Vector2f(width, height));
-	_rect.setFillColor(sf::Color::Blue);
-	_rect.setOrigin(_width / 2, _height / 2);
-	_rect.setPosition(x, y);
+	m_rect = sf::RectangleShape(sf::Vector2f(width, height));
+	m_rect.setFillColor(sf::Color::Blue);
+	m_rect.setOrigin(m_width / 2, m_height / 2);
+	m_rect.setPosition(x, y);
 }
 
 RectangleButton::~RectangleButton() {}
 
 bool RectangleButton::isHovering() {
-	return _hovered;
+	return m_hovered;
 }
 
-void RectangleButton::M_update(float deltaTime) {}
+void RectangleButton::update(float deltaTime) {}
 
-void RectangleButton::M_draw(sf::RenderWindow& window) {
+void RectangleButton::draw(sf::RenderWindow& window) {
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-	float _x = M_get_position().x, _y = M_get_position().y;
-	if (_x - _width / 2 < mousePos.x &&
-		_x + _width / 2 > mousePos.x &&
-		_y + _height / 2 > mousePos.y &&
-		_y - _height / 2 < mousePos.y) {
-		_rect.setFillColor(sf::Color::Blue);
-		_hovered = true;
+	float _x = getPosition().x, _y = getPosition().y;
+	if (_x - m_width / 2 < mousePos.x &&
+		_x + m_width / 2 > mousePos.x &&
+		_y + m_height / 2 > mousePos.y &&
+		_y - m_height / 2 < mousePos.y) {
+		m_rect.setFillColor(sf::Color::Blue);
+		m_hovered = true;
 	}
 	else {
-		_rect.setFillColor(sf::Color::Green);
-		_hovered = false;
+		m_rect.setFillColor(sf::Color::Green);
+		m_hovered = false;
 	}
 
-	window.draw(_rect);
+	window.draw(m_rect);
 }
 
 class CircleButton : public Button
@@ -82,41 +82,32 @@ public:
 	~CircleButton();
 
 	bool isHovering();
-	void M_update(float deltaTime);
-	void M_draw(sf::RenderWindow& window);
+	void update(float deltaTime);
+	void draw(sf::RenderWindow& window);
 private:
-	int _radius;
-	sf::CircleShape _circ;
+	int m_radius;
 };
 
-CircleButton::CircleButton(int x, int y, int radius) : _radius(radius), Button(x, y)
-{
-	_circ = sf::CircleShape(radius);
-	_circ.setFillColor(sf::Color::Blue);
-	_circ.setOrigin(radius, radius);
-	_circ.setPosition(x, y);
-}
+CircleButton::CircleButton(int x, int y, int radius) : m_radius(radius), Button(x, y) {}
 
 CircleButton::~CircleButton() {}
 
 bool CircleButton::isHovering() {
-	return _hovered;
+	return m_hovered;
 }
 
-void CircleButton::M_update(float deltaTime) {}
+void CircleButton::update(float deltaTime) {}
 
-void CircleButton::M_draw(sf::RenderWindow& window) 
+void CircleButton::draw(sf::RenderWindow& window) 
 {
-	GameObject::M_draw(window);
-	float _x = M_get_position().x, _y = M_get_position().y;
+	GameObject::draw(window);
+	float _x = getPosition().x, _y = getPosition().y;
 	sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-	if (_radius*_radius > pow(mousePos.x - _x - _radius, 2) + pow(mousePos.y - _y - _radius, 2)) {
-		_circ.setFillColor(sf::Color::Blue);
-		_hovered = true;
+	if (m_radius*m_radius > pow(mousePos.x - _x - m_radius, 2) + pow(mousePos.y - _y - m_radius, 2)) {
+		m_hovered = true;
 	}
 	else {
-		_circ.setFillColor(sf::Color::Green);
-		_hovered = false;
+		m_hovered = false;
 	}
 
 	//window.draw(_circ);

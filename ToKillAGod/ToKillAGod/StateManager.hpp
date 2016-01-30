@@ -14,7 +14,7 @@ public:
 	void update(float dt);
 	void draw(sf::RenderWindow & window);
 private:
-	State* _currentState;
+	State* m_currentState;
 };
 
 StateManager::StateManager() {}
@@ -22,21 +22,21 @@ StateManager::StateManager() {}
 StateManager::~StateManager() {}
 
 State* StateManager::getState() {
-	return _currentState;
+	return m_currentState;
 }
 
 bool StateManager::setState(State* state) {
-	if (_currentState == state) {
+	if (m_currentState == state) {
 		return false;
 	}
-	_currentState = state;
+	m_currentState = state;
 	return true;
 }
 
 void StateManager::draw(sf::RenderWindow &window) {
-	_currentState->draw(window);
+	m_currentState->draw(window);
 }
 
 void StateManager::update(float deltaTime) {
-	_currentState->update(deltaTime);
+	m_currentState->update(deltaTime);
 }

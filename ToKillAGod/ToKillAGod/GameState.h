@@ -119,7 +119,7 @@ void GameState::update(const float dt)
 {
 	for (auto it : m_objects)
 	{
-		it->M_set_Position(sf::Vector2f(it->M_get_position().x - dt * 800, it->M_get_position().y));
+		it->setPosition(sf::Vector2f(it->getPosition().x - dt * 800, it->getPosition().y));
 	}
 }
 
@@ -130,7 +130,7 @@ void GameState::draw(sf::RenderWindow &window)
 
 	for (auto it : m_objects)
 	{
-		it->M_draw(window);
+		it->draw(window);
 	}
 }
 

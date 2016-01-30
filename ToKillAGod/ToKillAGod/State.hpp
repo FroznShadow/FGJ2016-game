@@ -31,7 +31,7 @@ void State::update(const float dt)
 {
 	for (auto it : m_objects)
 	{
-		it->M_update(dt);
+		it->update(dt);
 	}
 }
 
@@ -39,6 +39,6 @@ void State::draw(sf::RenderWindow& window)
 {
 	for (auto it : m_objects)
 	{
-		it->M_draw(window);
+		it->draw(window);
 	}
 }
