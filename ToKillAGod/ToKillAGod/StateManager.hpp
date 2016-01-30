@@ -30,7 +30,7 @@ private:
 	State* m_currentState;
 
     //game progress
-    int m_levelFlags = 0;
+    int m_levelFlags = 5;
     int m_difficulty = 0;
 };
 

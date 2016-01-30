@@ -74,9 +74,8 @@ void MenuState::update(const float dt)
 			if (level0->isHovering())
 			{
 				level0->setTexture(*m_RM->getTexture("level0_p"));
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(0))
 				{
-					std::cout << "GAME ON!\n";
 					m_manager->setState(new GameState(m_manager));
 					return;
 				}
@@ -91,6 +90,11 @@ void MenuState::update(const float dt)
 			if (level1->isHovering())
 			{
 				level1->setTexture(*m_RM->getTexture("level1_p"));
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(1))
+                {
+                    m_manager->setState(new GameState(m_manager));
+                    return;
+                }
 			}
 			else
 			{
@@ -102,6 +106,11 @@ void MenuState::update(const float dt)
 			if (level2->isHovering())
 			{
 				level2->setTexture(*m_RM->getTexture("level1_p"));
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left) && !m_manager->isLevelCompleted(2))
+                {
+                    m_manager->setState(new GameState(m_manager));
+                    return;
+                }
 			}
 			else
 			{
