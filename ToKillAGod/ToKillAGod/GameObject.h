@@ -30,17 +30,20 @@ public:
 	float			getRotation() const;
 	sf::FloatRect	getBoundingBox() const;
 	TYPE			getType() const;
+	sf::Sprite&		getSprite() { return m_sprite; }
+
 
 	//Other values//
 	void rotation(float value);
 	virtual void draw(sf::RenderWindow& window)=0;
 	virtual void update(const float dt)=0;
 
+    void updateOrigin();
+
 protected:
 	
 	sf::Sprite m_sprite;
 	sf::Vector2f m_origin;
-	void updateOrigin();
 	TYPE m_type;
 };
 

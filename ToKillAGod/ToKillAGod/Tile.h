@@ -14,8 +14,6 @@ public:
 	{
 		normal,
 		danger,
-		heal,
-		background,
 		bouncer,
 		objective
 	};
@@ -25,6 +23,7 @@ public:
 	~Tile(){};
 	void draw(sf::RenderWindow &window)override{ GameObject::draw(window); }
     void update(const float dt)override{ GameObject::update(dt); }
+
 
 	TileType getTileType(){ return m_tileType; }
 

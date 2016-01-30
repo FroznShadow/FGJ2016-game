@@ -16,12 +16,6 @@ Tile::Tile(float x, float y, TileType type)
 	case TileType::danger:
 		setTexture(*RM->getTexture("danger"));
 		break;
-	case TileType::heal:
-		setTexture(*RM->getTexture("heal"));
-		break;
-	case TileType::background:
-		setTexture(*RM->getTexture("background"));
-		break;
 	case TileType::bouncer:
 		setTexture(*RM->getTexture("bouncer"));
 		break;

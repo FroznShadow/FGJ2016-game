@@ -28,24 +28,36 @@ private:
 	bool finished = false;
 	Player* m_player;
     int m_level;
+	sf::Sprite sprite;
+	sf::Texture texture;
+	int kakkaa;
 };
 
 void GameState::addTile(Tile::TileType type, float x, float y)
 {
 	m_objects.push_back(new Tile((x+16) * 128, y * 128, type));
+	
+	//if (type == Tile::TileType::danger) {
+	//	m_objects[m_objects.size()-1]->getSprite().setOrigin(64, 64);
+	//	//m_objects[m_objects.size() - 1]->getSprite().setPosition();
+	//}
 }
 
 
 GameState::GameState(StateManager* manager, int level)
     :State(manager), m_level(level)
 {
+	kakkaa = manager->getModifier();
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/danger.png", "danger");
-	m_RM->loadTexture("textures/tile_cyan.png", "heal");
-	m_RM->loadTexture("textures/tile_red.png", "background");
+	//m_RM->loadTexture("textures/tile_cyan.png", "heal");
+	//m_RM->loadTexture("textures/background.png", "background");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
-
+	texture.loadFromFile("textures/background.png");
+	//sprite.setPosition(m_player->getPosition());
+	sprite.setTexture(texture);
+	sprite.setScale(4, 3);
     switch (level)
     {
 
@@ -118,7 +130,7 @@ void GameState::generate()
 	int totalLength = 0;
 	bool bouncerGap = false;
 	//generate level
-	float levelLength = 50;
+	float levelLength = 50 + 50 * kakkaa;
 	for (unsigned i = 10; i < levelLength; i++)
 	{
 		if (gapWidth > 0)
@@ -183,7 +195,23 @@ void GameState::generate()
 
 void GameState::update(const float dt)
 {
+    //for (auto it : m_objects)
+    //{
+    //    if (it->getType() == TYPE::TILE)
+    //    {
+    //        Tile* tile = static_cast<Tile*>(it);
+    //        if (tile->getTileType() == Tile::TileType::danger)
+    //        {
+				//tile->updateOrigin();
+    //            tile->setRotation(tile->getRotation() + dt * 100);
+    //        }
+    //    }
+    //}
 	movePlayer(dt);
+	if (m_player->getPosition().y <= 1024)
+	{
+		sprite.setPosition((m_player->getPosition().x / 1.25) - 1000, sprite.getPosition().y);
+	}
 	if (finished)
 	{
 		levelFinish();
@@ -192,10 +220,14 @@ void GameState::update(const float dt)
 
 void GameState::draw(sf::RenderWindow &window)
 {
+	window.draw(sprite);
 	//sf::Mouse::getPosition(window);
-	sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
-
-	window.setView(playerView);
+	if (m_player->getPosition().y <= 1024)
+	{
+		sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
+		window.setView(playerView);
+	}
+	
 
 	for (auto it : m_objects)
 	{
@@ -257,7 +289,7 @@ void GameState::movePlayer(float dt)
 		//m_player->destroy();
 		std::cout << "haha kuolit!";
 		sf::Vector2f pos = m_player->getPosition();
-		m_player->move(-pos.x + 256, -pos.y);
+		m_player->move(-pos.x + 256, -pos.y+400);
 		m_player->setVelocity(sf::Vector2f());
 	}
 }
@@ -288,14 +320,6 @@ GameObject* GameState::getPlayerCollision()
 						m_player->move(-pos.x + 256, -pos.y+400);
 						m_player->setVelocity(sf::Vector2f());
 						return nullptr;
-						break;
-					}
-					case Tile::heal: {
-						//Heal
-						break;
-					}
-					case Tile::background: {
-						//Do nothing
 						break;
 					}
 					case Tile::bouncer: {

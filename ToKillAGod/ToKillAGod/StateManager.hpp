@@ -27,11 +27,12 @@ public:
     {
         return ((m_levelFlags >> levelNum) & 1) == 1;
     }
+	int getModifier() { return m_levelFlags; }
 private:
 	State* m_currentState;
 
     //game progress
-    int m_levelFlags = 3;
+    int m_levelFlags = 0;
     int m_difficulty = 0;
 };
 
