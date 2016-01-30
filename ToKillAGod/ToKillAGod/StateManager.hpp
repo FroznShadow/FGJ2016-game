@@ -27,6 +27,7 @@ public:
     {
         return ((m_levelFlags >> levelNum) & 1) == 1;
     }
+	int getModifier() { return m_levelFlags; }
 private:
 	State* m_currentState;
 

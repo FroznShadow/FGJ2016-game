@@ -30,6 +30,7 @@ private:
     int m_level;
 	sf::Sprite sprite;
 	sf::Texture texture;
+	int kakkaa;
 };
 
 void GameState::addTile(Tile::TileType type, float x, float y)
@@ -41,6 +42,7 @@ void GameState::addTile(Tile::TileType type, float x, float y)
 GameState::GameState(StateManager* manager, int level)
     :State(manager), m_level(level)
 {
+	kakkaa = manager->getModifier();
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/danger.png", "danger");
 	//m_RM->loadTexture("textures/tile_cyan.png", "heal");
@@ -123,7 +125,7 @@ void GameState::generate()
 	int totalLength = 0;
 	bool bouncerGap = false;
 	//generate level
-	float levelLength = 50;
+	float levelLength = 50 + 50 * kakkaa;
 	for (unsigned i = 10; i < levelLength; i++)
 	{
 		if (gapWidth > 0)
