@@ -5,8 +5,6 @@ Player::Player(sf::Vector2f position)
 {
 	ResourceManager* RM = ResourceManager::getInstance();
 	setPosition(m_position);
-
-	setTexture(*RM->getTexture("wizard"));
 }
 
 Player::~Player()

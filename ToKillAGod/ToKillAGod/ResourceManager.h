@@ -82,7 +82,7 @@ private:
 	ResourceManager()
 	{
 		std::cout << "loading default texture\n";
-		loadTexture("textures/default.png", "default");
+		loadTexture("textures/exitBtn_pressed.png", "default");
 
 	}
 	~ResourceManager()

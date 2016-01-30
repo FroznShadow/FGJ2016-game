@@ -69,6 +69,8 @@ GameState::GameState(StateManager* manager, int level)
     }
 
 	generate();
+
+    m_player->setTexture(*m_RM->getTexture("wizard"));
 }
 
 GameState::~GameState()

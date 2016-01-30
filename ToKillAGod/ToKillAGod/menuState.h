@@ -46,7 +46,8 @@ MenuState::MenuState(StateManager* manager)
     m_RM->loadTexture("textures/Player_red.png", "wizard_1");
     m_RM->loadTexture("textures/Player_white.png", "wizard_2");
 
-    m_RM->loadTexture("textures/tile_objective.png", "center");
+    m_RM->loadTexture("textures/levelFinal.png", "center");
+    m_RM->loadTexture("textures/levelFinal_pressed.png", "center_p");
 
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
@@ -70,6 +71,7 @@ MenuState::MenuState(StateManager* manager)
 }
 
 #include "GameState.h"
+#include "TheEpicBossFightState.h"
 
 MenuState::~MenuState()
 {
@@ -92,6 +94,7 @@ MenuState::~MenuState()
     m_RM->deleteTexture("wizard_2");
 
     m_RM->deleteTexture("center");
+    m_RM->deleteTexture("center_p");
 }
 
 void MenuState::update(const float dt)
@@ -176,6 +179,29 @@ void MenuState::update(const float dt)
                 level2->setTexture(*m_RM->getTexture("level2_c"));
             }
 		}
+        else if (it == center)
+        {
+            if (m_manager->isLevelCompleted(0) && m_manager->isLevelCompleted(1) && m_manager->isLevelCompleted(2))
+            {
+                if (center->isHovering())
+                {
+                    center->setTexture(*m_RM->getTexture("center_p"));
+                    if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+                    {
+                        m_manager->setState(new BossFightScene(m_manager));
+                        return;
+                    }
+                }
+                else
+                {
+                    center->setTexture(*m_RM->getTexture("center"));
+                }
+            }
+            else
+            {
+                center->setTexture(*m_RM->getTexture("center"));
+            }
+        }
 	}
 }
 

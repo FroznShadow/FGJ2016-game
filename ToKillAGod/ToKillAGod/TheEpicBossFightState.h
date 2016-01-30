@@ -54,6 +54,10 @@ BossFightScene::BossFightScene(StateManager* manager)
     m_player_1 = new Player(sf::Vector2f(128.0f, 256.0f));
     m_player_2 = new Player(sf::Vector2f(256.0f, 256.0f));
 
+    m_objects.push_back(m_player_0);
+    m_objects.push_back(m_player_1);
+    m_objects.push_back(m_player_2);
+
     loadResources();
 
     generate();
@@ -187,6 +191,22 @@ void BossFightScene::generate()
     m_circle_0.setPosition(0.0f, 128.0f);
     m_circle_0.setPosition(128.0f, 128.0f);
     m_circle_0.setPosition(256.0f, 128.0f);
+}
+
+void BossFightScene::draw(sf::RenderWindow& window)
+{
+    for (auto it : m_objects)
+    {
+        it->draw(window);
+    }
+
+    window.draw(m_circle_0);
+    window.draw(m_circle_1);
+    window.draw(m_circle_2);
+
+    window.draw(m_circle_effect_0);
+    window.draw(m_circle_effect_1);
+    window.draw(m_circle_effect_2);
 }
 
 #endif
