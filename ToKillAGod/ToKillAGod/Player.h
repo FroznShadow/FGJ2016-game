@@ -1,25 +1,25 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "GameObject.h"
+#include "ResourceManager.h"
 
 class Player : public GameObject
 {
 public:
-	Player();
+	Player(sf::Vector2f position);
 	~Player();
-	void draw();
-	void movePlayer(std::string dir);
-	//void collision();
-	void jump();
+	void draw(sf::RenderWindow& window)override;
+	void update(float deltaTime)override;
+	void jump(float jumpSpeed);
+
+	sf::Vector2f getVelocity() { return m_velocity; }
 private:
 	int m_hitPoints;
+	int m_life;
 	sf::Vector2f m_position;
-	float m_acceleration;
-	float m_deceleration;
 	float m_maxSpeed;
-	float m_jumpAcceleration;
-	float m_xVelocity;
-	float m_yVelocity;
+	sf::Vector2f m_velocity;
+
 };
 
 #endif // !PLAYER_H
