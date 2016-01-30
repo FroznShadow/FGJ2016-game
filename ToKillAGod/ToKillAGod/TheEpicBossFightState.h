@@ -245,13 +245,13 @@ void BossFightScene::loadResources()
     m_player_2->setTexture(*m_RM->loadTexture("textures/Player_white.png", "player2"));
 
     //load destination sprites & their effects
-    m_circle_0.setTexture(*m_RM->loadTexture("textures/exitBtn_pressed.png", "circle0"));
-    m_circle_1.setTexture(*m_RM->loadTexture("textures/exitBtn_pressed.png", "circle1"));
-    m_circle_2.setTexture(*m_RM->loadTexture("textures/exitBtn_pressed.png", "circle2"));
+    m_circle_2.setTexture(*m_RM->loadTexture("textures/finalTile_1.png", "circle2"));
+    m_circle_0.setTexture(*m_RM->loadTexture("textures/finalTile_3.png", "circle0"));
+    m_circle_1.setTexture(*m_RM->loadTexture("textures/finalTile_2.png", "circle1"));
 
-    m_circle_0.setOrigin(64.0f, 64.0f);
-    m_circle_1.setOrigin(64.0f, 64.0f);
-    m_circle_2.setOrigin(64.0f, 64.0f);
+    m_circle_0.setOrigin(111.0f, 61.5f);
+    m_circle_1.setOrigin(116.5f, 51.0f);
+    m_circle_2.setOrigin(113.5f, 62.5f);
 
     m_circle_effect_0.setTexture(*m_RM->loadTexture("textures/shield_blue.png", "effect0"));
     m_circle_effect_1.setTexture(*m_RM->loadTexture("textures/shield_red.png", "effect1"));
@@ -281,10 +281,15 @@ void BossFightScene::generate()
 void BossFightScene::draw(sf::RenderWindow& window)
 {
     m_PM->draw(window);
-
-    sf::Vector2f aveRage = (m_player_0->getPosition() + m_player_1->getPosition() + m_player_2->getPosition()) / 3.0f;
-    m_gameView.setCenter(aveRage);
-    window.setView(m_gameView);
+	if (!m_bossfight) {
+		sf::Vector2f aveRage = (m_player_0->getPosition() + m_player_1->getPosition() + m_player_2->getPosition()) / 3.0f;
+		m_gameView.setCenter(aveRage);
+		window.setView(m_gameView);
+	}
+	else if (m_gameView.getCenter().y  >= -260) { //Vois parantaa, mutten jaksa
+		m_gameView.setCenter(m_gameView.getCenter() + sf::Vector2f(0, -1));
+		window.setView(m_gameView);
+	}
 
     window.draw(m_circle_0);
     window.draw(m_circle_1);

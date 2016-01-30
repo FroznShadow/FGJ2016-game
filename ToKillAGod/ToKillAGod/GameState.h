@@ -208,7 +208,7 @@ void GameState::update(const float dt)
     //    }
     //}
 	movePlayer(dt);
-	if (m_player->getPosition().y <= 1024)
+	if (m_player->getPosition().y <= 1390)
 	{
 		sprite.setPosition((m_player->getPosition().x / 1.25) - 1000, sprite.getPosition().y);
 	}
@@ -222,7 +222,7 @@ void GameState::draw(sf::RenderWindow &window)
 {
 	window.draw(sprite);
 	//sf::Mouse::getPosition(window);
-	if (m_player->getPosition().y <= 1024)
+	if (m_player->getPosition().y <= 1390)
 	{
 		sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
 		window.setView(playerView);
@@ -254,8 +254,8 @@ void GameState::movePlayer(float dt)
 	else
 	{
 		m_player->getVSpeed() = 0;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			m_player->getVSpeed() = -25.0f;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			m_player->getVSpeed() = -27.5f;
 	}
 	m_player->move(0, -1);
 
@@ -323,7 +323,7 @@ GameObject* GameState::getPlayerCollision()
 						break;
 					}
 					case Tile::bouncer: {
-						m_player->getVSpeed() = -25.0f;
+						m_player->getVSpeed() = -35.0f;
 						return nullptr;
 						break;
 					}
