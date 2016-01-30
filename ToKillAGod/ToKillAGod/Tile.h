@@ -14,8 +14,6 @@ public:
 	{
 		normal,
 		danger,
-		heal,
-		background,
 		bouncer,
 		objective
 	};

@@ -28,6 +28,8 @@ private:
 	bool finished = false;
 	Player* m_player;
     int m_level;
+	sf::Sprite sprite;
+	sf::Texture texture;
 };
 
 void GameState::addTile(Tile::TileType type, float x, float y)
@@ -41,11 +43,14 @@ GameState::GameState(StateManager* manager, int level)
 {
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/danger.png", "danger");
-	m_RM->loadTexture("textures/tile_cyan.png", "heal");
-	m_RM->loadTexture("textures/tile_red.png", "background");
+	//m_RM->loadTexture("textures/tile_cyan.png", "heal");
+	//m_RM->loadTexture("textures/background.png", "background");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
-
+	texture.loadFromFile("textures/background.png");
+	//sprite.setPosition(m_player->getPosition());
+	sprite.setTexture(texture);
+	sprite.setScale(4, 3);
     switch (level)
     {
 
@@ -184,6 +189,7 @@ void GameState::generate()
 void GameState::update(const float dt)
 {
 	movePlayer(dt);
+	sprite.setPosition((m_player->getPosition().x/2)-1000,sprite.getPosition().y);
 	if (finished)
 	{
 		levelFinish();
@@ -192,15 +198,20 @@ void GameState::update(const float dt)
 
 void GameState::draw(sf::RenderWindow &window)
 {
+	window.draw(sprite);
 	//sf::Mouse::getPosition(window);
-	sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
-
-	window.setView(playerView);
+	if (m_player->getPosition().y <= 1024)
+	{
+		sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
+		window.setView(playerView);
+	}
+	
 
 	for (auto it : m_objects)
 	{
 		it->draw(window);
 	}
+
 }
 
 void GameState::movePlayer(float dt)
@@ -288,14 +299,6 @@ GameObject* GameState::getPlayerCollision()
 						m_player->move(-pos.x + 256, -pos.y+400);
 						m_player->setVelocity(sf::Vector2f());
 						return nullptr;
-						break;
-					}
-					case Tile::heal: {
-						//Heal
-						break;
-					}
-					case Tile::background: {
-						//Do nothing
 						break;
 					}
 					case Tile::bouncer: {
