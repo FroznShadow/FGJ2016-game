@@ -232,10 +232,38 @@ GameObject* GameState::getPlayerCollision()
 				position.y < it->getPosition().y + 128.0f
 				)
 			{
-				if (dynamic_cast<Tile*>(it)->getTileType() == Tile::TileType::objective)
+				Tile::TileType tileType = dynamic_cast<Tile*>(it)->getTileType();
+				switch (tileType)
 				{
-					std::cout << "Level finished\n";
-					levelFinish();
+					case Tile::normal: {
+						//Do nothing
+						break;
+					}
+					case Tile::danger: {
+						//Damage
+						break;
+					}
+					case Tile::heal: {
+						//Heal
+						break;
+					}
+					case Tile::background: {
+						//Do nothing
+						break;
+					}
+					case Tile::bouncer: {
+						//vspeed = -25.0f;
+						break;
+					}
+					case Tile::objective: {
+						std::cout << "Level finished\n";
+						levelFinish();
+						break;
+					}
+					default: {
+						//Something happened
+						break;
+					}
 				}
 				return it;
 			}
