@@ -20,9 +20,11 @@ public:
 private:
 	void addTile(Tile::TileType type, float x, float y);
 	void generate();
+	void levelFinish();
 	GameObject* getPlayerCollision();
 	void movePlayer(float dt);
 	ResourceManager* m_RM;
+	bool objective = false;
 	Player* m_player;
 };
 
@@ -30,6 +32,7 @@ void GameState::addTile(Tile::TileType type, float x, float y)
 {
 	m_objects.push_back(new Tile((x+16) * 128, y * 128, type));
 }
+
 
 GameState::GameState(StateManager* manager)
 	:State(manager)
@@ -53,6 +56,8 @@ GameState::~GameState()
 
 void GameState::generate()
 {
+	std::cout << "asd";
+
 	m_player = new Player(sf::Vector2f(256, 256));
 	m_player->setVelocity(sf::Vector2f(0, 0));
 	m_player->setTexture(*m_RM->getTexture("wizard"));
@@ -77,7 +82,7 @@ void GameState::generate()
 	int totalLength = 0;
 	bool bouncerGap = false;
 	//generate level
-	float levelLength = 200;
+	float levelLength = 50;
 	for (unsigned i = 0; i < levelLength; i++)
 	{
 		if (gapWidth > 0)
@@ -119,21 +124,25 @@ void GameState::generate()
 				heightLength++;
 			}
 		}
-		if (totalLength == levelLength-1)
-		{
-			addTile(Tile::TileType::objective, i-1, levelHeight-1);
+		if (totalLength == levelLength-1 && !objective)
+		{			
+			if (objective == false) {
+				objective = true;
+				std::cout << objective << std::endl;
+				totalLength++;
+				addTile(Tile::TileType::objective, i - 1, levelHeight - 1);
+				return;
+			}
 		}
-		totalLength++;
+		else {
+			totalLength++;
+		}
+
 	}
 }
 
 void GameState::update(const float dt)
 {
-	for (auto it : m_objects)
-	{
-		//it->setPosition(sf::Vector2f(it->getPosition().x - dt * 50, it->getPosition().y));
-	}
-
 	movePlayer(dt);
 }
 
@@ -164,13 +173,13 @@ void GameState::movePlayer(float dt)
 	m_player->move(0, 1);
 	if (!getPlayerCollision()) //fall or move back
 	{
-		vspeed += dt * 3;
+		vspeed += 15 * dt;
 	}
 	else
 	{
 		vspeed = 0;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			vspeed = -1.5f;
+			vspeed = -15.0f;
 	}
 	m_player->move(0, -1);
 
@@ -212,7 +221,7 @@ void GameState::movePlayer(float dt)
 GameObject* GameState::getPlayerCollision()
 {
 	for (GameObject* it : m_objects)
-	{
+	{		
 		if (it != m_player && it->getType() == TYPE::TILE)
 		{
 			sf::Vector2f position = m_player->getPosition();
@@ -223,11 +232,50 @@ GameObject* GameState::getPlayerCollision()
 				position.y < it->getPosition().y + 128.0f
 				)
 			{
+				Tile::TileType tileType = dynamic_cast<Tile*>(it)->getTileType();
+				switch (tileType)
+				{
+					case Tile::normal: {
+						//Do nothing
+						break;
+					}
+					case Tile::danger: {
+						//Damage
+						break;
+					}
+					case Tile::heal: {
+						//Heal
+						break;
+					}
+					case Tile::background: {
+						//Do nothing
+						break;
+					}
+					case Tile::bouncer: {
+						//vspeed = -25.0f;
+						break;
+					}
+					case Tile::objective: {
+						std::cout << "Level finished\n";
+						levelFinish();
+						break;
+					}
+					default: {
+						//Something happened
+						break;
+					}
+				}
 				return it;
 			}
 		}
+
 	}
 	return nullptr;
+}
+void GameState::levelFinish()
+{
+
+	m_manager->setState(new MenuState(m_manager));
 }
 
 #endif

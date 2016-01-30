@@ -49,8 +49,10 @@ MenuState::MenuState(StateManager* manager)
 
 MenuState::~MenuState()
 {
-	//do this at the next state
-	//ResourceManager::getInstance()->clearAll();
+    m_RM->deleteTexture("level0");
+    m_RM->deleteTexture("level0_p");
+    m_RM->deleteTexture("level1");
+    m_RM->deleteTexture("level1_p");
 }
 
 void MenuState::update(const float dt)

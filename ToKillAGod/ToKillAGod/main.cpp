@@ -17,6 +17,7 @@ int main()
 	ResourceManager* RM = ResourceManager::getInstance();
 	StateManager SM;
 	SM.setState(new MenuState(&SM));
+	window.setFramerateLimit(60);
 
 	while (window.isOpen())
 	{

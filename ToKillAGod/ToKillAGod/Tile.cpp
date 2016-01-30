@@ -27,6 +27,7 @@ Tile::Tile(float x, float y, TileType type)
 		break;
 	case TileType::objective:
 		setTexture(*RM->getTexture("objective"));
+
 		break;
 	default:
 		// Set texture to normal tile just in case
