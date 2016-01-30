@@ -36,6 +36,11 @@ private:
 void GameState::addTile(Tile::TileType type, float x, float y)
 {
 	m_objects.push_back(new Tile((x+16) * 128, y * 128, type));
+	
+	//if (type == Tile::TileType::danger) {
+	//	m_objects[m_objects.size()-1]->getSprite().setOrigin(64, 64);
+	//	//m_objects[m_objects.size() - 1]->getSprite().setPosition();
+	//}
 }
 
 
@@ -190,17 +195,18 @@ void GameState::generate()
 
 void GameState::update(const float dt)
 {
-    for (auto it : m_objects)
-    {
-        if (it->getType() == TYPE::TILE)
-        {
-            Tile* tile = static_cast<Tile*>(it);
-            if (tile->getTileType() == Tile::TileType::danger)
-            {
-                tile->setRotation(tile->getRotation() + dt * 100);
-            }
-        }
-    }
+    //for (auto it : m_objects)
+    //{
+    //    if (it->getType() == TYPE::TILE)
+    //    {
+    //        Tile* tile = static_cast<Tile*>(it);
+    //        if (tile->getTileType() == Tile::TileType::danger)
+    //        {
+				//tile->updateOrigin();
+    //            tile->setRotation(tile->getRotation() + dt * 100);
+    //        }
+    //    }
+    //}
 	movePlayer(dt);
 	if (m_player->getPosition().y <= 1024)
 	{

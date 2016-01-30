@@ -30,6 +30,8 @@ public:
 	float			getRotation() const;
 	sf::FloatRect	getBoundingBox() const;
 	TYPE			getType() const;
+	sf::Sprite&		getSprite() { return m_sprite; }
+
 
 	//Other values//
 	void rotation(float value);
