@@ -22,6 +22,10 @@ public:
 	void update(float dt);
 	void draw(sf::RenderWindow & window);
     void levelComplete(LevelFlag flag);
+    bool isLevelCompleted(int levelNum)
+    {
+        return ((m_levelFlags >> levelNum) & 1) == 1;
+    }
 private:
 	State* m_currentState;
 

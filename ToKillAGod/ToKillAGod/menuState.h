@@ -31,6 +31,7 @@ MenuState::MenuState(StateManager* manager)
 	m_RM->loadTexture("textures/Level0_pressed.bmp", "level0_p");
 	m_RM->loadTexture("textures/Level1.bmp", "level1");
 	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
+    m_RM->loadTexture("textures/tile_objective.png", "finished");
 
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
@@ -76,7 +77,6 @@ void MenuState::update(const float dt)
 				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 				{
 					std::cout << "GAME ON!\n";
-					m_RM->clearAll();
 					m_manager->setState(new GameState(m_manager));
 					return;
 				}
@@ -114,12 +114,28 @@ void MenuState::update(const float dt)
 void MenuState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
+    sf::Sprite done(*m_RM->getTexture("finished"));
 
+    for (auto it : m_objects)
+    {
+        it->draw(window);
+    }
 
-	for (auto it : m_objects)
-	{
-		it->draw(window);
-	}
+    if (m_manager->isLevelCompleted(0))
+    {
+        done.setPosition(level0->getPosition());
+        window.draw(done);
+    }
+    if (m_manager->isLevelCompleted(1))
+    {
+        done.setPosition(level1->getPosition());
+        window.draw(done);
+    }
+    if (m_manager->isLevelCompleted(2))
+    {
+        done.setPosition(level2->getPosition());
+        window.draw(done);
+    }
 }
 
 #endif

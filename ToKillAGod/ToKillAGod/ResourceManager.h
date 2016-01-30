@@ -55,10 +55,11 @@ public:
         {
             delete it->second;
             m_map.erase(it);
+            std::cout << "Texture" << name << " deleted\n";
         }
         else
         {
-            std::cout << "Texture not found\n";
+            std::cout << "Texture" << name << " not deleted\n";
         }
     }
 	void clearAll()
