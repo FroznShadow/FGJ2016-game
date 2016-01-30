@@ -72,8 +72,8 @@ void GameState::generate()
 	m_objects.push_back(m_player);
 
 
-	addTile(Tile::TileType::normal, 1, 1);
-	addTile(Tile::TileType::normal, 2, 1);
+	addTile(Tile::TileType::bouncer, 1, 1);
+	addTile(Tile::TileType::bouncer, 2, 1);
 
 	//generate starting platform
 	for (unsigned j = 0; j < 16; j++)
@@ -174,24 +174,24 @@ void GameState::draw(sf::RenderWindow &window)
 void GameState::movePlayer(float dt)
 {
 	sf::Vector2f prev = m_player->getPosition();
-	float hspeed = 0.0f;
-	float vspeed = m_player->getVelocity().y;
+	m_player->getHSpeed() = 0.0f;
+	m_player->getVSpeed() = m_player->getVelocity().y;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		hspeed += 1000*dt;
+		m_player->getHSpeed() += 1000 * dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		hspeed -= 1000*dt;
+		m_player->getHSpeed() -= 1000 * dt;
 	
 	//check if can fall
 	m_player->move(0, 1);
 	if (!getPlayerCollision()) //fall or move back
 	{
-		vspeed += 15 * dt;
+		m_player->getVSpeed() += 15 * dt;
 	}
 	else
 	{
-		vspeed = 0;
+		m_player->getVSpeed() = 0;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-			vspeed = -15.0f;
+			m_player->getVSpeed() = -15.0f;
 	}
 	m_player->move(0, -1);
 
@@ -199,28 +199,28 @@ void GameState::movePlayer(float dt)
 	GameObject* other = nullptr;
 
 	//x
-	m_player->move(hspeed, 0);
+	m_player->move(m_player->getHSpeed(), 0);
 	other = getPlayerCollision();
 	if (other)
 	{
 		//move next to the wall
 		float dx = other->getPosition().x - m_player->getPosition().x; //gap between the player and the wall
-		m_player->move(((dx > 0) ? ( - m_player->getBoundingBox().width ) : 128.0f) + dx, 0);
-		hspeed = 0;
+		m_player->move(((dx > 0) ? ( - m_player->getBoundingBox().width ) : 128.0) + dx, 0);
+		m_player->getHSpeed() = 0;
 	}
-	m_player->move(0, vspeed);
+	m_player->move(0, m_player->getVSpeed());
 	other = getPlayerCollision();
 	if (other)
 	{
 		//move next to the wall
 		float dy = other->getPosition().y - m_player->getPosition().y; //gap between the player and the wall
 		m_player->move(0, dy + ((dy > 0) ? -m_player->getBoundingBox().height : 128.0f));
-		vspeed = 0;
+		m_player->getVSpeed() = 0;
 	}
 
-	m_player->setVelocity(sf::Vector2f(hspeed, vspeed));
+	m_player->setVelocity(sf::Vector2f(m_player->getHSpeed(), m_player->getVSpeed()));
 
-	if (m_player->getPosition().y > 10000)
+	if (m_player->getPosition().y > 1000)
 	{
 		//m_player->destroy();
 		std::cout << "haha kuolit!";
@@ -264,7 +264,8 @@ GameObject* GameState::getPlayerCollision()
 						break;
 					}
 					case Tile::bouncer: {
-						//vspeed = -25.0f;
+						m_player->getVSpeed() = -25.0f;
+						return nullptr;
 						break;
 					}
 					case Tile::objective: {

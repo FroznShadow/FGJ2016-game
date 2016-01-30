@@ -14,12 +14,17 @@ public:
 	void move(float dx, float dy);
 	sf::Vector2f getVelocity() { return m_velocity; }
 	void setVelocity(sf::Vector2f velocity) { m_velocity = velocity; }
+
+	float& getHSpeed() { return m_hSpeed; }
+	float& getVSpeed() { return m_vSpeed; }
 private:
 	int m_hitPoints;
 	int m_life;
 	sf::Vector2f m_position;
 	float m_maxSpeed;
 	sf::Vector2f m_velocity;
+	float m_hSpeed;
+	float m_vSpeed;
 
 };
 
