@@ -17,16 +17,19 @@ private:
 	int m_hitpoints;
 	float m_x;
 	float m_y;
-	bool m_turn;
 	float m_z;
+	sf::Texture m_tex;
 };
 
-ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x), m_turn(false) {
+ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x) {
 	ResourceManager* RM = ResourceManager::getInstance();
 	setPosition(sf::Vector2f(m_x, m_y));
 
-	setTexture(*RM->getTexture("BigBadBoss"));
-	m_sprite.setOrigin(64, 64);
+	m_tex = *RM->getTexture("BigBadBoss");
+	m_tex.setSmooth(true);
+	setTexture(m_tex);
+	m_sprite.setOrigin(281, 281);
+	m_sprite.setScale(0.75, 0.75);
 }
 
 ÜberEpicBoss::~ÜberEpicBoss()
@@ -38,9 +41,9 @@ void ÜberEpicBoss::draw(sf::RenderWindow& window) {
 }
 
 void ÜberEpicBoss::update(const float deltaTime) {
-	m_z += 75 * deltaTime;
+	m_z += 15 * deltaTime;
 	m_x = (500 * sinf(m_z * 2 * 3.14159265359f / 180))/2;
-	m_y = 50 * sinf(m_z * 3 * 3.14159265359f / 180) -412;
+	m_y = 50 * sinf(m_z * 3 * 3.14159265359f / 180) - 525;
 
 	setPosition(sf::Vector2f(m_x, m_y));
 }

@@ -244,7 +244,7 @@ void BossFightScene::generate()
 void BossFightScene::draw(sf::RenderWindow& window)
 {
     sf::Vector2f aveRage = (m_player_0->getPosition() + m_player_1->getPosition() + m_player_2->getPosition()) / 3.0f;
-    m_gameView.setCenter(aveRage);
+    m_gameView.setCenter(aveRage+sf::Vector2f(0,-250));
     window.setView(m_gameView);
 
     window.draw(m_circle_0);
