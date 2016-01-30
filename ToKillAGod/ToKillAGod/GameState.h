@@ -280,7 +280,7 @@ void GameState::movePlayer(float dt)
 		//m_player->destroy();
 		std::cout << "haha kuolit!";
 		sf::Vector2f pos = m_player->getPosition();
-		m_player->move(-pos.x + 256, -pos.y);
+		m_player->move(-pos.x + 256, -pos.y+400);
 		m_player->setVelocity(sf::Vector2f());
 	}
 }
