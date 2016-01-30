@@ -21,7 +21,7 @@ private:
 	void addTile(Tile::TileType type, float x, float y);
 	void generate();
 	GameObject* getPlayerCollision();
-	void movePlayer();
+	void movePlayer(float dt);
 	ResourceManager* m_RM;
 	Player* m_player;
 };
@@ -43,8 +43,6 @@ GameState::GameState(StateManager* manager)
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
 	m_RM->loadTexture("textures/player.png", "wizard");
 
-	//m_player = new Player();
-
 	generate();
 }
 
@@ -55,6 +53,15 @@ GameState::~GameState()
 
 void GameState::generate()
 {
+	m_player = new Player(sf::Vector2f(256, 256));
+	m_player->setVelocity(sf::Vector2f(0, 0));
+	m_player->setTexture(*m_RM->getTexture("wizard"));
+	m_objects.push_back(m_player);
+
+
+	addTile(Tile::TileType::normal, 1, 1);
+	addTile(Tile::TileType::normal, 2, 1);
+
 	//generate starting platform
 	for (unsigned j = 0; j < 16; j++)
 	{
@@ -127,13 +134,13 @@ void GameState::update(const float dt)
 		//it->setPosition(sf::Vector2f(it->getPosition().x - dt * 50, it->getPosition().y));
 	}
 
-	movePlayer();
+	movePlayer(dt);
 }
 
 void GameState::draw(sf::RenderWindow &window)
 {
 	//sf::Mouse::getPosition(window);
-	sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize());
+	sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
 
 	window.setView(playerView);
 
@@ -143,95 +150,63 @@ void GameState::draw(sf::RenderWindow &window)
 	}
 }
 
-void GameState::movePlayer()
+void GameState::movePlayer(float dt)
 {
-	float hspeed = 0, vspeed = 0;
-	sf::Vector2f pos = m_player->getPosition();
 	sf::Vector2f prev = m_player->getPosition();
+	float hspeed = 0.0f;
+	float vspeed = m_player->getVelocity().y;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		hspeed += 5;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-	{
-		m_player->setPosition(sf::Vector2f(m_player->getPosition().x + 1, m_player->getPosition().y));
-		if (getPlayerCollision() == nullptr)
-		{
-			vspeed = -10;
-		}
-		m_player->setPosition(prev);
-	}
+		hspeed += 1000*dt;
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		hspeed -= 5;
-
-	vspeed += m_player->getVelocity().x;
-
-	//deprecated useless trigonometry. please, don't look.
-	/*if (hspeed == 0 && vspeed == 0)
+		hspeed -= 1000*dt;
+	
+	//check if can fall
+	m_player->move(0, 1);
+	if (!getPlayerCollision()) //fall or move back
 	{
-		speed = 0;
+		vspeed += dt * 3;
 	}
 	else
 	{
-		speed = sqrt(vspeed*vspeed + hspeed*hspeed);
-	}*/
+		vspeed = 0;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			vspeed = -1.5f;
+	}
+	m_player->move(0, -1);
 
-	//direction = atan2f(vspeed, hspeed);
+	//try to move
+	GameObject* other = nullptr;
 
-	//liikkuminen x-akselilla
-	pos.x += hspeed;
-	m_player->setPosition(pos);
-	GameObject* other = getPlayerCollision();
-	if (other != nullptr)
+	//x
+	m_player->move(hspeed, 0);
+	other = getPlayerCollision();
+	if (other)
 	{
-		//jos pelaaja törmää, siirretään pelaajaa seinän viereen
-		if (pos.x > other->getPosition().x)
-		{
-			m_player->setPosition(sf::Vector2f(other->getPosition().x + 128.0f, pos.y));
-		}
-		else
-		{
-			m_player->setPosition(sf::Vector2f(other->getPosition().x - 128.0f, pos.y));
-		}
+		//move next to the wall
+		float dx = other->getPosition().x - m_player->getPosition().x; //gap between the player and the wall
+		m_player->move(((dx > 0) ? ( - m_player->getBoundingBox().width ) : 128.0) + dx, 0);
 		hspeed = 0;
 	}
-	//liikkuminen y-akselilla
-	pos = m_player->getPosition();
-	prev = pos;
-	pos.y += m_player->getVelocity().y;
-	m_player->setPosition(pos);
+	m_player->move(0, vspeed);
 	other = getPlayerCollision();
-	if (other != nullptr)
+	if (other)
 	{
-		if (pos.y > other->getPosition().y)
-		{
-			m_player->setPosition(sf::Vector2f(pos.x, other->getPosition().y + 128.0f));
-		}
-		else
-		{
-			m_player->setPosition(sf::Vector2f(pos.x, other->getPosition().y - 128.0f));
-		}
+		//move next to the wall
+		float dy = other->getPosition().y - m_player->getPosition().y; //gap between the player and the wall
+		m_player->move(0, dy + ((dy > 0) ? -m_player->getBoundingBox().height : 128.0f));
 		vspeed = 0;
 	}
-	else
-	{
-		prev = m_player->getPosition();
-		if (getPlayerCollision() != nullptr)
-		{
-			m_player->setPosition(prev);
-		}
-		else
-		{
-			vspeed += 0.5;
-			if (vspeed > 100)
-				vspeed = 100;
-		}
-	}
+
+	m_player->setVelocity(sf::Vector2f(hspeed, vspeed));
 
 	if (m_player->getPosition().y > 10000)
 	{
-		m_player->destroy();
+		//m_player->destroy();
+		std::cout << "haha kuolit!";
+		sf::Vector2f pos = m_player->getPosition();
+		m_player->move(-pos.x + 256, -pos.y);
+		m_player->setVelocity(sf::Vector2f());
 	}
-
-	m_player->setVelocity(sf::Vector2f(vspeed, hspeed));
 }
 
 GameObject* GameState::getPlayerCollision()

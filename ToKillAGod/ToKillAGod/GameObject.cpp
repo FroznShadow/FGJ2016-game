@@ -80,6 +80,15 @@ sf::FloatRect GameObject::getBoundingBox() const
 {
 	return m_sprite.getGlobalBounds();
 }
+TYPE GameObject::getType()const
+{
+	return m_type;
+}
+
+
+
+//??
+
 
 void GameObject::updateOrigin()
 {

@@ -20,10 +20,17 @@ void Player::draw(sf::RenderWindow& window)
 
 void Player::update(float deltaTime)
 {
-	m_position += sf::Vector2f(m_velocity.x + deltaTime * 800, m_velocity.y);
-	setPosition(m_position);
+	//m_position += sf::Vector2f(m_velocity.x + deltaTime * 800, m_velocity.y);
+	//setPosition(m_position);
 }
 void Player::jump(float jumpSpeed)
 {
 	m_velocity.y += jumpSpeed;
+}
+
+void Player::move(float dx, float dy)
+{
+	m_position.x += dx;
+	m_position.y += dy;
+	setPosition(m_position);
 }

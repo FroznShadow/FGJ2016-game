@@ -11,8 +11,9 @@ public:
 	void draw(sf::RenderWindow& window)override;
 	void update(float deltaTime)override;
 	void jump(float jumpSpeed);
-
+	void move(float dx, float dy);
 	sf::Vector2f getVelocity() { return m_velocity; }
+	void setVelocity(sf::Vector2f velocity) { m_velocity = velocity; }
 private:
 	int m_hitPoints;
 	int m_life;
