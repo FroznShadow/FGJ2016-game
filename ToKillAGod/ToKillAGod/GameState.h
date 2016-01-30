@@ -202,7 +202,10 @@ void GameState::update(const float dt)
         }
     }
 	movePlayer(dt);
-	sprite.setPosition((m_player->getPosition().x/1.25)-1000,sprite.getPosition().y);
+	if (m_player->getPosition().y <= 1024)
+	{
+		sprite.setPosition((m_player->getPosition().x / 1.25) - 1000, sprite.getPosition().y);
+	}
 	if (finished)
 	{
 		levelFinish();
