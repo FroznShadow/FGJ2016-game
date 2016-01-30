@@ -29,6 +29,7 @@ bool StateManager::setState(State* state) {
 	if (m_currentState == state) {
 		return false;
 	}
+	delete m_currentState;
 	m_currentState = state;
 	return true;
 }

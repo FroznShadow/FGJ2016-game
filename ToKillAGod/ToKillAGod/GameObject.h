@@ -4,9 +4,11 @@
 #include "SFML\Graphics.hpp"
 enum TYPE
 {
+
 	TILE,
 	PLAYER,
-	ENEMY
+	ENEMY,
+	OBJECTIVE,
 };
 class GameObject
 {

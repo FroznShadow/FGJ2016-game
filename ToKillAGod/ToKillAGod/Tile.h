@@ -26,7 +26,7 @@ public:
 	void draw(sf::RenderWindow &window)override{ GameObject::draw(window); }
 	void update(float dt)override{ GameObject::update(dt); }
 
-	TileType getType(){ return m_tileType; }
+	TileType getTileType(){ return m_tileType; }
 
 private:
 	TileType m_tileType;
