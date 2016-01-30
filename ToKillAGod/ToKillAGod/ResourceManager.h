@@ -32,6 +32,7 @@ public:
 			else
 			{
 				std::cout << "unable to load texture " << path << " \n";
+                return nullptr;
 			}
 		}
 	}

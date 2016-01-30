@@ -14,7 +14,7 @@ public:
 	MenuState(StateManager* manager);
 	~MenuState();
 	void draw(sf::RenderWindow &window)override;
-	void update(float dt)override;
+    void update(const float dt)override;
 private:
 	float m_totalTime = 0;
 	ResourceManager* m_RM;
@@ -59,8 +59,8 @@ MenuState::~MenuState()
 void MenuState::update(const float dt)
 {
 	m_totalTime += dt;
-	float pi = 3.1415926535;
-	float range = 128 * sqrt(2);
+	float pi = 3.1415926535f;
+	float range = 128.f * sqrt(2);
 	float centerX = 512 - 128;//= 320 - 128;
 	float centerY = 512 - 128;//= 240 - 128;
 	level2->setPosition(sf::Vector2f((cos(m_totalTime + 4 * pi / 3)) * range + centerX, (sin(m_totalTime + 4 * pi / 3)) * range + centerY));

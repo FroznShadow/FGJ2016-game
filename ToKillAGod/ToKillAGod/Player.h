@@ -9,7 +9,7 @@ public:
 	Player(sf::Vector2f position);
 	~Player();
 	void draw(sf::RenderWindow& window)override;
-	void update(float deltaTime)override;
+    void update(const float deltaTime)override;
 	void jump(float jumpSpeed);
 	void move(float dx, float dy);
 	sf::Vector2f getVelocity() { return m_velocity; }

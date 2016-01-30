@@ -16,7 +16,7 @@ public:
 	GameState(StateManager* manager);
 	~GameState();
 	void draw(sf::RenderWindow &window)override;
-	void update(float dt)override;
+    void update(const float dt)override;
 private:
 	void addTile(Tile::TileType type, float x, float y);
 	void generate();
@@ -193,7 +193,7 @@ void GameState::movePlayer(float dt)
 	{
 		//move next to the wall
 		float dx = other->getPosition().x - m_player->getPosition().x; //gap between the player and the wall
-		m_player->move(((dx > 0) ? ( - m_player->getBoundingBox().width ) : 128.0) + dx, 0);
+		m_player->move(((dx > 0) ? ( - m_player->getBoundingBox().width ) : 128.0f) + dx, 0);
 		hspeed = 0;
 	}
 	m_player->move(0, vspeed);
