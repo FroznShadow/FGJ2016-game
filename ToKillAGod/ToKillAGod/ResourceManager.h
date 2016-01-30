@@ -61,10 +61,9 @@ public:
             delete it->second;
 
             m_map.erase(name);
-        }
-
             std::cout << "Texture" << name << " deleted\n";
         }
+
         else
         {
             std::cout << "Texture" << name << " not deleted\n";
