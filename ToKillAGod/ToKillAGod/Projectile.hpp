@@ -63,4 +63,5 @@ void Projectile::update(const float deltaTime) {
     m_y += m_vspeed;
 
     setPosition(sf::Vector2f(m_x-64.0f, m_y-64.0f));
+
 }

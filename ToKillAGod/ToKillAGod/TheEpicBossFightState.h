@@ -29,7 +29,8 @@ private:
     ParticleManager* m_PM;
     bool objective = false;
     bool finished = false;
-
+	float bossShootTimer;
+	float projectileLifeTime;
     Player* m_player_0;
     Player* m_player_1;
     Player* m_player_2;
@@ -132,11 +133,26 @@ void BossFightScene::movePlayers(float dt)
 
 void BossFightScene::update(float dt)
 {
+
+	if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
+	{
+		m_projectiles.erase(m_projectiles.begin(),m_projectiles.end());
+		projectileLifeTime = 0;
+	}
+	else if (m_projectiles.size() > 0){ projectileLifeTime += dt; }
     for (auto it : m_objects)
     {
         it->update(dt);
     }
-
+	for (auto it : m_projectiles)
+	{
+		it->update(dt);
+	}
+	if (m_bossfight&&m_boss->hp() <= 0)
+	{
+		//cue the explosions!!!!!1111!!!
+		std::cout << "your winner.\n";
+	}
     movePlayers(dt);
     if (m_spawnTimer > 0)
     {
@@ -161,7 +177,7 @@ void BossFightScene::update(float dt)
 
             for (int i = 0; i < 200; i++)
             {
-                m_objects.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
+                m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
             std::cout << "particles created\n";
         }
@@ -193,14 +209,14 @@ void BossFightScene::update(float dt)
             m_boss->getPosition().y - m_player_0->getPosition().y,
             m_boss->getPosition().x - m_player_0->getPosition().x),
             1.5f, 180.0f, 0.05f, 0.5f );
-        m_PM->createParticle(m_RM->getTexture("spark"),
+        m_PM->createParticle(m_RM->getTexture("spark_red"),
             m_player_1->getPosition().x, m_player_1->getPosition().y,
             500.0f,
             atan2f(
             m_boss->getPosition().y - m_player_1->getPosition().y,
             m_boss->getPosition().x - m_player_1->getPosition().x),
             1.5f, 180.0f, 0.05f, 0.5f);
-        m_PM->createParticle(m_RM->getTexture("spark"),
+        m_PM->createParticle(m_RM->getTexture("spark_white"),
             m_player_2->getPosition().x, m_player_2->getPosition().y,
             500.0f,
             atan2f(
@@ -208,6 +224,19 @@ void BossFightScene::update(float dt)
             m_boss->getPosition().x - m_player_2->getPosition().x),
             1.5f, 180.0f, 0.05f, 0.5f);
 
+		if (bossShootTimer >= 500 * dt)
+		{
+			for (int i = 0; i < 200; i++)
+			{
+				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
+			}
+			std::cout << "particles created\n";
+			bossShootTimer = 0;
+		}
+		else
+		{
+			bossShootTimer += dt;
+		}
         //stuff
         m_PM->update(dt);
     }
@@ -260,6 +289,8 @@ void BossFightScene::loadResources()
     m_RM->loadTexture("textures/BigBadBoss.png", "BigBadBoss");
     m_RM->loadTexture("textures/projectile.png", "Projectile1");
     m_RM->loadTexture("textures/spark.png", "spark");
+	m_RM->loadTexture("textures/spark_white.png", "spark_white");
+	m_RM->loadTexture("textures/spark_red.png", "spark_red");
 
     m_player_0->setTexture(*m_RM->loadTexture("textures/Player_blue.png", "player0"));
     m_player_1->setTexture(*m_RM->loadTexture("textures/Player_red.png", "player1"));
@@ -324,6 +355,10 @@ void BossFightScene::draw(sf::RenderWindow& window)
     {
         it->draw(window);
     }
+	for (auto it : m_projectiles)
+	{
+		it->draw(window);
+	}
 }
 
 #endif

@@ -15,6 +15,7 @@ public:
 	virtual void draw(sf::RenderWindow &window)=0;
 protected:
 	std::vector<GameObject*> m_objects;
+	std::vector<GameObject*> m_projectiles;
 	StateManager* m_manager;
 };
 
