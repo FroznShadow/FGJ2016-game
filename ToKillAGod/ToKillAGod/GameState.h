@@ -6,7 +6,7 @@
 #include "Button.hpp"
 #include "Tile.h"
 #include "Player.h"
-
+#include <SFML\Audio.hpp>
 class StateManager;
 
 class GameState
@@ -30,6 +30,16 @@ private:
     int m_level;
 	sf::Sprite sprite;
 	sf::Texture texture;
+
+	sf::SoundBuffer fallbuffer;
+	sf::SoundBuffer finishbuffer;
+	sf::SoundBuffer jumpbuffer;
+	sf::SoundBuffer checkpointbuffer;
+
+	sf::Sound fall;
+	sf::Sound finish;
+	sf::Sound jump;
+	sf::Sound checkpoint;
 
     sf::Vector2f m_checkpoint;
 
@@ -81,6 +91,15 @@ GameState::GameState(StateManager* manager, int level)
     }
 
 	generate();
+	fallbuffer.loadFromFile("audio/falldown.wav");
+	jumpbuffer.loadFromFile("audio/jump.wav");
+	finishbuffer.loadFromFile("audio/finishStage.wav");
+	checkpointbuffer.loadFromFile("audio/steponcheckpoint.wav");
+
+	fall.setBuffer(fallbuffer);
+	jump.setBuffer(jumpbuffer);
+	finish.setBuffer(finishbuffer);
+	checkpoint.setBuffer(checkpointbuffer);
 
     m_player->setTexture(*m_RM->getTexture("wizard"));
 }
@@ -208,6 +227,7 @@ void GameState::update(const float dt)
 	}
 	if (finished)
 	{
+		finish.play();
 		levelFinish();
 	}
 }
@@ -254,7 +274,10 @@ void GameState::movePlayer(float dt)
 	{
 		m_player->getVSpeed() = 0;
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			jump.play();
 			m_player->getVSpeed() = -27.5f;
+		}
 	}
 	m_player->move(0, -1);
 
@@ -285,9 +308,10 @@ void GameState::movePlayer(float dt)
 
 	if (m_player->getPosition().y > 8000)
 	{
+		fall.play();
 		sf::Vector2f pos = m_player->getPosition();
 		m_player->move(-pos.x + 256, -pos.y+400);
-        m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
+        	m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
 		m_player->setVelocity(sf::Vector2f());
 	}
 }
@@ -314,14 +338,16 @@ GameObject* GameState::getPlayerCollision()
 						break;
 					}
 					case Tile::danger: {
+						fall.play();
 						sf::Vector2f pos = m_player->getPosition();
 						m_player->move(-pos.x + 256, -pos.y+400);
-                        m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
+                        			m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
 						m_player->setVelocity(sf::Vector2f());
 						return nullptr;
 						break;
 					}
 					case Tile::bouncer: {
+						jump.play();
 						m_player->getVSpeed() = -35.0f;
 						return nullptr;
 						break;
@@ -330,10 +356,12 @@ GameObject* GameState::getPlayerCollision()
 						finished = true;
 						break;
 					}
-                    case Tile::checkpoint: {
-                        m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
-                        dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
-                        break;
+                    			case Tile::checkpoint: {
+
+						checkpoint.play();
+                        			m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
+                        			dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
+                        			break;
                     }
 					default: {
 						//Something happened
