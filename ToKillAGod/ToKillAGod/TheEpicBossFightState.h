@@ -61,9 +61,9 @@ BossFightScene::BossFightScene(StateManager* manager)
     :State(manager)
 {
     //create players
-    m_player_0 = new Player(sf::Vector2f(0.0f, 0.0f));
-    m_player_1 = new Player(sf::Vector2f(0.0f, 0.0f));
-    m_player_2 = new Player(sf::Vector2f(0.0f, 0.0f));
+    m_player_0 = new Player(sf::Vector2f(-32.0f, -600.0f));
+    m_player_1 = new Player(sf::Vector2f(-32.0f, -600.0f));
+    m_player_2 = new Player(sf::Vector2f(-32.0f, -600.0f));
 
     m_objects.push_back(m_player_0);
     m_objects.push_back(m_player_1);
@@ -88,35 +88,35 @@ void BossFightScene::movePlayers(float dt)
 
     if (!player_0_at_destination || m_boss)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            m_player_0->move(-dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)	&& (!m_bossfight || m_player_0->getPosition().x >= -512))
+			m_player_0->move(-dt * move_speed, 0);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && (!m_bossfight || m_player_0->getPosition().x <= 448))
             m_player_0->move(dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)	&& (!m_bossfight || m_player_0->getPosition().y >= -768))
             m_player_0->move(0, -dt * move_speed);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)	&& (!m_bossfight || m_player_0->getPosition().y <= 192))
             m_player_0->move(0, dt * move_speed);
     }
     if (!player_2_at_destination || m_boss)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            m_player_2->move(-dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            m_player_2->move(dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-            m_player_2->move(0, -dt * move_speed);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && (!m_bossfight || m_player_2->getPosition().x >= -512))
+			m_player_2->move(-dt * move_speed, 0);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) && (!m_bossfight || m_player_2->getPosition().x <= 448))
+			m_player_2->move(dt * move_speed, 0);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && (!m_bossfight || m_player_2->getPosition().y >= -768))
+			m_player_2->move(0, -dt * move_speed);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S) && (!m_bossfight || m_player_2->getPosition().y <= 192))
             m_player_2->move(0, dt * move_speed);
     }
     if (!player_1_at_destination || m_boss)
     {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::J))
-            m_player_1->move(-dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::L))
-            m_player_1->move(dt * move_speed, 0);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::I))
-            m_player_1->move(0, -dt * move_speed);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::K))
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && (!m_bossfight || m_player_1->getPosition().x >= -512))
+			m_player_1->move(-dt * move_speed, 0);									 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::L) && (!m_bossfight || m_player_1->getPosition().x <= 448))
+			m_player_1->move(dt * move_speed, 0);									 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::I) && (!m_bossfight || m_player_1->getPosition().y >= -768))
+			m_player_1->move(0, -dt * move_speed);									 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::K) && (!m_bossfight || m_player_1->getPosition().y <= 192))
             m_player_1->move(0, dt * move_speed);
     }
 }
@@ -287,7 +287,7 @@ void BossFightScene::draw(sf::RenderWindow& window)
 		window.setView(m_gameView);
 	}
 	else if (m_gameView.getCenter().y  >= -260) { //Vois parantaa, mutten jaksa
-		m_gameView.setCenter(m_gameView.getCenter() + sf::Vector2f(0, -1));
+		m_gameView.setCenter(0.0f, m_gameView.getCenter().y -1.5f);
 		window.setView(m_gameView);
 	}
 

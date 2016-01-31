@@ -37,11 +37,10 @@ public:
 	void rotation(float value);
 	virtual void draw(sf::RenderWindow& window)=0;
 	virtual void update(const float dt)=0;
-
+	void circleCollision(GameObject* go);
     void updateOrigin();
 
 protected:
-	
 	sf::Sprite m_sprite;
 	sf::Vector2f m_origin;
 	TYPE m_type;

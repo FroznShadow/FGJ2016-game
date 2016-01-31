@@ -29,3 +29,7 @@ void Player::move(float dx, float dy)
 	m_position.y += dy;
 	setPosition(m_position);
 }
+
+void Player::hit(int dmg) {
+	m_hitPoints -= dmg;
+}

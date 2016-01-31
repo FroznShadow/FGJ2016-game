@@ -13,15 +13,16 @@ public:
 	void update(const float deltaTime)override;
 
 	void move(float x, float y);
+	float& hp() { return m_hitpoints; }
 private:
-	int m_hitpoints;
+	float m_hitpoints;
 	float m_x;
 	float m_y;
 	float m_z;
 	sf::Texture m_tex;
 };
 
-ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x) {
+ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x), m_hitpoints(9999999999.9f) {
 	ResourceManager* RM = ResourceManager::getInstance();
 	setPosition(sf::Vector2f(m_x, m_y));
 
