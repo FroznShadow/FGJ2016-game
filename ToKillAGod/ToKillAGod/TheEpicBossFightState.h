@@ -247,11 +247,13 @@ void BossFightScene::update(float dt)
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
 
+            //TODO: add more cool effects when the big bad boss is summoned
+
             for (int i = 0; i < 50; i++)
             {
                 m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
-            std::cout << "particles created\n";
+            std::cout << "projectiles created\n";
         }
     }
     else
@@ -313,6 +315,17 @@ void BossFightScene::update(float dt)
 		}
         //stuff
         m_PM->update(dt);
+
+        //delete deleted objects
+        for (unsigned i = 0; i < m_objects.size(); i++)
+        {
+            if (m_objects[i]->isDestroyed())
+            {
+                delete m_objects[i];
+                m_objects.erase(m_objects.begin() + i);
+                i--;
+            }
+        }
     }
 
     //rotate shields

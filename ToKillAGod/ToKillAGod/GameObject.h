@@ -31,6 +31,7 @@ public:
 	sf::FloatRect	getBoundingBox() const;
 	TYPE			getType() const;
 	sf::Sprite&		getSprite() { return m_sprite; }
+    bool            isDestroyed() { return m_isRemoved; }
 
 
 	//Other values//
@@ -45,6 +46,7 @@ protected:
 	sf::Vector2f m_origin;
 	TYPE m_type;
 	sf::RectangleShape* m_hpBar;
+    bool m_isRemoved;
 };
 
 
