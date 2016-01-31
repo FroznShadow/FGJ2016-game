@@ -34,7 +34,9 @@ private:
 	m_sprite.setScale(0.75, 0.75);
 
 	m_hpBar = new sf::RectangleShape(sf::Vector2f(1000, 50));
-	m_hpBar->setFillColor(sf::Color::Red);
+	m_hpBar->setFillColor(sf::Color::Black);
+	m_hpBar->setOutlineThickness(3.0f);
+	m_hpBar->setOutlineColor(sf::Color::White);
 	m_hpBar->setOrigin(500, 25);
 	m_hpBar->setPosition(0, -760);
 }
@@ -54,6 +56,6 @@ void ÜberEpicBoss::update(const float deltaTime) {
 	m_y = 50 * sinf(m_z * 3 * 3.14159265359f / 180) - 525;
 
 	setPosition(sf::Vector2f(m_x, m_y));
-	m_hitpoints -= deltaTime;
+	m_hitpoints -= deltaTime*10;
 	m_hpBar->setScale(m_hitpoints / m_maxHP, 1); //tämä hoidetaan statessa!!! float& hp()
 }

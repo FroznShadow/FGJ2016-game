@@ -102,7 +102,7 @@ void GameObject::rotation(float value)
 
 void GameObject::destroy()
 {
-	delete this;
+    m_isRemoved = true;
 }
 
 GameObject* GameObject::circleCollision(GameObject* go) {
