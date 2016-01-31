@@ -138,54 +138,21 @@ GameObject* BossFightScene::getPlayerCollisions()
 	{
 
 		
-		if (m_player_0->circleCollision(it) != nullptr)
+		if (m_player_0->circleCollision(it) != nullptr && !m_player_0->isDestroyed())
 		{
-			m_player_0->hit(99);
+			m_player_0->hit(1);
 			std::cout << "player 1 got hit"<< std::endl;
 		}
-		if (m_player_1->circleCollision(it) != nullptr)
+		if (m_player_1->circleCollision(it) != nullptr&& !m_player_1->isDestroyed())
 		{
-			m_player_1->hit(99);
+			m_player_1->hit(1);
 			std::cout << "player 2 got hit" << std::endl;
 		}
-		if (m_player_2->circleCollision(it) != nullptr)
+		if (m_player_2->circleCollision(it) != nullptr&& !m_player_2->isDestroyed())
 		{
-			m_player_2->hit(99);
+			m_player_2->hit(1);
 			std::cout << "player 3 got hit" << std::endl;
 		}
-			/*sf::Vector2f Player_1_position = m_player_0->getPosition();
-			sf::Vector2f Player_2_position = m_player_1->getPosition();
-			sf::Vector2f Player_3_position = m_player_2->getPosition();
-			sf::FloatRect size1 = m_player_0->getBoundingBox();
-			sf::FloatRect size2 = m_player_1->getBoundingBox();
-			sf::FloatRect size3 = m_player_2->getBoundingBox();
-			if (Player_1_position.x + size1.width > it->getPosition().x &&
-				Player_1_position.y + size1.height > it->getPosition().y &&
-				Player_1_position.x < it->getPosition().x + 128.0f &&
-				Player_1_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 1 got hit" << std::endl;
-				m_player_0->hit(1);
-			}
-			else if (Player_2_position.x + size2.width > it->getPosition().x &&
-				Player_2_position.y + size2.height > it->getPosition().y &&
-				Player_2_position.x < it->getPosition().x + 128.0f &&
-				Player_2_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 2 got hit" << std::endl;
-				m_player_1->hit(1);
-			}
-			else if (Player_3_position.x + size3.width > it->getPosition().x &&
-				Player_3_position.y + size3.height > it->getPosition().y &&
-				Player_3_position.x < it->getPosition().x + 128.0f &&
-				Player_3_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 3 got hit" << std::endl;
-				m_player_2->hit(1);
-			}*/
 		}
 
 	return nullptr;

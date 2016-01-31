@@ -18,7 +18,7 @@ void Player::draw(sf::RenderWindow& window)
 		if (m_alpha < 255.0f) {
 			m_hpBar->setFillColor(sf::Color(m_hpBar->getFillColor().r, m_hpBar->getFillColor().g, m_hpBar->getFillColor().b, m_alpha));
 		}
-		m_hpBar->setScale(m_HP / m_maxHP, 50);
+		m_hpBar->setScale(m_HP / m_maxHP, 1);
 		window.draw(*m_hpBar);
 	}
 }
