@@ -353,8 +353,6 @@ void BossFightScene::update(float dt)
 			}
         }
 
-
-
         //stuff
         m_PM->update(dt);
 
