@@ -159,19 +159,19 @@ GameObject* BossFightScene::getPlayerCollisions()
 		GameObject* temp = m_player_0->circleCollision(it);
 		if (temp != nullptr && !m_player_0->isDestroyed()) {
 			fallSound.play();
-			m_player_0->hit(1.0);
+			m_player_0->hit(1.25f);
 			temp->destroy();
 		}
 		temp = m_player_1->circleCollision(it);
 		if (temp != nullptr&& !m_player_1->isDestroyed()) {
 			fallSound.play();
-			m_player_1->hit(1.0);
+			m_player_1->hit(1.25f);
 			temp->destroy();
 		}
 		temp = m_player_2->circleCollision(it);
 		if (temp != nullptr&& !m_player_2->isDestroyed()) {
 			fallSound.play();
-			m_player_2->hit(1.0);
+			m_player_2->hit(1.25f);
 			temp->destroy();
 		}
 	}
@@ -296,21 +296,21 @@ void BossFightScene::update(float dt)
                 atan2f(
                 m_boss->getPosition().y - m_player_0->getPosition().y,
                 m_boss->getPosition().x - m_player_0->getPosition().x),
-                1.5f, 180.0f, 0.05f, 0.5f);
+                1.5f, 180.0f, 0.1f, 0.5f);
 			if (m_player_1->hp() > 0) m_PM->createParticle(m_RM->getTexture("spark_red"),
                 m_player_1->getPosition().x, m_player_1->getPosition().y,
                 500.0f,
                 atan2f(
                 m_boss->getPosition().y - m_player_1->getPosition().y,
                 m_boss->getPosition().x - m_player_1->getPosition().x),
-                1.5f, 180.0f, 0.05f, 0.5f);
+                1.5f, 180.0f, 0.1f, 0.5f);
 			if (m_player_2->hp() > 0) m_PM->createParticle(m_RM->getTexture("spark_white"),
                 m_player_2->getPosition().x, m_player_2->getPosition().y,
                 500.0f,
                 atan2f(
                 m_boss->getPosition().y - m_player_2->getPosition().y,
                 m_boss->getPosition().x - m_player_2->getPosition().x),
-                1.5f, 180.0f, 0.05f, 0.5f);
+                1.5f, 180.0f, 0.1f, 0.5f);
         
 			if (bossShootTimer >= 2.0f && (!m_player_0->isDestroyed() || !m_player_1->isDestroyed() || !m_player_2->isDestroyed())) {
 
@@ -380,6 +380,13 @@ void BossFightScene::update(float dt)
     m_circle_effect_0.rotate(dt * 120);
     m_circle_effect_1.rotate(dt * 120);
     m_circle_effect_2.rotate(dt * 120);
+
+	if (m_player_0->isDestroyed() && m_player_1->isDestroyed() && m_player_2->isDestroyed()) {
+		m_RM->clearAll();
+		m_PM->clearAll();
+		m_manager->setState(new MenuState(m_manager));
+		return;
+	}
 }
 
 void BossFightScene::circleCollisions()
@@ -490,12 +497,6 @@ void BossFightScene::draw(sf::RenderWindow& window)
 	if (m_player_1->hp() > 0) window.draw(m_circle_effect_1);
 	if (m_player_2->hp() > 0) window.draw(m_circle_effect_2);
 
-	if (m_bossfight) {
-		if(m_player_0->hp() > 0) m_player_0->drawHP(window);
-		if(m_player_1->hp() > 0) m_player_1->drawHP(window);
-		if(m_player_2->hp() > 0) m_player_2->drawHP(window);
-	}
-
     for (auto it : m_objects)
     {
 		if (!it->isDestroyed())
@@ -504,6 +505,12 @@ void BossFightScene::draw(sf::RenderWindow& window)
 	for (auto it : m_projectiles)
 	{
 		it->draw(window);
+	}
+
+	if (m_bossfight) {
+		if(m_player_0->hp() > 0) m_player_0->drawHP(window);
+		if(m_player_1->hp() > 0) m_player_1->drawHP(window);
+		if(m_player_2->hp() > 0) m_player_2->drawHP(window);
 	}
 }
 

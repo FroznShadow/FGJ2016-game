@@ -19,6 +19,7 @@ public:
     void update(const float dt)override;
 private:
 	float m_totalTime = 0;
+	bool m_running;
 
 	ResourceManager* m_RM;
     ParticleManager* m_PM;
@@ -27,6 +28,7 @@ private:
 	CircleButton* level1;
 	CircleButton* level2;
     CircleButton* center;
+	CircleButton* close;
 
     sf::Sprite* wizard0;
     sf::Sprite* wizard1;
@@ -35,7 +37,7 @@ private:
 };
 
 MenuState::MenuState(StateManager* manager)
-	:State(manager)
+	:State(manager), m_running(true)
 {
 	m_RM = ResourceManager::getInstance();
     m_PM = ParticleManager::getInstance();
@@ -60,7 +62,11 @@ MenuState::MenuState(StateManager* manager)
     m_RM->loadTexture("textures/spark.png", "spark0");
     m_RM->loadTexture("textures/spark_red.png", "spark1");
     m_RM->loadTexture("textures/spark_white.png", "spark2");
+	m_RM->loadTexture("textures/exitBtn.png", "exit");
+	m_RM->loadTexture("textures/exitBtn_pressed.png", "exit_p");
+
 	menu.openFromFile("audio/menuMusic.wav");
+
 	menu.setLoop(true);
 	menu.play();
 	level0 = new CircleButton(0, 0, 128);
@@ -78,6 +84,10 @@ MenuState::MenuState(StateManager* manager)
     center = new CircleButton(512 - 128, 512 - 128 , 128);
     center->setTexture(*m_RM->getTexture("center"));
     m_objects.push_back(center);
+
+	close = new CircleButton(875, 875, 128);
+	close->setTexture(*m_RM->getTexture("exit"));
+	m_objects.push_back(close);
 
     wizard0 = new sf::Sprite(*m_RM->getTexture("wizard_0"));
     wizard1 = new sf::Sprite(*m_RM->getTexture("wizard_1"));
@@ -239,38 +249,57 @@ void MenuState::update(const float dt)
                 center->setTexture(*m_RM->getTexture("center"));
             }
         }
+		else if (it == close)
+		{
+			if (close->isHovering())
+			{
+				close->setTexture(*m_RM->getTexture("exit_p"));
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
+				{
+					m_running = false;
+				}
+			}
+			else
+			{
+				close->setTexture(*m_RM->getTexture("exit"));
+			}
+		}
 	}
 
     m_PM->update(dt);
 }
 
-void MenuState::draw(sf::RenderWindow &window)
+void MenuState::draw(sf::RenderWindow& window)
 {
-	//sf::Mouse::getPosition(window);
-    m_PM->draw(window);
+	if (m_running) {
+		//sf::Mouse::getPosition(window);
+		m_PM->draw(window);
 
-	window.setView(window.getDefaultView());
+		window.setView(window.getDefaultView());
 
-    for (auto it : m_objects)
-    {
-        it->draw(window);
-    }
+		for (auto it : m_objects)
+		{
+			it->draw(window);
+		}
 
-    if (m_manager->isLevelCompleted(0))
-    {
-        wizard0->setPosition(level0->getPosition());
-        window.draw(*wizard0);
-    }
-    if (m_manager->isLevelCompleted(1))
-    {
-        wizard1->setPosition(level1->getPosition());
-        window.draw(*wizard1);
-    }
-    if (m_manager->isLevelCompleted(2))
-    {
-        wizard2->setPosition(level2->getPosition());
-        window.draw(*wizard2);
-    }
+		if (m_manager->isLevelCompleted(0))
+		{
+			wizard0->setPosition(level0->getPosition());
+			window.draw(*wizard0);
+		}
+		if (m_manager->isLevelCompleted(1))
+		{
+			wizard1->setPosition(level1->getPosition());
+			window.draw(*wizard1);
+		}
+		if (m_manager->isLevelCompleted(2))
+		{
+			wizard2->setPosition(level2->getPosition());
+			window.draw(*wizard2);
+		}
+	} else {
+		window.close();
+	}
 }
 
 #endif

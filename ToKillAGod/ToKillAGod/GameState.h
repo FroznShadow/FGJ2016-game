@@ -229,6 +229,9 @@ void GameState::update(const float dt)
 		finish.play();
 		levelFinish();
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
+		m_manager->setState(new MenuState(m_manager));
+	}
 }
 
 void GameState::draw(sf::RenderWindow &window)
