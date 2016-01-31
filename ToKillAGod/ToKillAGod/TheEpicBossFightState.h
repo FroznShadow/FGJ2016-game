@@ -45,6 +45,7 @@ private:
 	sf::Sound explosionSound;
 	sf::Sound stepOnTriangleSound;
 	sf::Sound fallSound;
+	sf::Music bossMusic;
 
     sf::Sprite m_circle_0;
     sf::Sprite m_circle_1;
@@ -96,6 +97,7 @@ BossFightScene::BossFightScene(StateManager* manager)
 	ExplosionBuffer.loadFromFile("audio/bossExplosion.wav");
 	stepOnTriangleBuffer.loadFromFile("audio/stepontriangle.wav");
 	fallbuffer.loadFromFile("audio/falldown.wav");
+	bossMusic.openFromFile("audio/bossMusic.wav");
 	shootSound.setBuffer(shootbuffer);
 	explosionSound.setBuffer(ExplosionBuffer);
 	stepOnTriangleSound.setBuffer(stepOnTriangleBuffer);
@@ -251,6 +253,8 @@ void BossFightScene::update(float dt)
         if (player_0_at_destination && player_1_at_destination && player_2_at_destination)
         {
             m_bossfight = true;
+			bossMusic.setLoop(true);
+			bossMusic.play();
             m_boss = new ÜberEpicBoss(0.0f, -512.f);
             m_objects.push_back(m_boss);
             m_spawnTimer = 3.1415926535f;
