@@ -50,6 +50,7 @@ private:
 
     bool m_bossfight = false;
     float m_spawnTimer = 0;
+    float m_end = 0;
 
     sf::View m_gameView;
 
@@ -157,15 +158,15 @@ void BossFightScene::update(float dt)
 
 	if (m_player_0->hp() <= 0)
 	{
-		std::cout << "Player 1 ded" << std::endl;
+        m_player_0->destroy();
 	}
 	if (m_player_1->hp() <= 0)
 	{
-		std::cout << "Player 2 ded" << std::endl;
+        m_player_1->destroy();
 	}
 	if (m_player_2->hp() <= 0)
 	{
-		std::cout << "Player 3 ded" << std::endl;
+        m_player_2->destroy();
 	}
 
 	if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
@@ -189,12 +190,14 @@ void BossFightScene::update(float dt)
         {
             m_PM->createParticle(m_RM->getTexture("star"),
                 m_boss->getPosition().x, m_boss->getPosition().y,
-                1000.0f,
+                1500.0f,
                 0.0f,
-                3.0f, 1000.0f, 3.14159265f*2.0f, 2.0f);
+                5.0f, 
+                1500.0f, 360.0f, 4.9f);
         }
         m_bossfight = false;
-        //m_boss->destroy();
+        m_end = 10.0f;
+        m_boss->destroy();
 		std::cout << "your winner.\n";
 	}
     movePlayers(dt);
@@ -207,8 +210,21 @@ void BossFightScene::update(float dt)
         m_circle_effect_1.setScale(scale, scale);
         m_circle_effect_2.setScale(scale, scale);
     }
+    if (m_end > 0)
+    {
+        m_end -= dt;
+        if (m_end < 0)
+        {
+            m_RM->clearAll();
+            m_PM->clearAll();
+            m_manager->levelComplete(LevelFlag::GAME_COMPLETED);
+            m_manager->setState(new MenuState(m_manager));
+            return;
+        }
+    }
+
     //collisions:
-    if (!m_bossfight)
+    if (!m_bossfight && m_end == 0.0f)
     {
         circleCollisions();
         if (player_0_at_destination && player_1_at_destination && player_2_at_destination)
@@ -240,32 +256,35 @@ void BossFightScene::update(float dt)
 		}
 
         //move shields to players
-        m_circle_effect_0.setPosition(m_player_0->getPosition() + sf::Vector2f(32.0f, 32.0f));
-        m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
-        m_circle_effect_2.setPosition(m_player_2->getPosition() + sf::Vector2f(32.0f, 32.0f));
+        if (m_player_0->hp() > 0) m_circle_effect_0.setPosition(m_player_0->getPosition() + sf::Vector2f(32.0f, 32.0f));
+        if (m_player_1->hp() > 0) m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
+        if (m_player_2->hp() > 0) m_circle_effect_2.setPosition(m_player_2->getPosition() + sf::Vector2f(32.0f, 32.0f));
 
-        //shoot particles to boss
-        m_PM->createParticle(m_RM->getTexture("spark"),
-            m_player_0->getPosition().x , m_player_0->getPosition().y,
-            500.0f,
-            atan2f(
-            m_boss->getPosition().y - m_player_0->getPosition().y,
-            m_boss->getPosition().x - m_player_0->getPosition().x),
-            1.5f, 180.0f, 0.05f, 0.5f );
-        m_PM->createParticle(m_RM->getTexture("spark_red"),
-            m_player_1->getPosition().x, m_player_1->getPosition().y,
-            500.0f,
-            atan2f(
-            m_boss->getPosition().y - m_player_1->getPosition().y,
-            m_boss->getPosition().x - m_player_1->getPosition().x),
-            1.5f, 180.0f, 0.05f, 0.5f);
-        m_PM->createParticle(m_RM->getTexture("spark_white"),
-            m_player_2->getPosition().x, m_player_2->getPosition().y,
-            500.0f,
-            atan2f(
-            m_boss->getPosition().y - m_player_2->getPosition().y,
-            m_boss->getPosition().x - m_player_2->getPosition().x),
-            1.5f, 180.0f, 0.05f, 0.5f);
+        if (m_end == 0.0f)
+        {
+            //shoot particles to boss
+            m_PM->createParticle(m_RM->getTexture("spark"),
+                m_player_0->getPosition().x, m_player_0->getPosition().y,
+                500.0f,
+                atan2f(
+                m_boss->getPosition().y - m_player_0->getPosition().y,
+                m_boss->getPosition().x - m_player_0->getPosition().x),
+                1.5f, 180.0f, 0.05f, 0.5f);
+            m_PM->createParticle(m_RM->getTexture("spark_red"),
+                m_player_1->getPosition().x, m_player_1->getPosition().y,
+                500.0f,
+                atan2f(
+                m_boss->getPosition().y - m_player_1->getPosition().y,
+                m_boss->getPosition().x - m_player_1->getPosition().x),
+                1.5f, 180.0f, 0.05f, 0.5f);
+            m_PM->createParticle(m_RM->getTexture("spark_white"),
+                m_player_2->getPosition().x, m_player_2->getPosition().y,
+                500.0f,
+                atan2f(
+                m_boss->getPosition().y - m_player_2->getPosition().y,
+                m_boss->getPosition().x - m_player_2->getPosition().x),
+                1.5f, 180.0f, 0.05f, 0.5f);
+        }
 
 		if (bossShootTimer >= 500 * dt)
 		{
@@ -288,7 +307,8 @@ void BossFightScene::update(float dt)
         {
             if (m_objects[i]->isDestroyed())
             {
-                delete m_objects[i];
+                if (m_objects[i] != m_player_0 && m_objects[i] != m_player_1 && m_objects[i] != m_player_2)
+                    delete m_objects[i];
                 m_objects.erase(m_objects.begin() + i);
                 i--;
             }
@@ -388,7 +408,7 @@ void BossFightScene::generate()
 void BossFightScene::draw(sf::RenderWindow& window)
 {
     m_PM->draw(window);
-	if (!m_bossfight) {
+	if (!m_bossfight && m_end == 0.0f) {
 		sf::Vector2f aveRage = (m_player_0->getPosition() + m_player_1->getPosition() + m_player_2->getPosition()) / 3.0f;
 		m_gameView.setCenter(aveRage);
 		window.setView(m_gameView);
@@ -407,9 +427,9 @@ void BossFightScene::draw(sf::RenderWindow& window)
     window.draw(m_circle_effect_2);
 
 	if (m_bossfight) {
-		m_player_0->drawHP(window);
-		m_player_1->drawHP(window);
-		m_player_2->drawHP(window);
+		if(m_player_0->hp() > 0) m_player_0->drawHP(window);
+		if(m_player_1->hp() > 0) m_player_1->drawHP(window);
+		if(m_player_2->hp() > 0) m_player_2->drawHP(window);
 	}
 
     for (auto it : m_objects)
