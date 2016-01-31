@@ -185,6 +185,16 @@ void BossFightScene::update(float dt)
 	if (m_bossfight&&m_boss->hp() <= 0)
 	{
 		//cue the explosions!!!!!1111!!!
+        for (int i = 0; i < 500; i++)
+        {
+            m_PM->createParticle(m_RM->getTexture("star"),
+                m_boss->getPosition().x, m_boss->getPosition().y,
+                1000.0f,
+                0.0f,
+                3.0f, 1000.0f, 3.14159265f*2.0f, 2.0f);
+        }
+        m_bossfight = false;
+        //m_boss->destroy();
 		std::cout << "your winner.\n";
 	}
     movePlayers(dt);
@@ -335,6 +345,7 @@ void BossFightScene::loadResources()
     m_RM->loadTexture("textures/spark.png", "spark");
 	m_RM->loadTexture("textures/spark_white.png", "spark_white");
 	m_RM->loadTexture("textures/spark_red.png", "spark_red");
+    m_RM->loadTexture("textures/tile_objective.png", "star");
 
     m_player_0->setTexture(*m_RM->loadTexture("textures/Player_blue.png", "player0"));
     m_player_1->setTexture(*m_RM->loadTexture("textures/Player_red.png", "player1"));
