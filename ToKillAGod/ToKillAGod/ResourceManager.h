@@ -26,12 +26,10 @@ public:
 			if (texture->loadFromFile(path))
 			{
 				m_map.insert(std::make_pair(name, texture));
-				std::cout << "loaded texture " << path << " \n";
 				return texture;
 			}
 			else
 			{
-				std::cout << "unable to load texture " << path << " \n";
                 return nullptr;
 			}
 		}
@@ -61,7 +59,6 @@ public:
             delete it->second;
 
             m_map.erase(name);
-            std::cout << "Texture" << name << " deleted\n";
         }
 
         else
@@ -81,7 +78,6 @@ public:
 private:
 	ResourceManager()
 	{
-		std::cout << "loading default texture\n";
 		loadTexture("textures/exitBtn_pressed.png", "default");
 
 	}

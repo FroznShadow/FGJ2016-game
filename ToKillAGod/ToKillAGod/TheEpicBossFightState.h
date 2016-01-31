@@ -9,7 +9,7 @@
 #include "ÜberEpicBoss.hpp"
 #include "Projectile.hpp"
 #include "ParticleManager.h"
-
+#include <SFML\Audio.hpp>
 class StateManager;
 
 class BossFightScene
@@ -35,6 +35,17 @@ private:
     Player* m_player_0;
     Player* m_player_1;
     Player* m_player_2;
+
+	sf::SoundBuffer shootbuffer;
+	sf::SoundBuffer ExplosionBuffer;
+	sf::SoundBuffer stepOnTriangleBuffer;
+	sf::SoundBuffer fallbuffer;
+
+	sf::Sound shootSound;
+	sf::Sound explosionSound;
+	sf::Sound stepOnTriangleSound;
+	sf::Sound fallSound;
+	sf::Music bossMusic;
 
     sf::Sprite m_circle_0;
     sf::Sprite m_circle_1;
@@ -82,7 +93,15 @@ BossFightScene::BossFightScene(StateManager* manager)
 	m_player_2->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
 
     loadResources();
-
+	shootbuffer.loadFromFile("audio/bossShoot.wav");
+	ExplosionBuffer.loadFromFile("audio/bossExplosion.wav");
+	stepOnTriangleBuffer.loadFromFile("audio/stepontriangle.wav");
+	fallbuffer.loadFromFile("audio/falldown.wav");
+	bossMusic.openFromFile("audio/bossMusic.wav");
+	shootSound.setBuffer(shootbuffer);
+	explosionSound.setBuffer(ExplosionBuffer);
+	stepOnTriangleSound.setBuffer(stepOnTriangleBuffer);
+	fallSound.setBuffer(fallbuffer);
     generate();
 }
 
@@ -139,16 +158,19 @@ GameObject* BossFightScene::getPlayerCollisions()
 	{
 		GameObject* temp = m_player_0->circleCollision(it);
 		if (temp != nullptr && !m_player_0->isDestroyed()) {
+			fallSound.play();
 			m_player_0->hit(1.0);
 			temp->destroy();
 		}
 		temp = m_player_1->circleCollision(it);
 		if (temp != nullptr&& !m_player_1->isDestroyed()) {
+			fallSound.play();
 			m_player_1->hit(1.0);
 			temp->destroy();
 		}
 		temp = m_player_2->circleCollision(it);
 		if (temp != nullptr&& !m_player_2->isDestroyed()) {
+			fallSound.play();
 			m_player_2->hit(1.0);
 			temp->destroy();
 		}
@@ -191,6 +213,7 @@ void BossFightScene::update(float dt)
 	if (m_bossfight&&m_boss->hp() <= 0)
 	{
 		//cue the explosions!!!!!1111!!!
+		explosionSound.play();
         for (int i = 0; i < 500; i++)
         {
             m_PM->createParticle(m_RM->getTexture("star"),
@@ -235,13 +258,15 @@ void BossFightScene::update(float dt)
         if (player_0_at_destination && player_1_at_destination && player_2_at_destination)
         {
             m_bossfight = true;
+			bossMusic.setLoop(true);
+			bossMusic.play();
             m_boss = new ÜberEpicBoss(0.0f, -512.f);
             m_objects.push_back(m_boss);
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
 
             //TODO: add more cool effects when the big bad boss is summoned
-
+			shootSound.play();
             for (int i = 0; i < 50; i++)
             {
 				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
@@ -290,13 +315,15 @@ void BossFightScene::update(float dt)
                 m_boss->getPosition().x - m_player_2->getPosition().x),
                 1.5f, 180.0f, 0.05f, 0.5f);
         
-			if (bossShootTimer >= 1.0f && (!m_player_0->isDestroyed() || !m_player_1->isDestroyed() || !m_player_2->isDestroyed())) {
+			if (bossShootTimer >= 2.0f && (!m_player_0->isDestroyed() || !m_player_1->isDestroyed() || !m_player_2->isDestroyed())) {
 
 				//Get random player
 				GameObject* target = m_objects[rand() % 3];
 				while (target->isDestroyed() && target->getType() != TYPE::PLAYER) {
 					target = m_objects[rand() % 3];
 				}
+				
+				shootSound.play();
 
 				switch (rand() % 3)
 				{
@@ -321,11 +348,12 @@ void BossFightScene::update(float dt)
 				}
 				bossShootTimer = 0;
 			}
-			else
-			{
+			else {
 				bossShootTimer += dt;
 			}
-		}
+        }
+
+
 
         //stuff
         m_PM->update(dt);
@@ -375,18 +403,21 @@ void BossFightScene::circleCollisions()
     if (!player_0_at_destination)
         if (dx0*dx0 + dy0*dy0 < range*range)
         {
+			stepOnTriangleSound.play();
             player_0_at_destination = true;
             m_circle_effect_0.setPosition(m_player_0->getPosition() + sf::Vector2f(32.0f, 32.0f));
         }
     if (!player_1_at_destination)
         if (dx1*dx1 + dy1*dy1 < range*range)
         {
+			stepOnTriangleSound.play();
             player_1_at_destination = true;
             m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
         }
     if (!player_2_at_destination)
         if (dx2*dx2 + dy2*dy2 < range*range)
         {
+			stepOnTriangleSound.play();
             player_2_at_destination = true;
             m_circle_effect_2.setPosition(m_player_2->getPosition() + sf::Vector2f(32.0f, 32.0f));
         }

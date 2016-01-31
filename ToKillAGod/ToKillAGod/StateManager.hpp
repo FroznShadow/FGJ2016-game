@@ -63,7 +63,6 @@ void StateManager::update(float deltaTime) {
 void StateManager::levelComplete(LevelFlag flag)
 {
     m_levelFlags |= flag;
-    std::cout << "flags: " << m_levelFlags << "\n";
 
     if (flag == LevelFlag::GAME_COMPLETED)
     {

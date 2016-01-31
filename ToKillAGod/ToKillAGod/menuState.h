@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "ParticleManager.h"
 #include "Button.hpp"
+#include <SFML\Audio.hpp>
 
 class StateManager;
 
@@ -30,6 +31,7 @@ private:
     sf::Sprite* wizard0;
     sf::Sprite* wizard1;
     sf::Sprite* wizard2;
+	sf::Music menu;
 };
 
 MenuState::MenuState(StateManager* manager)
@@ -58,7 +60,9 @@ MenuState::MenuState(StateManager* manager)
     m_RM->loadTexture("textures/spark.png", "spark0");
     m_RM->loadTexture("textures/spark_red.png", "spark1");
     m_RM->loadTexture("textures/spark_white.png", "spark2");
-
+	menu.openFromFile("audio/menuMusic.wav");
+	menu.setLoop(true);
+	menu.play();
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
 	m_objects.push_back(level0);
