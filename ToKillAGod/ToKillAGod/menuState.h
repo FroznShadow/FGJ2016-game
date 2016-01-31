@@ -38,15 +38,15 @@ MenuState::MenuState(StateManager* manager)
 	m_RM = ResourceManager::getInstance();
     m_PM = ParticleManager::getInstance();
 
-	m_RM->loadTexture("textures/Level0.bmp", "level0");
-	m_RM->loadTexture("textures/Level0_pressed.bmp", "level0_p");
-    m_RM->loadTexture("textures/Level0_complete.bmp", "level0_c");
-	m_RM->loadTexture("textures/Level1.bmp", "level1");
-	m_RM->loadTexture("textures/Level1_pressed.bmp", "level1_p");
-    m_RM->loadTexture("textures/Level1_complete.bmp", "level1_c");
-    m_RM->loadTexture("textures/Level2.bmp", "level2");
-    m_RM->loadTexture("textures/Level2_pressed.bmp", "level2_p");
-    m_RM->loadTexture("textures/Level2_complete.bmp", "level2_c");
+	m_RM->loadTexture("textures/Level0.png", "level0");
+	m_RM->loadTexture("textures/Level0_pressed.png", "level0_p");
+    m_RM->loadTexture("textures/Level0_complete.png", "level0_c");
+	m_RM->loadTexture("textures/Level1.png", "level1");
+	m_RM->loadTexture("textures/Level1_pressed.png", "level1_p");
+    m_RM->loadTexture("textures/Level1_complete.png", "level1_c");
+    m_RM->loadTexture("textures/Level2.png", "level2");
+    m_RM->loadTexture("textures/Level2_pressed.png", "level2_p");
+    m_RM->loadTexture("textures/Level2_complete.png", "level2_c");
 
     m_RM->loadTexture("textures/Player_blue.png", "wizard_0");
     m_RM->loadTexture("textures/Player_red.png", "wizard_1");

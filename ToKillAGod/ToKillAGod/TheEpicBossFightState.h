@@ -55,7 +55,7 @@ private:
 
     ÜberEpicBoss* m_boss;
 
-	float m_hpYPosition = 510.0f;
+	float m_hpYPosition = 550.0f;
     
 };
 
@@ -73,8 +73,8 @@ BossFightScene::BossFightScene(StateManager* manager)
     m_objects.push_back(m_player_2);
 
 	m_player_0->initHP(sf::Vector3f(255.0, 255.0, 255.0), 250.0f);
-	m_player_1->initHP(sf::Vector3f(255.0, 0.0, 0.0), 250.0f);
-	m_player_2->initHP(sf::Vector3f(0.0, 0.0, 255.0), 250.0f);
+	m_player_1->initHP(sf::Vector3f(136.0, 0.0, 21.0), 250.0f);
+	m_player_2->initHP(sf::Vector3f(0.0, 255.0, 255.0), 250.0f);
 
 	m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
 	m_player_1->setHPPosition(sf::Vector2f(0, m_hpYPosition));
@@ -140,18 +140,15 @@ GameObject* BossFightScene::getPlayerCollisions()
 		
 		if (m_player_0->circleCollision(it) != nullptr)
 		{
-			m_player_0->hit(99);
-			std::cout << "player 1 got hit"<< std::endl;
+			m_player_0->hit(0.1);
 		}
 		if (m_player_1->circleCollision(it) != nullptr)
 		{
-			m_player_1->hit(99);
-			std::cout << "player 2 got hit" << std::endl;
+			m_player_1->hit(0.1);
 		}
 		if (m_player_2->circleCollision(it) != nullptr)
 		{
-			m_player_2->hit(99);
-			std::cout << "player 3 got hit" << std::endl;
+			m_player_2->hit(0.1);
 		}
 			/*sf::Vector2f Player_1_position = m_player_0->getPosition();
 			sf::Vector2f Player_2_position = m_player_1->getPosition();
@@ -263,11 +260,6 @@ void BossFightScene::update(float dt)
 			m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
 			m_player_1->setHPPosition(sf::Vector2f(0,	 m_hpYPosition));
 			m_player_2->setHPPosition(sf::Vector2f(300,  m_hpYPosition));
-		}
-		if (m_player_0->alpha() < 255.0f) {
-			m_player_0->alpha() += 0.75f;
-			m_player_1->alpha() += 0.75f;
-			m_player_2->alpha() += 0.75f;
 		}
 
         //move shields to players
@@ -424,6 +416,12 @@ void BossFightScene::draw(sf::RenderWindow& window)
     window.draw(m_circle_effect_0);
     window.draw(m_circle_effect_1);
     window.draw(m_circle_effect_2);
+
+	if (m_bossfight) {
+		m_player_0->drawHP(window);
+		m_player_1->drawHP(window);
+		m_player_2->drawHP(window);
+	}
 
     for (auto it : m_objects)
     {

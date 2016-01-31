@@ -14,18 +14,17 @@ public:
 	void move(float dx, float dy);
 	sf::Vector2f getVelocity() { return m_velocity; }
 	void setVelocity(sf::Vector2f velocity) { m_velocity = velocity; }
-	void hit(int dmg);
+	void hit(float dmg);
 	void Player::initHP(sf::Vector3f color, float size);
 	void setHPPosition(sf::Vector2f pos);
 	sf::Vector2f getHPPos() { return m_hpBar->getPosition(); }
 	float& getHSpeed() { return m_hSpeed; }
 	float& getVSpeed() { return m_vSpeed; }
 	float& hp() { return m_HP; }
-	float& alpha() { return m_alpha; }
+	void drawHP(sf::RenderWindow& window);
 private:
 	float m_HP;
 	float m_maxHP;
-	float m_alpha;
 	sf::Vector2f m_position;
 	float m_maxSpeed;
 	sf::Vector2f m_velocity;
