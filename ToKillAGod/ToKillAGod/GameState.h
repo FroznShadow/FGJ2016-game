@@ -38,12 +38,11 @@ private:
 
 void GameState::addTile(Tile::TileType type, float x, float y)
 {
+    if (type == Tile::TileType::danger)
+    {
+        y += 8.0f/128.0f;
+    }
 	m_objects.push_back(new Tile((x+16) * 128, y * 128, type));
-	
-	//if (type == Tile::TileType::danger) {
-	//	m_objects[m_objects.size()-1]->getSprite().setOrigin(64, 64);
-	//	//m_objects[m_objects.size() - 1]->getSprite().setPosition();
-	//}
 }
 
 
@@ -53,12 +52,10 @@ GameState::GameState(StateManager* manager, int level)
 	kakkaa = manager->getModifier();
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/danger.png", "danger");
-	//m_RM->loadTexture("textures/tile_cyan.png", "heal");
 	m_RM->loadTexture("textures/tile_bouncer.png", "checkpoint");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
 	texture.loadFromFile("textures/background.png");
-	//sprite.setPosition(m_player->getPosition());
 	sprite.setTexture(texture);
 	sprite.setScale(4, 3);
     switch (level)
@@ -92,18 +89,13 @@ GameState::~GameState()
 {
 	m_RM->deleteTexture("normal");
 	m_RM->deleteTexture("danger");
-	m_RM->deleteTexture("heal");
-	m_RM->deleteTexture("background");
 	m_RM->deleteTexture("bouncer");
 	m_RM->deleteTexture("objective");
 	m_RM->deleteTexture("wizard");
-	std::cout << "destruction" << std::endl;
 }
 
 void GameState::generate()
 {
-	std::cout << "asd";
-
 	m_player = new Player(sf::Vector2f(256, 256));
 	m_player->setVelocity(sf::Vector2f(0, 0));
 	m_player->setTexture(*m_RM->getTexture("wizard"));
@@ -209,18 +201,6 @@ void GameState::generate()
 
 void GameState::update(const float dt)
 {
-    //for (auto it : m_objects)
-    //{
-    //    if (it->getType() == TYPE::TILE)
-    //    {
-    //        Tile* tile = static_cast<Tile*>(it);
-    //        if (tile->getTileType() == Tile::TileType::danger)
-    //        {
-				//tile->updateOrigin();
-    //            tile->setRotation(tile->getRotation() + dt * 100);
-    //        }
-    //    }
-    //}
 	movePlayer(dt);
 	if (m_player->getPosition().y <= 1390)
 	{
@@ -305,8 +285,6 @@ void GameState::movePlayer(float dt)
 
 	if (m_player->getPosition().y > 8000)
 	{
-		//m_player->destroy();
-		std::cout << "haha kuolit!";
 		sf::Vector2f pos = m_player->getPosition();
 		m_player->move(-pos.x + 256, -pos.y+400);
         m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
@@ -349,12 +327,10 @@ GameObject* GameState::getPlayerCollision()
 						break;
 					}
 					case Tile::objective: {
-						std::cout << "Level finished\n";
 						finished = true;
 						break;
 					}
                     case Tile::checkpoint: {
-                        std::cout << "CP!\n";
                         m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
                         dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
                         break;

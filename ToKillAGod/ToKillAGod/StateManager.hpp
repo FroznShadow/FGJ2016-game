@@ -32,7 +32,7 @@ private:
 	State* m_currentState;
 
     //game progress
-    int m_levelFlags = 7;
+    int m_levelFlags = 0;
     int m_difficulty = 0;
 };
 
@@ -63,7 +63,6 @@ void StateManager::update(float deltaTime) {
 void StateManager::levelComplete(LevelFlag flag)
 {
     m_levelFlags |= flag;
-    std::cout << "flags: " << m_levelFlags << "\n";
 
     if (flag == LevelFlag::GAME_COMPLETED)
     {
