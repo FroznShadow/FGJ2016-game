@@ -341,7 +341,7 @@ GameObject* GameState::getPlayerCollision()
 						fall.play();
 						sf::Vector2f pos = m_player->getPosition();
 						m_player->move(-pos.x + 256, -pos.y+400);
-                        			m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
+                        m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
 						m_player->setVelocity(sf::Vector2f());
 						return nullptr;
 						break;
@@ -356,12 +356,11 @@ GameObject* GameState::getPlayerCollision()
 						finished = true;
 						break;
 					}
-                    			case Tile::checkpoint: {
-
+                    	case Tile::checkpoint: {
 						checkpoint.play();
-                        			m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
-                        			dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
-                        			break;
+                        m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
+                        dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
+                        break;
                     }
 					default: {
 						//Something happened
