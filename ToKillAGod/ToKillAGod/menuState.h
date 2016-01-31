@@ -61,6 +61,7 @@ MenuState::MenuState(StateManager* manager)
     m_RM->loadTexture("textures/spark_red.png", "spark1");
     m_RM->loadTexture("textures/spark_white.png", "spark2");
 	menu.openFromFile("audio/menuMusic.wav");
+	menu.setLoop(true);
 	menu.play();
 	level0 = new CircleButton(0, 0, 128);
 	level0->setTexture(*m_RM->getTexture("level0"));
