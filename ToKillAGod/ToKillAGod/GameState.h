@@ -30,7 +30,10 @@ private:
     int m_level;
 	sf::Sprite sprite;
 	sf::Texture texture;
-	int kakkaa;
+
+    sf::Vector2f m_checkpoint;
+
+	int kakkaa; //ehh... difficulty modifier?
 };
 
 void GameState::addTile(Tile::TileType type, float x, float y)
@@ -51,7 +54,7 @@ GameState::GameState(StateManager* manager, int level)
 	m_RM = ResourceManager::getInstance();
 	m_RM->loadTexture("textures/danger.png", "danger");
 	//m_RM->loadTexture("textures/tile_cyan.png", "heal");
-	//m_RM->loadTexture("textures/background.png", "background");
+	m_RM->loadTexture("textures/tile_bouncer.png", "checkpoint");
 	m_RM->loadTexture("textures/tile_chess.png", "bouncer");
 	m_RM->loadTexture("textures/tile_objective.png", "objective");
 	texture.loadFromFile("textures/background.png");
@@ -128,11 +131,23 @@ void GameState::generate()
 	int gapWidth = 0;    //obstacle width [0...3]
 	int heightLength = 0;//length of the platform that has been generated on the current height
 	int totalLength = 0;
+    int minPlat = 3;
 	bool bouncerGap = false;
 	//generate level
 	float levelLength = 50 + 50 * kakkaa;
-	for (unsigned i = 10; i < levelLength; i++)
+
+    if (kakkaa > 0)
+    {
+        minPlat = 1;
+    }
+
+	for (unsigned i = 10; i < levelLength+1; i++)
 	{
+        if (i % 50 == 0)
+        {
+            addTile((i == levelLength) ? Tile::TileType::objective : Tile::TileType::checkpoint, i, levelHeight-1);
+            continue;
+        }
 		if (gapWidth > 0)
 		{
 			if (gapWidth >(bouncerGap ? 5 : 3))
@@ -147,7 +162,7 @@ void GameState::generate()
 		}
 		else
 		{
-			if (rand() % 4 == 0 && heightLength > 1)
+			if (rand() % 4 == 0 && heightLength > minPlat)
 			{
 				//start a gap
 				bouncerGap = false;
@@ -189,7 +204,6 @@ void GameState::generate()
 		else {
 			totalLength++;
 		}
-
 	}
 }
 
@@ -220,9 +234,14 @@ void GameState::update(const float dt)
 
 void GameState::draw(sf::RenderWindow &window)
 {
+    sf::RectangleShape r;
+    r.setFillColor(sf::Color(255, 255, 255));
+    r.setSize(sf::Vector2f(2048.0f, 3072.0f));
+    r.setPosition(window.getView().getCenter().x - 1024.0f, 1370.0f + 1024.0f);
+    window.draw(r);
 	window.draw(sprite);
 	//sf::Mouse::getPosition(window);
-	if (m_player->getPosition().y <= 1390)
+	if (m_player->getPosition().y <= 4000)
 	{
 		sf::View playerView(m_player->getPosition(), (sf::Vector2f)window.getSize()*2.0f);
 		window.setView(playerView);
@@ -284,12 +303,13 @@ void GameState::movePlayer(float dt)
 
 	m_player->setVelocity(sf::Vector2f(m_player->getHSpeed(), m_player->getVSpeed()));
 
-	if (m_player->getPosition().y > 5000)
+	if (m_player->getPosition().y > 8000)
 	{
 		//m_player->destroy();
 		std::cout << "haha kuolit!";
 		sf::Vector2f pos = m_player->getPosition();
 		m_player->move(-pos.x + 256, -pos.y+400);
+        m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
 		m_player->setVelocity(sf::Vector2f());
 	}
 }
@@ -318,6 +338,7 @@ GameObject* GameState::getPlayerCollision()
 					case Tile::danger: {
 						sf::Vector2f pos = m_player->getPosition();
 						m_player->move(-pos.x + 256, -pos.y+400);
+                        m_player->move(m_checkpoint.x - 256, m_checkpoint.y - 400);
 						m_player->setVelocity(sf::Vector2f());
 						return nullptr;
 						break;
@@ -332,6 +353,12 @@ GameObject* GameState::getPlayerCollision()
 						finished = true;
 						break;
 					}
+                    case Tile::checkpoint: {
+                        std::cout << "CP!\n";
+                        m_checkpoint = it->getPosition() - sf::Vector2f(32.0f, 128.0f);
+                        dynamic_cast<Tile*>(it)->setTileType(Tile::TileType::normal);
+                        break;
+                    }
 					default: {
 						//Something happened
 						break;

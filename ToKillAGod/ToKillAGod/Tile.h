@@ -15,7 +15,8 @@ public:
 		normal,
 		danger,
 		bouncer,
-		objective
+		objective,
+        checkpoint
 	};
 
 	Tile();
@@ -24,7 +25,7 @@ public:
 	void draw(sf::RenderWindow &window)override{ GameObject::draw(window); }
     void update(const float dt)override{ GameObject::update(dt); }
 
-
+    void setTileType(TileType type){ m_tileType = type; }
 	TileType getTileType(){ return m_tileType; }
 
 private:
