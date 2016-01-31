@@ -137,7 +137,23 @@ GameObject* BossFightScene::getPlayerCollisions()
 	for (GameObject* it : m_projectiles)
 	{
 
-			sf::Vector2f Player_1_position = m_player_0->getPosition();
+		
+		if (m_player_0->circleCollision(it) != nullptr)
+		{
+			m_player_0->hit(99);
+			std::cout << "player 1 got hit"<< std::endl;
+		}
+		if (m_player_1->circleCollision(it) != nullptr)
+		{
+			m_player_1->hit(99);
+			std::cout << "player 2 got hit" << std::endl;
+		}
+		if (m_player_2->circleCollision(it) != nullptr)
+		{
+			m_player_2->hit(99);
+			std::cout << "player 3 got hit" << std::endl;
+		}
+			/*sf::Vector2f Player_1_position = m_player_0->getPosition();
 			sf::Vector2f Player_2_position = m_player_1->getPosition();
 			sf::Vector2f Player_3_position = m_player_2->getPosition();
 			sf::FloatRect size1 = m_player_0->getBoundingBox();
@@ -169,7 +185,7 @@ GameObject* BossFightScene::getPlayerCollisions()
 			{
 				std::cout << "player 3 got hit" << std::endl;
 				m_player_2->hit(1);
-			}
+			}*/
 		}
 
 	return nullptr;
@@ -177,7 +193,18 @@ GameObject* BossFightScene::getPlayerCollisions()
 void BossFightScene::update(float dt)
 {
 
-	
+	if (m_player_0->hp() <= 0)
+	{
+		std::cout << "Player 1 ded" << std::endl;
+	}
+	if (m_player_1->hp() <= 0)
+	{
+		std::cout << "Player 2 ded" << std::endl;
+	}
+	if (m_player_2->hp() <= 0)
+	{
+		std::cout << "Player 3 ded" << std::endl;
+	}
 
 	if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
 	{
