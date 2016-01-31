@@ -73,13 +73,13 @@ BossFightScene::BossFightScene(StateManager* manager)
     m_objects.push_back(m_player_1);
     m_objects.push_back(m_player_2);
 
-	m_player_0->initHP(sf::Vector3f(255.0, 255.0, 255.0), 250.0f);
+	m_player_2->initHP(sf::Vector3f(255.0, 255.0, 255.0), 250.0f);
 	m_player_1->initHP(sf::Vector3f(136.0, 0.0, 21.0), 250.0f);
-	m_player_2->initHP(sf::Vector3f(0.0, 255.0, 255.0), 250.0f);
+	m_player_0->initHP(sf::Vector3f(0.0, 255.0, 255.0), 250.0f);
 
-	m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
+	m_player_0->setHPPosition(sf::Vector2f(300, m_hpYPosition));
 	m_player_1->setHPPosition(sf::Vector2f(0, m_hpYPosition));
-	m_player_2->setHPPosition(sf::Vector2f(300, m_hpYPosition));
+	m_player_2->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
 
     loadResources();
 
@@ -137,17 +137,20 @@ GameObject* BossFightScene::getPlayerCollisions()
 {
 	for (GameObject* it : m_projectiles)
 	{
-
-		
-		if (m_player_0->circleCollision(it) != nullptr && !m_player_0->isDestroyed()) {
-			m_player_0->hit(0.1);
-
+		GameObject* temp = m_player_0->circleCollision(it);
+		if (temp != nullptr && !m_player_0->isDestroyed()) {
+			m_player_0->hit(1.0);
+			temp->destroy();
 		}
-		if (m_player_1->circleCollision(it) != nullptr&& !m_player_1->isDestroyed()) {
-			m_player_1->hit(0.1);
+		temp = m_player_1->circleCollision(it);
+		if (temp != nullptr&& !m_player_1->isDestroyed()) {
+			m_player_1->hit(1.0);
+			temp->destroy();
 		}
-		if (m_player_2->circleCollision(it) != nullptr&& !m_player_2->isDestroyed()) {
-			m_player_2->hit(0.1);
+		temp = m_player_2->circleCollision(it);
+		if (temp != nullptr&& !m_player_2->isDestroyed()) {
+			m_player_2->hit(1.0);
+			temp->destroy();
 		}
 	}
 
@@ -155,6 +158,8 @@ GameObject* BossFightScene::getPlayerCollisions()
 }
 void BossFightScene::update(float dt)
 {
+
+	srand(time(NULL));
 
 	if (m_player_0->hp() <= 0)
 	{
@@ -169,12 +174,12 @@ void BossFightScene::update(float dt)
         m_player_2->destroy();
 	}
 
-	if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
-	{
-		m_projectiles.erase(m_projectiles.begin(),m_projectiles.end());
-		projectileLifeTime = 0;
-	}
-	else if (m_projectiles.size() > 0){ projectileLifeTime += dt; }
+	//if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
+	//{
+	//	m_projectiles.erase(m_projectiles.begin(),m_projectiles.end());
+	//	projectileLifeTime = 0;
+	//}
+	//else if (m_projectiles.size() > 0){ projectileLifeTime += dt; }
     for (auto it : m_objects)
     {
         it->update(dt);
@@ -198,7 +203,7 @@ void BossFightScene::update(float dt)
         m_bossfight = false;
         m_end = 10.0f;
         m_boss->destroy();
-		std::cout << "your winner.\n";
+		std::cout << "YOUR WIENER!!!\n";
 	}
     movePlayers(dt);
     if (m_spawnTimer > 0)
@@ -239,7 +244,7 @@ void BossFightScene::update(float dt)
 
             for (int i = 0; i < 50; i++)
             {
-                m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
+				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
             std::cout << "projectiles created\n";
         }
@@ -250,9 +255,9 @@ void BossFightScene::update(float dt)
 
 		if (m_hpYPosition > 230) {
 			m_hpYPosition = m_player_0->getHPPos().y - 1.5f;
-			m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
+			m_player_0->setHPPosition(sf::Vector2f(300, m_hpYPosition));
 			m_player_1->setHPPosition(sf::Vector2f(0,	 m_hpYPosition));
-			m_player_2->setHPPosition(sf::Vector2f(300,  m_hpYPosition));
+			m_player_2->setHPPosition(sf::Vector2f(-300,  m_hpYPosition));
 		}
 
         //move shields to players
@@ -263,42 +268,65 @@ void BossFightScene::update(float dt)
         if (m_end == 0.0f)
         {
             //shoot particles to boss
-            m_PM->createParticle(m_RM->getTexture("spark"),
+			if (m_player_0->hp() > 0) m_PM->createParticle(m_RM->getTexture("spark"),
                 m_player_0->getPosition().x, m_player_0->getPosition().y,
                 500.0f,
                 atan2f(
                 m_boss->getPosition().y - m_player_0->getPosition().y,
                 m_boss->getPosition().x - m_player_0->getPosition().x),
                 1.5f, 180.0f, 0.05f, 0.5f);
-            m_PM->createParticle(m_RM->getTexture("spark_red"),
+			if (m_player_1->hp() > 0) m_PM->createParticle(m_RM->getTexture("spark_red"),
                 m_player_1->getPosition().x, m_player_1->getPosition().y,
                 500.0f,
                 atan2f(
                 m_boss->getPosition().y - m_player_1->getPosition().y,
                 m_boss->getPosition().x - m_player_1->getPosition().x),
                 1.5f, 180.0f, 0.05f, 0.5f);
-            m_PM->createParticle(m_RM->getTexture("spark_white"),
+			if (m_player_2->hp() > 0) m_PM->createParticle(m_RM->getTexture("spark_white"),
                 m_player_2->getPosition().x, m_player_2->getPosition().y,
                 500.0f,
                 atan2f(
                 m_boss->getPosition().y - m_player_2->getPosition().y,
                 m_boss->getPosition().x - m_player_2->getPosition().x),
                 1.5f, 180.0f, 0.05f, 0.5f);
-        }
+        
+			if (bossShootTimer >= 1.0f && (!m_player_0->isDestroyed() || !m_player_1->isDestroyed() || !m_player_2->isDestroyed())) {
 
-		if (bossShootTimer >= 500 * dt)
-		{
-			for (int i = 0; i < 50; i++)
-			{
-				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
+				//Get random player
+				GameObject* target = m_objects[rand() % 3];
+				while (target->isDestroyed() && target->getType() != TYPE::PLAYER) {
+					target = m_objects[rand() % 3];
+				}
+
+				switch (rand() % 3)
+				{
+				case 0:
+					for (int i = 0; i < 5; i++)
+					{
+						m_projectiles.push_back(new Projectile(m_boss->getPosition().x, m_boss->getPosition().y, target->getPosition().x, target->getPosition().y, -atan2f(target->getPosition().y - m_boss->getPosition().y, target->getPosition().x - m_boss->getPosition().x)));
+					}
+					break;
+				case 1:
+					for (int i = 0; i < 5; i++)
+					{
+						m_projectiles.push_back(new Projectile(m_boss->getPosition().x, m_boss->getPosition().y, target->getPosition().x, target->getPosition().y, -atan2f(target->getPosition().y - m_boss->getPosition().y, target->getPosition().x - m_boss->getPosition().x)*i / 3.14f));
+					}
+					break;
+				default:
+					for (int i = 0; i < 15; i++)
+					{
+						m_projectiles.push_back(new Projectile(m_boss->getPosition().x, m_boss->getPosition().y, 0.0f, 0.0f));
+					}
+					break;
+				}
+				bossShootTimer = 0;
 			}
-			std::cout << "particles created\n";
-			bossShootTimer = 0;
+			else
+			{
+				bossShootTimer += dt;
+			}
 		}
-		else
-		{
-			bossShootTimer += dt;
-		}
+
         //stuff
         m_PM->update(dt);
 
@@ -307,12 +335,22 @@ void BossFightScene::update(float dt)
         {
             if (m_objects[i]->isDestroyed())
             {
-                if (m_objects[i] != m_player_0 && m_objects[i] != m_player_1 && m_objects[i] != m_player_2)
-                    delete m_objects[i];
-                m_objects.erase(m_objects.begin() + i);
-                i--;
+				if (m_objects[i] != m_player_0 && m_objects[i] != m_player_1 && m_objects[i] != m_player_2) {
+					delete m_objects[i];
+					m_objects.erase(m_objects.begin() + i);
+					i--;
+				}
             }
         }
+		for (unsigned i = 0; i < m_projectiles.size(); i++)
+		{
+			if (m_projectiles[i]->isDestroyed())
+			{
+				delete m_projectiles[i];
+				m_projectiles.erase(m_projectiles.begin() + i);
+				i--;
+			}
+		}
     }
 
     //rotate shields
@@ -418,13 +456,13 @@ void BossFightScene::draw(sf::RenderWindow& window)
 		window.setView(m_gameView);
 	}
 
-    window.draw(m_circle_0);
-    window.draw(m_circle_1);
-    window.draw(m_circle_2);
+	window.draw(m_circle_0);
+	window.draw(m_circle_1);
+	window.draw(m_circle_2);
 
-    window.draw(m_circle_effect_0);
-    window.draw(m_circle_effect_1);
-    window.draw(m_circle_effect_2);
+	if (m_player_0->hp() > 0) window.draw(m_circle_effect_0);
+	if (m_player_1->hp() > 0) window.draw(m_circle_effect_1);
+	if (m_player_2->hp() > 0) window.draw(m_circle_effect_2);
 
 	if (m_bossfight) {
 		if(m_player_0->hp() > 0) m_player_0->drawHP(window);
@@ -434,7 +472,8 @@ void BossFightScene::draw(sf::RenderWindow& window)
 
     for (auto it : m_objects)
     {
-        it->draw(window);
+		if (!it->isDestroyed())
+	        it->draw(window);
     }
 	for (auto it : m_projectiles)
 	{
