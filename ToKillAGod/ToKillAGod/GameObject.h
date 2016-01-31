@@ -44,6 +44,7 @@ protected:
 	sf::Sprite m_sprite;
 	sf::Vector2f m_origin;
 	TYPE m_type;
+	sf::RectangleShape* m_hpBar;
 };
 
 

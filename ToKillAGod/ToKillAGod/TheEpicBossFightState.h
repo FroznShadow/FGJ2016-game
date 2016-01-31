@@ -53,6 +53,7 @@ private:
 
     ÜberEpicBoss* m_boss;
 
+	float m_hpYPosition = 510.0f;
     
 };
 
@@ -68,6 +69,14 @@ BossFightScene::BossFightScene(StateManager* manager)
     m_objects.push_back(m_player_0);
     m_objects.push_back(m_player_1);
     m_objects.push_back(m_player_2);
+
+	m_player_0->initHP(sf::Vector3f(255.0, 255.0, 255.0), 250.0f);
+	m_player_1->initHP(sf::Vector3f(255.0, 0.0, 0.0), 250.0f);
+	m_player_2->initHP(sf::Vector3f(0.0, 0.0, 255.0), 250.0f);
+
+	m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
+	m_player_1->setHPPosition(sf::Vector2f(0, m_hpYPosition));
+	m_player_2->setHPPosition(sf::Vector2f(300, m_hpYPosition));
 
     loadResources();
 
@@ -159,6 +168,18 @@ void BossFightScene::update(float dt)
     }
     else
     {
+		if (m_hpYPosition > 230) {
+			m_hpYPosition = m_player_0->getHPPos().y - 1.5f;
+			m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
+			m_player_1->setHPPosition(sf::Vector2f(0,	 m_hpYPosition));
+			m_player_2->setHPPosition(sf::Vector2f(300,  m_hpYPosition));
+		}
+		if (m_player_0->alpha() < 255.0f) {
+			m_player_0->alpha() += 0.75f;
+			m_player_1->alpha() += 0.75f;
+			m_player_2->alpha() += 0.75f;
+		}
+
         //move shields to players
         m_circle_effect_0.setPosition(m_player_0->getPosition() + sf::Vector2f(32.0f, 32.0f));
         m_circle_effect_1.setPosition(m_player_1->getPosition() + sf::Vector2f(32.0f, 32.0f));
