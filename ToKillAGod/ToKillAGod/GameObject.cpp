@@ -106,8 +106,8 @@ void GameObject::destroy()
 }
 
 GameObject* GameObject::circleCollision(GameObject* go) {
-	float radius = ((m_sprite.getLocalBounds().width / 2) + (m_sprite.getLocalBounds().height / 2) / 2);
-	float radius2 = ((go->m_sprite.getLocalBounds().width / 2) + (go->m_sprite.getLocalBounds().height / 2) / 2);
+	float radius = ((m_sprite.getLocalBounds().width / 2));
+	float radius2 = ((go->m_sprite.getLocalBounds().width / 2));
 
 	if (((m_sprite.getPosition().x - go->m_sprite.getPosition().x)*(m_sprite.getPosition().x - go->m_sprite.getPosition().x))
 		+ ((m_sprite.getPosition().y - go->m_sprite.getPosition().y)*(m_sprite.getPosition().y - go->m_sprite.getPosition().y))

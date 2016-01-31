@@ -23,7 +23,7 @@ private:
 	sf::Texture m_tex;
 };
 
-ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x), m_hitpoints(100.0f), m_maxHP(m_hitpoints) {
+ÜberEpicBoss::ÜberEpicBoss(float x, float y) : m_x(x), m_y(y), m_z(x), m_hitpoints(60.0f), m_maxHP(m_hitpoints) {
 	ResourceManager* RM = ResourceManager::getInstance();
 	setPosition(sf::Vector2f(m_x, m_y));
 
@@ -56,6 +56,6 @@ void ÜberEpicBoss::update(const float deltaTime) {
 	m_y = 50 * sinf(m_z * 3 * 3.14159265359f / 180) - 525;
 
 	setPosition(sf::Vector2f(m_x, m_y));
-	m_hitpoints -= deltaTime*10;
+	m_hitpoints -= deltaTime;
 	m_hpBar->setScale(m_hitpoints / m_maxHP, 1); //tämä hoidetaan statessa!!! float& hp()
 }

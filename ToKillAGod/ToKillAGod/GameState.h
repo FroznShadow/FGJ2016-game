@@ -206,7 +206,6 @@ void GameState::generate()
 		{			
 			if (objective == false) {
 				objective = true;
-				std::cout << objective << std::endl;
 				totalLength++;
 				addTile(Tile::TileType::objective, i + 1, levelHeight - 1);
 				return;

@@ -7,7 +7,7 @@
 class Projectile : public GameObject
 {
 public:
-	Projectile(float x, float y, float xTarget, float yTarget);
+	Projectile(float x, float y, float xTarget, float yTarget, float direction=0.0f);
 	~Projectile();
 
 	void draw(sf::RenderWindow& window)override;
@@ -24,7 +24,7 @@ private:
     float m_hspeed;
 };
 
-Projectile::Projectile(float x, float y, float xTarget, float yTarget)
+Projectile::Projectile(float x, float y, float xTarget, float yTarget, float direction)
 	:m_x(x), m_y(y), m_xTarget(xTarget), m_yTarget(yTarget)
 {
 	ResourceManager* RM = ResourceManager::getInstance();
@@ -33,9 +33,12 @@ Projectile::Projectile(float x, float y, float xTarget, float yTarget)
 	setTexture(*RM->getTexture("Projectile1"));
 
     float speed = 15;
-    float direction = (float)(rand() % 180) * 3.14159265 / 180;
-    m_hspeed = cos(direction) * speed;
-    m_vspeed = -sin(direction) * speed;
+	float dir = direction;
+	if (dir == 0.0f) {
+    dir = (float)(rand() % 180) * 3.14159265 / 180;
+	}
+    m_hspeed = cos(dir) * speed;
+    m_vspeed = -sin(dir) * speed;
 }
 
 Projectile::~Projectile()

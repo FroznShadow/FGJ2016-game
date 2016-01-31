@@ -226,7 +226,6 @@ void BossFightScene::update(float dt)
         m_bossfight = false;
         m_end = 10.0f;
         m_boss->destroy();
-		std::cout << "YOUR WIENER!!!\n";
 	}
     movePlayers(dt);
     if (m_spawnTimer > 0)
@@ -263,7 +262,6 @@ void BossFightScene::update(float dt)
             m_boss = new ÜberEpicBoss(0.0f, -512.f);
             m_objects.push_back(m_boss);
             m_spawnTimer = 3.1415926535f;
-            std::cout << "BOSSFOO!\n";
 
             //TODO: add more cool effects when the big bad boss is summoned
 			shootSound.play();
@@ -271,7 +269,6 @@ void BossFightScene::update(float dt)
             {
 				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
-            std::cout << "projectiles created\n";
         }
     }
     else
