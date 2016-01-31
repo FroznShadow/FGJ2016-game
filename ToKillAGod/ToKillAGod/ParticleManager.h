@@ -27,6 +27,7 @@ public:
                 j--;
             }
         }
+		
     }
 
     void draw(sf::RenderWindow& window)

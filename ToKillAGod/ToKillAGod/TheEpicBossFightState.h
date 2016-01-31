@@ -20,6 +20,7 @@ public:
     ~BossFightScene();
     void draw(sf::RenderWindow &window)override;
     void update(const float dt)override;
+	GameObject* getPlayerCollisions();
 private:
     void loadResources();
     void generate();
@@ -131,8 +132,52 @@ void BossFightScene::movePlayers(float dt)
     }
 }
 
+GameObject* BossFightScene::getPlayerCollisions()
+{
+	for (GameObject* it : m_projectiles)
+	{
+
+			sf::Vector2f Player_1_position = m_player_0->getPosition();
+			sf::Vector2f Player_2_position = m_player_1->getPosition();
+			sf::Vector2f Player_3_position = m_player_2->getPosition();
+			sf::FloatRect size1 = m_player_0->getBoundingBox();
+			sf::FloatRect size2 = m_player_1->getBoundingBox();
+			sf::FloatRect size3 = m_player_2->getBoundingBox();
+			if (Player_1_position.x + size1.width > it->getPosition().x &&
+				Player_1_position.y + size1.height > it->getPosition().y &&
+				Player_1_position.x < it->getPosition().x + 128.0f &&
+				Player_1_position.y < it->getPosition().y + 128.0f
+				)
+			{
+				std::cout << "player 1 got hit" << std::endl;
+				m_player_0->hit(1);
+			}
+			else if (Player_2_position.x + size2.width > it->getPosition().x &&
+				Player_2_position.y + size2.height > it->getPosition().y &&
+				Player_2_position.x < it->getPosition().x + 128.0f &&
+				Player_2_position.y < it->getPosition().y + 128.0f
+				)
+			{
+				std::cout << "player 2 got hit" << std::endl;
+				m_player_1->hit(1);
+			}
+			else if (Player_3_position.x + size3.width > it->getPosition().x &&
+				Player_3_position.y + size3.height > it->getPosition().y &&
+				Player_3_position.x < it->getPosition().x + 128.0f &&
+				Player_3_position.y < it->getPosition().y + 128.0f
+				)
+			{
+				std::cout << "player 3 got hit" << std::endl;
+				m_player_2->hit(1);
+			}
+		}
+
+	return nullptr;
+}
 void BossFightScene::update(float dt)
 {
+
+	
 
 	if (projectileLifeTime >= 7 && m_projectiles.size() > 0)
 	{
@@ -175,7 +220,7 @@ void BossFightScene::update(float dt)
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 50; i++)
             {
                 m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
@@ -184,6 +229,8 @@ void BossFightScene::update(float dt)
     }
     else
     {
+		BossFightScene::getPlayerCollisions();
+
 		if (m_hpYPosition > 230) {
 			m_hpYPosition = m_player_0->getHPPos().y - 1.5f;
 			m_player_0->setHPPosition(sf::Vector2f(-300, m_hpYPosition));
@@ -226,7 +273,7 @@ void BossFightScene::update(float dt)
 
 		if (bossShootTimer >= 500 * dt)
 		{
-			for (int i = 0; i < 200; i++)
+			for (int i = 0; i < 50; i++)
 			{
 				m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
 			}
