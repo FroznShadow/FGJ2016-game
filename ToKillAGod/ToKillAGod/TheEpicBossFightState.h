@@ -138,52 +138,17 @@ GameObject* BossFightScene::getPlayerCollisions()
 	{
 
 		
-		if (m_player_0->circleCollision(it) != nullptr)
-		{
+		if (m_player_0->circleCollision(it) != nullptr && !m_player_0->isDestroyed()) {
 			m_player_0->hit(0.1);
+
 		}
-		if (m_player_1->circleCollision(it) != nullptr)
-		{
+		if (m_player_1->circleCollision(it) != nullptr&& !m_player_1->isDestroyed()) {
 			m_player_1->hit(0.1);
 		}
-		if (m_player_2->circleCollision(it) != nullptr)
-		{
+		if (m_player_2->circleCollision(it) != nullptr&& !m_player_2->isDestroyed()) {
 			m_player_2->hit(0.1);
 		}
-			/*sf::Vector2f Player_1_position = m_player_0->getPosition();
-			sf::Vector2f Player_2_position = m_player_1->getPosition();
-			sf::Vector2f Player_3_position = m_player_2->getPosition();
-			sf::FloatRect size1 = m_player_0->getBoundingBox();
-			sf::FloatRect size2 = m_player_1->getBoundingBox();
-			sf::FloatRect size3 = m_player_2->getBoundingBox();
-			if (Player_1_position.x + size1.width > it->getPosition().x &&
-				Player_1_position.y + size1.height > it->getPosition().y &&
-				Player_1_position.x < it->getPosition().x + 128.0f &&
-				Player_1_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 1 got hit" << std::endl;
-				m_player_0->hit(1);
-			}
-			else if (Player_2_position.x + size2.width > it->getPosition().x &&
-				Player_2_position.y + size2.height > it->getPosition().y &&
-				Player_2_position.x < it->getPosition().x + 128.0f &&
-				Player_2_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 2 got hit" << std::endl;
-				m_player_1->hit(1);
-			}
-			else if (Player_3_position.x + size3.width > it->getPosition().x &&
-				Player_3_position.y + size3.height > it->getPosition().y &&
-				Player_3_position.x < it->getPosition().x + 128.0f &&
-				Player_3_position.y < it->getPosition().y + 128.0f
-				)
-			{
-				std::cout << "player 3 got hit" << std::endl;
-				m_player_2->hit(1);
-			}*/
-		}
+	}
 
 	return nullptr;
 }
@@ -244,11 +209,13 @@ void BossFightScene::update(float dt)
             m_spawnTimer = 3.1415926535f;
             std::cout << "BOSSFOO!\n";
 
+            //TODO: add more cool effects when the big bad boss is summoned
+
             for (int i = 0; i < 50; i++)
             {
                 m_projectiles.push_back(new Projectile(0.0f, -700.0f, 0.0f, 0.0f));
             }
-            std::cout << "particles created\n";
+            std::cout << "projectiles created\n";
         }
     }
     else
@@ -305,6 +272,17 @@ void BossFightScene::update(float dt)
 		}
         //stuff
         m_PM->update(dt);
+
+        //delete deleted objects
+        for (unsigned i = 0; i < m_objects.size(); i++)
+        {
+            if (m_objects[i]->isDestroyed())
+            {
+                delete m_objects[i];
+                m_objects.erase(m_objects.begin() + i);
+                i--;
+            }
+        }
     }
 
     //rotate shields
